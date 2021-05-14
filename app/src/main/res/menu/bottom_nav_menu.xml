@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="Store" />
+
+
+    <item
+        android:id="@+id/navigation_view_youtube"
+        android:icon="@drawable/ic_baseline_play_circle_filled_24"
+        android:title="View" />
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Campaign" />
+
+</menu>

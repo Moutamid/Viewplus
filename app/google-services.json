@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "586894305126",
+    "firebase_url": "https://viewplus-13fb4-default-rtdb.firebaseio.com",
+    "project_id": "viewplus-13fb4",
+    "storage_bucket": "viewplus-13fb4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586894305126:android:b75ca22e8ef3f11a29caa7",
+        "android_client_info": {
+          "package_name": "com.moutamid.viewplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586894305126-70savvir616ngbgmuh339so6kcsvlt87.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moutamid.viewplus",
+            "certificate_hash": "f39a3ca243502e996f2be8d87b2ec0391f576d60"
+          }
+        },
+        {
+          "client_id": "586894305126-tm2lnbqblm8tjfq5q0pd9175c3l176l3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moutamid.viewplus",
+            "certificate_hash": "592eb93dd25ca2ff6e102db0ec9d9fecf4d5d22b"
+          }
+        },
+        {
+          "client_id": "586894305126-1s2i5r13loupk121q8cnq0jr8salqv9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc1Y01FlR7ZzyTWXPvSGBVYIMheiMlEl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586894305126-1s2i5r13loupk121q8cnq0jr8salqv9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
