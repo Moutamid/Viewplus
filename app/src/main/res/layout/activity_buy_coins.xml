@@ -35,8 +35,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
+                android:fontFamily="casual"
                 android:layout_marginLeft="10dp"
-                android:text="Viewplus"
+                android:text="SubsBooster"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
@@ -85,9 +86,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_margin="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="Contact on sjfgajs@gmail.com to buy coins or some text here"
+            android:text="Contact on moutamid@gmail.com to buy coins or some text here"
             android:textSize="25sp" />
 
     </RelativeLayout>

@@ -3,24 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_view_youtube">
+    app:startDestination="@+id/navigation_view">
 
     <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.moutamid.viewplus.ui.notifications.SettingsFragment"
-        android:label="Store"
-        tools:layout="@layout/fragment_settings" />
+        android:id="@+id/navigation_subscribe"
+        android:name="com.moutamid.viewplussubsbooster.ui.subscribe.SubscribeFragment"
+        android:label="Subscribe"
+        tools:layout="@layout/fragment_subscribe" />
 
     <fragment
-        android:id="@+id/navigation_view_youtube"
-        android:name="com.moutamid.viewplus.ui.dashboard.ViewYoutubeFragment"
+        android:id="@+id/navigation_like"
+        android:name="com.moutamid.viewplussubsbooster.ui.like.LikeFragment"
+        android:label="Like"
+        tools:layout="@layout/fragment_like" />
+
+    <fragment
+        android:id="@+id/navigation_view"
+        android:name="com.moutamid.viewplussubsbooster.ui.view.ViewFragment"
         android:label="View"
-        tools:layout="@layout/fragment_view_youtube" />
+        tools:layout="@layout/fragment_view" />
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.moutamid.viewplus.ui.home.HomeFragment"
+        android:id="@+id/navigation_campaign"
+        android:name="com.moutamid.viewplussubsbooster.ui.campaign.CampaignFragment"
         android:label="Campaign"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_campaign" />
+
+    <fragment
+        android:id="@+id/navigation_points"
+        android:name="com.moutamid.viewplussubsbooster.ui.points.PointsFragment"
+        android:label="Points"
+        tools:layout="@layout/fragment_points" />
 
 </navigation>
