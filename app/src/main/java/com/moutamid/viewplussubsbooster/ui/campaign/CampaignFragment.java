@@ -73,6 +73,8 @@ public class CampaignFragment extends Fragment {
                             return;
                         }
 
+                        tasksArrayList.clear();
+
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                             CampaignFragment.Task task = dataSnapshot.getValue(CampaignFragment.Task.class);

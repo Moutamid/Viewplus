@@ -191,7 +191,7 @@ public class ViewFragment extends Fragment {
 //                    Toast.makeText(getActivity(), task1.getTaskKey(), Toast.LENGTH_SHORT).show();
 //                }
 
-                if (taskArrayList != null) {
+                if (taskArrayList.size() > 0) {
                     videoUrl = taskArrayList.get(0).getVideoUrl();
 
                     currentPoints = Integer.parseInt(taskArrayList.get(0)
@@ -199,9 +199,11 @@ public class ViewFragment extends Fragment {
 
                     currentPointTextview.setText(currentPoints + "");
 //                    percentage;
+                    initYoutubePlayer();
+                } else {
+                    Toast.makeText(requireContext(), "No video found to watch!", Toast.LENGTH_SHORT).show();
                 }
 
-                initYoutubePlayer();
 
             }
 
@@ -322,6 +324,7 @@ public class ViewFragment extends Fragment {
         tv.setText(taskArrayList.get(currentPosition).getTotalViewTimeQuantity());
 
         // INIT PLAYER VIEW
+
         getVideoTitle.setId(videoUrl);
         getVideoTitle.execute();
     }

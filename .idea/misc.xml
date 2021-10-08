@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/drawable/nav_header_layout.xml" value="0.21614583333333334" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_add_task.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_bottom_navigation.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_buy_coins.xml" value="0.2" />
@@ -19,7 +20,10 @@
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/fragment_view.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/fragment_view_youtube.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/layout_task_home.xml" value="0.2" />
+        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/nav_header_layout.xml" value="0.2" />
+        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/menu/admin_nav_drawer_menu.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2" />
+        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/menu/nav_drawer_menu.xml" value="0.2" />
       </map>
     </option>
   </component>
