@@ -62,7 +62,7 @@ public class ViewFragment extends Fragment {
 
     private static class HttpHandler {
 
-        private String TAG = "HttpHandler";
+//        private String TAG = "HttpHandler";
 
         public HttpHandler() {
         }
@@ -124,7 +124,7 @@ public class ViewFragment extends Fragment {
 
     private ArrayList<Taskk> taskArrayList = new ArrayList<>();
 
-    private GetVideoTitle getVideoTitle = new GetVideoTitle();
+//    private GetVideoTitle getVideoTitle = new GetVideoTitle();
     private YouTubePlayerView youTubePlayerView;
     private String videoUrl;
 
@@ -151,7 +151,7 @@ public class ViewFragment extends Fragment {
     private int currentVideoLength = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        Log.d(TAG, "onCreateView: ");
         root = inflater.inflate(R.layout.fragment_view, container, false);
 
 //        videoUrl = getIntent().getStringExtra("url");
@@ -166,8 +166,10 @@ public class ViewFragment extends Fragment {
         databaseReference.child("tasks").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists())
+                if (!snapshot.exists()) {
+                    Log.d(TAG, "onDataChange: snapshot not exist");
                     return;
+                }
 
                 taskArrayList.clear();
 
@@ -179,9 +181,10 @@ public class ViewFragment extends Fragment {
                 }
 
                 for (int i = 0; i <= taskArrayList.size() - 1; i++) {
-
+                    Log.d(TAG, "onDataChange: "+i);
                     Taskk currentTask1 = taskArrayList.get(i);
                     if (!currentTask1.getCompletedDate().equals("error")) {
+                        Log.d(TAG, "onDataChange: removed");
                         taskArrayList.remove(currentTask1);
                     }
                 }
@@ -192,6 +195,7 @@ public class ViewFragment extends Fragment {
 //                }
 
                 if (taskArrayList.size() > 0) {
+                    Log.d(TAG, "onDataChange: if (taskArrayList.size() > 0) {");
                     videoUrl = taskArrayList.get(0).getVideoUrl();
 
                     currentPoints = Integer.parseInt(taskArrayList.get(0)
@@ -263,6 +267,7 @@ public class ViewFragment extends Fragment {
     }
 
     private void initYoutubePlayer() {
+        Log.d(TAG, "initYoutubePlayer: ");
         getLifecycle().addObserver(youTubePlayerView);
 
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
@@ -312,6 +317,7 @@ public class ViewFragment extends Fragment {
         youTubePlayerView.getPlayerUiController().setFullScreenButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: fullscreen");
                 youTubePlayerView.toggleFullScreen();
             }
         });
@@ -325,9 +331,14 @@ public class ViewFragment extends Fragment {
 
         // INIT PLAYER VIEW
 
-        getVideoTitle.setId(videoUrl);
-        getVideoTitle.execute();
+        if (!isRunning) {
+            new GetVideoTitle(videoUrl).execute();
+//            getVideoTitle.setId(videoUrl);
+//            getVideoTitle.execute();
+        }
     }
+
+    private boolean isRunning = false;
 
     private static String getVideoId(@NonNull String videoUrl) {
         String videoId = "";
@@ -337,6 +348,7 @@ public class ViewFragment extends Fragment {
         if (matcher.find()) {
             videoId = matcher.group(1);
         }
+        Log.d(TAG, "getVideoId: videoId "+videoId);
         return videoId;
     }
 
@@ -373,7 +385,7 @@ public class ViewFragment extends Fragment {
 
             @Override
             public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
-
+                Log.d(TAG, "onCurrentSecond: "+Math.round(v));
                 showToastOnDifferentSec(Math.round(v));
 
 //                if (Math.round(v) != prev) {
@@ -388,7 +400,7 @@ public class ViewFragment extends Fragment {
 
             @Override
             public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
-
+                Log.d(TAG, "onVideoDuration: "+Math.round(v));
                 currentVideoLength = Math.round(v);
 
                 //                new Handler().postDelayed(new Runnable() {
@@ -421,11 +433,12 @@ public class ViewFragment extends Fragment {
     boolean run = true;
 
     private void showToastOnDifferentSec(int sec) {
-
+        Log.d(TAG, "showToastOnDifferentSec: "+sec);
         if (!run)
             return;
 
         if (sec == nmbr) {
+            Log.d(TAG, "showToastOnDifferentSec: if (sec == nmbr) {");
 
         } else {
 
@@ -462,10 +475,19 @@ public class ViewFragment extends Fragment {
     private void setNewVideoPlayerDetails() {
         String url = getNextUrl();
 
-        GetVideoTitle getVideoTitle1 = new GetVideoTitle();
+        if (url.equals("null"))
+            return;
 
-        getVideoTitle1.setId(url);
-        getVideoTitle1.execute();
+//        GetVideoTitle getVideoTitle1 = new GetVideoTitle();
+
+//        getVideoTitle1.setId(url);
+//        getVideoTitle1.execute();
+
+        if (!isRunning) {
+            new GetVideoTitle(url).execute();
+//            getVideoTitle.setId(videoUrl);
+//            getVideoTitle.execute();
+        }
 
         youTubePlayer1.loadVideo(getVideoId(url), 0);
 
@@ -599,12 +621,20 @@ public class ViewFragment extends Fragment {
         } else {
             currentPosition = 0;
 
-            currentPoints = Integer.parseInt(taskArrayList.get(0)
-                    .getTotalViewTimeQuantity());
+            if (taskArrayList.size() > 0) {
 
-            currentPointTextview.setText(currentPoints + "");
+                currentPoints = Integer.parseInt(taskArrayList.get(0)
+                        .getTotalViewTimeQuantity());
 
-            return taskArrayList.get(0).getVideoUrl();
+                currentPointTextview.setText(currentPoints + "");
+
+                return taskArrayList.get(0).getVideoUrl();
+
+            } else {
+                Toast.makeText(requireContext(), "No video found to watch!", Toast.LENGTH_SHORT).show();
+                return "null";
+            }
+
         }
 
     }
@@ -614,28 +644,33 @@ public class ViewFragment extends Fragment {
         super.onDestroy();
 
         youTubePlayerView.release();
-        getVideoTitle.cancel(true);
+//        getVideoTitle.cancel(true);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        getVideoTitle.cancel(true);
+//        getVideoTitle.cancel(true);
 
     }
 
     private class GetVideoTitle extends AsyncTask<String, Void, String> {
 
-        private String id;
-
-        public void setId(String id) {
+        public GetVideoTitle(String id) {
             this.id = id;
         }
+
+        private String id;
+
+//        public void setId(String id) {
+//            this.id = id;
+//        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            isRunning = true;
             if (!isCancelled())
                 youTubePlayerView.getPlayerUiController().setVideoTitle("Loading...");
         }
@@ -699,6 +734,7 @@ public class ViewFragment extends Fragment {
             if (!isCancelled())
                 youTubePlayerView.getPlayerUiController().setVideoTitle(s);
 
+            isRunning = false;
         }
     }
 
