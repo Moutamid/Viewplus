@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,11 +50,17 @@ public class CampaignFragment extends Fragment {
     private DatabaseReference databaseReference;
     private ProgressDialog progressDialog;
 
+    FloatingActionButton fabViewBtn, fabLikeBtn, fabSubscribeBtn;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_campaign, container, false);
 
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        fabViewBtn = root.findViewById(R.id.viewTaskBtn);
+        fabLikeBtn = root.findViewById(R.id.likeTaskBtn);
+        fabSubscribeBtn = root.findViewById(R.id.subscribeTaskBtn);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
@@ -97,6 +104,24 @@ public class CampaignFragment extends Fragment {
 
 
         setAddTaskButton();
+
+        root.findViewById(R.id.addBtnShowTasks).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // VIEW LIKE SUBSCRIBE
+                if (fabSubscribeBtn.getVisibility() == View.VISIBLE) {
+                    fabViewBtn.setVisibility(View.GONE);
+                    fabLikeBtn.setVisibility(View.GONE);
+                    fabSubscribeBtn.setVisibility(View.GONE);
+
+                } else {
+                    fabViewBtn.setVisibility(View.VISIBLE);
+                    fabLikeBtn.setVisibility(View.VISIBLE);
+                    fabSubscribeBtn.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
 
         return root;
     }

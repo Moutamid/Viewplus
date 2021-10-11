@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,17 +8,7 @@
     android:orientation="vertical"
     tools:context=".ui.campaign.CampaignFragment">
 
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Only supports upto 3 tasks at the same time. Please delete the tasks."
-        android:textColor="@color/accentColor"
-        android:textSize="23sp" />
-
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -45,13 +35,82 @@
             android:background="@color/darkerGrey"
             android:text="add" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="70dp"
-        android:id="@+id/home_recyclerview"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/likeTaskBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/addBtnShowTasks"
+        android:layout_marginBottom="-10dp"
+        android:visibility="gone"
+        android:layout_toStartOf="@+id/viewTaskBtn"
+        android:src="@drawable/ic_baseline_thumb_up_alt_24"
+        app:backgroundTint="@color/red"
+        app:fabSize="mini"
+        app:tint="@color/white" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/subscribeTaskBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp"
+        android:layout_toStartOf="@id/addBtnShowTasks"
+        android:src="@drawable/ic_baseline_group_add_24"
+        app:backgroundTint="@color/red"
+        app:fabSize="mini"
+        app:tint="@color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/viewTaskBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/addBtnShowTasks"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_baseline_play_arrow_24"
+        app:backgroundTint="@color/red"
+        app:fabSize="mini"
+        app:tint="@color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addBtnShowTasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_baseline_add_24"
+        app:backgroundTint="@color/red"
+        app:fabSize="normal"
+        app:tint="@color/white" />
+
+</RelativeLayout>
