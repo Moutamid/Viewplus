@@ -29,9 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
-import com.moutamid.viewplussubsbooster.BottomNavigationActivity;
+import com.moutamid.viewplussubsbooster.activities.BottomNavigationActivity;
 import com.moutamid.viewplussubsbooster.R;
-import com.moutamid.viewplussubsbooster.Utils;
+import com.moutamid.viewplussubsbooster.utils.Utils;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
@@ -532,7 +532,8 @@ public class ViewFragment extends Fragment {
                                     .child("tasks")
                                     .child(taskArrayList.get(currentPosition).getTaskKey())
                                     .child("completedDate")
-                                    .setValue(new Utils().getDate())
+                                    .setValue(Utils.getDate())
+//                                    .setValue(new Utils().getDate())
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {

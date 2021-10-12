@@ -8,10 +8,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.moutamid.viewplussubsbooster.MainActivity;
+import com.moutamid.viewplussubsbooster.activities.MainActivity;
 import com.moutamid.viewplussubsbooster.R;
 
 public class PointsFragment extends Fragment {

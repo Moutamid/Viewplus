@@ -1,5 +1,6 @@
 package com.moutamid.viewplussubsbooster.ui.campaign;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +9,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -28,9 +31,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.moutamid.viewplussubsbooster.AddTaskActivity;
+import com.moutamid.viewplussubsbooster.activities.AddTaskActivity;
 import com.moutamid.viewplussubsbooster.R;
-import com.moutamid.viewplussubsbooster.Utils;
+import com.moutamid.viewplussubsbooster.models.LikeTaskModel;
+import com.moutamid.viewplussubsbooster.models.SubscribeTaskModel;
+import com.moutamid.viewplussubsbooster.models.TasksTypeModel;
+import com.moutamid.viewplussubsbooster.models.ViewTaskModel;
+import com.moutamid.viewplussubsbooster.utils.Constants;
+import com.moutamid.viewplussubsbooster.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -42,6 +50,8 @@ public class CampaignFragment extends Fragment {
     private View root;
 
     private ArrayList<Task> tasksArrayList = new ArrayList<>();
+
+    ArrayList<TasksTypeModel> allTasksArrayList = new ArrayList<>();
 
     private RecyclerView conversationRecyclerView;
     private RecyclerViewAdapterMessages adapter;
@@ -55,6 +65,11 @@ public class CampaignFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_campaign, container, false);
 
+        LikeTaskModel model = new LikeTaskModel();
+        model.setCurrentLikesQuantity(76);
+
+        allTasksArrayList.add(new TasksTypeModel(model, ""));
+
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -62,19 +77,25 @@ public class CampaignFragment extends Fragment {
         fabLikeBtn = root.findViewById(R.id.likeTaskBtn);
         fabSubscribeBtn = root.findViewById(R.id.subscribeTaskBtn);
 
+        fabViewBtn.setOnClickListener(fabViewBtnClickListener());
+        fabLikeBtn.setOnClickListener(fabLikeBtnClickListener());
+        fabSubscribeBtn.setOnClickListener(fabSubscribeBtnClickListener());
+
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        databaseReference.child("tasks").orderByChild("posterUid")
+        getViewTasksListFromDB();
+
+        /*databaseReference.child("tasks").orderByChild("posterUid")
                 .equalTo(mAuth.getCurrentUser().getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                         if (!snapshot.exists()) {
-                            new Utils().storeBoolean(getActivity(), "canAddNewTask", true);
+                            Utils.store("canAddNewTask", true);
 
                             progressDialog.dismiss();
                             return;
@@ -97,18 +118,182 @@ public class CampaignFragment extends Fragment {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                        new Utils().storeBoolean(getActivity(), "canAddNewTask", true);
+                        Utils.store( "canAddNewTask", true);
 
                     }
+                });*/
+
+
+//        setAddTaskButton();
+
+        root.findViewById(R.id.addBtnShowTasks).setOnClickListener(addBtnShowTasksClickListener());
+
+        return root;
+    }
+
+    private void getViewTasksListFromDB() {
+        databaseReference.child("tasks").orderByChild("posterUid")
+                .equalTo(mAuth.getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        allTasksArrayList.clear();
+                        if (!snapshot.exists()) {
+                            getLikeTasksListFromDB();
+//                            progressDialog.dismiss();
+                            return;
+                        }
+
+
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                            ViewTaskModel task = dataSnapshot.getValue(ViewTaskModel.class);
+
+                            allTasksArrayList.add(new TasksTypeModel(task, Constants.TYPE_VIEW));
+
+                        }
+
+//                        initRecyclerView();
+                        getLikeTasksListFromDB();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 });
+    }
+
+    private void getLikeTasksListFromDB() {
+        databaseReference.child(Constants.LIKE_TASKS).orderByChild("posterUid")
+                .equalTo(mAuth.getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        allTasksArrayList.clear();
+                        if (!snapshot.exists()) {
+                            getSubscribeTasksListFromDB();
+//                            progressDialog.dismiss();
+                            return;
+                        }
 
 
-        setAddTaskButton();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
-        root.findViewById(R.id.addBtnShowTasks).setOnClickListener(new View.OnClickListener() {
+                            LikeTaskModel task = dataSnapshot.getValue(LikeTaskModel.class);
+
+                            allTasksArrayList.add(new TasksTypeModel(task, Constants.TYPE_LIKE));
+
+                        }
+
+//                        initRecyclerView();
+                        getSubscribeTasksListFromDB();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void getSubscribeTasksListFromDB() {
+        databaseReference.child(Constants.SUBSCRIBE_TASKS).orderByChild("posterUid")
+                .equalTo(mAuth.getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        allTasksArrayList.clear();
+                        if (!snapshot.exists()) {
+                            initRecyclerView();
+//                            getSubscribeTasksListFromDB();
+                            progressDialog.dismiss();
+                            return;
+                        }
+
+
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                            SubscribeTaskModel task = dataSnapshot.getValue(SubscribeTaskModel.class);
+
+                            allTasksArrayList.add(new TasksTypeModel(task, Constants.TYPE_SUBSCRIBE));
+
+                        }
+
+                        initRecyclerView();
+//                        getSubscribeTasksListFromDB();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    String videoType = Constants.TYPE_VIEW;
+
+    private void showAddTaskDialog() {
+        Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_add_video_task);
+        dialog.setCancelable(true);
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        dialog.findViewById(R.id.addTaskButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // VIEW LIKE SUBSCRIBE
+                // CODE HERE
+                setAddTaskButton(dialog);
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setAttributes(layoutParams);
+    }
+
+    private View.OnClickListener fabViewBtnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                videoType = Constants.TYPE_VIEW;
+                showAddTaskDialog();
+
+            }
+        };
+    }
+
+    private View.OnClickListener fabLikeBtnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                videoType = Constants.TYPE_LIKE;
+                showAddTaskDialog();
+
+            }
+        };
+    }
+
+    private View.OnClickListener fabSubscribeBtnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                videoType = Constants.TYPE_SUBSCRIBE;
+                showAddTaskDialog();
+
+            }
+        };
+    }
+
+    private View.OnClickListener addBtnShowTasksClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 if (fabSubscribeBtn.getVisibility() == View.VISIBLE) {
                     fabViewBtn.setVisibility(View.GONE);
                     fabLikeBtn.setVisibility(View.GONE);
@@ -119,38 +304,31 @@ public class CampaignFragment extends Fragment {
                     fabLikeBtn.setVisibility(View.VISIBLE);
                     fabSubscribeBtn.setVisibility(View.VISIBLE);
                 }
-
             }
-        });
-
-        return root;
+        };
     }
 
-    private void setAddTaskButton() {
-        root.findViewById(R.id.addTaskButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    private void setAddTaskButton(Dialog dialog) {
+        EditText editText = dialog.findViewById(R.id.youtube_video_url_edittext);
 
-                EditText editText = root.findViewById(R.id.youtube_video_url_edittext);
+        if (TextUtils.isEmpty(editText.getText().toString())) {
+            editText.setError("Please enter a url!");
+            return;
+        }
 
-                if (TextUtils.isEmpty(editText.getText().toString())) {
-                    editText.setError("Please enter a url!");
-                    return;
-                }
+        if (TextUtils.isEmpty(getVideoId(editText.getText().toString()))) {
+            editText.setError("Wrong url!");
+        } else {
 
-                if (TextUtils.isEmpty(getVideoId(editText.getText().toString()))) {
-                    editText.setError("Wrong url!");
-                } else {
+            Intent intent = new Intent(getActivity(), AddTaskActivity.class);
+            intent.putExtra("url", editText.getText().toString().trim());
+            intent.putExtra(Constants.PARAMS, videoType);
 
-                    Intent intent = new Intent(getActivity(), AddTaskActivity.class);
-                    intent.putExtra("url", editText.getText().toString().trim());
+            dialog.dismiss();
+            editText.setText("");
 
-                    editText.setText("");
-
-                    startActivity(intent);
-                }
-            }
-        });
+            startActivity(intent);
+        }
     }
 
     private static String getVideoId(@NonNull String videoUrl) {
@@ -177,18 +355,19 @@ public class CampaignFragment extends Fragment {
 
         conversationRecyclerView.setAdapter(adapter);
 
+        /*TODO: COMMENTED
         if (adapter.getItemCount() == 3) {
 
-            new Utils().storeBoolean(getActivity(), "canAddNewTask", false);
+            Utils.store( "canAddNewTask", false);
 
 
             //        noChatsLayout.setVisibility(View.GONE);
             //        chatsRecyclerView.setVisibility(View.VISIBLE);
 
         } else {
-            new Utils().storeBoolean(getActivity(), "canAddNewTask", true);
+            Utils.store( "canAddNewTask", true);
 
-        }
+        }*/
 
         progressDialog.dismiss();
 
@@ -206,8 +385,99 @@ public class CampaignFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final ViewHolderRightMessage holder, int position) {
-            CampaignFragment.Task task = tasksArrayList.get(position);
+        public void onBindViewHolder(@NonNull final ViewHolderRightMessage holder, int position1) {
+            int position = holder.getAdapterPosition();
+
+            switch (allTasksArrayList.get(position).getType()) {
+                case Constants.TYPE_VIEW:
+                    // VIEW TYPE VIDEO ITEM
+                    dealWithViewItemLayouts(holder, position);
+
+                    break;
+                case Constants.TYPE_LIKE:
+                    // LIKE TYPE VIDEO ITEM
+                    dealWithLikeItemLayouts(holder, position);
+
+                    break;
+                case Constants.TYPE_SUBSCRIBE:
+                    // SUBSCRIBE TYPE VIDEO ITEM
+                    dealWithSubscribeItemLayouts(holder, position);
+
+                    break;
+            }
+
+
+        }
+
+        private void dealWithSubscribeItemLayouts(ViewHolderRightMessage holder, int position) {
+            SubscribeTaskModel task = allTasksArrayList.get(position).getSubscribeTaskModel();
+//            CampaignFragment.Task task = tasksArrayList.get(position);
+
+            holder.totalViews.setText(
+                    "" + task.getCurrentSubscribesQuantity()
+                            + "/" +
+                            task.getTotalSubscribesQuantity() + " Subscribes");
+
+            holder.watchSecondsDefined.setText("Total Subscribes:" + task.getTotalSubscribesQuantity());
+
+            if (!task.getCompletedDate().equals("error")) {
+                holder.completedTime.setText("complete:" + task.getCompletedDate());
+            }
+
+            if (task.getTotalSubscribesQuantity().equals(String.valueOf(
+                    task.getCurrentSubscribesQuantity()
+            ))) {
+                holder.doneTickImageview.setVisibility(View.VISIBLE);
+            }
+
+            Glide.with(requireContext())
+                    .load(task.getThumbnailUrl())
+                    .apply(new RequestOptions()
+                            .placeholder(R.color.grey)
+                            .error(R.color.grey)
+                    )
+                    .into(holder.thumbnailImage);
+
+            holder.parentLayout.setOnLongClickListener(subscribeParentLayoutLngCLick(task));
+
+        }
+
+        private void dealWithLikeItemLayouts(ViewHolderRightMessage holder, int position) {
+            LikeTaskModel task = allTasksArrayList.get(position).getLikeTaskModel();
+//            CampaignFragment.Task task = tasksArrayList.get(position);
+
+            holder.totalViews.setText(
+                    "" + task.getCurrentLikesQuantity()
+                            + "/" +
+                            task.getTotalLikesQuantity() + " Likes");
+
+            holder.watchSecondsDefined.setText("Total Likes:" + task.getTotalLikesQuantity());
+
+            if (!task.getCompletedDate().equals("error")) {
+                holder.completedTime.setText("complete:" + task.getCompletedDate());
+            }
+
+            if (task.getTotalLikesQuantity().equals(String.valueOf(
+                    task.getCurrentLikesQuantity()
+            ))) {
+                holder.doneTickImageview.setVisibility(View.VISIBLE);
+            }
+
+            Glide.with(requireContext())
+                    .load(task.getThumbnailUrl())
+                    .apply(new RequestOptions()
+                            .placeholder(R.color.grey)
+                            .error(R.color.grey)
+                    )
+                    .into(holder.thumbnailImage);
+
+            holder.parentLayout.setOnLongClickListener(likeParentLayoutLngCLick(task));
+
+        }
+
+        private void dealWithViewItemLayouts(ViewHolderRightMessage holder, int position) {
+            ViewTaskModel task = allTasksArrayList.get(position).getViewTaskModel();
+//            CampaignFragment.Task task = tasksArrayList.get(position);
 
             holder.totalViews.setText(
                     "" + task.getCurrentViewsQuantity()
@@ -226,7 +496,7 @@ public class CampaignFragment extends Fragment {
                 holder.doneTickImageview.setVisibility(View.VISIBLE);
             }
 
-            Glide.with(getActivity())
+            Glide.with(requireContext())
                     .load(task.getThumbnailUrl())
                     .apply(new RequestOptions()
                             .placeholder(R.color.grey)
@@ -234,11 +504,17 @@ public class CampaignFragment extends Fragment {
                     )
                     .into(holder.thumbnailImage);
 
-            holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            holder.parentLayout.setOnLongClickListener(viewParentLayoutLngCLick(task));
+
+        }
+
+
+        private View.OnLongClickListener viewParentLayoutLngCLick(ViewTaskModel task) {
+            return new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
 
-                    new Utils().showDialog(getActivity(),
+                    Utils.showDialog(requireContext(),
                             "Are you sure?",
                             "Do you really want to delete this task?",
                             "Yes",
@@ -262,15 +538,81 @@ public class CampaignFragment extends Fragment {
 
                     return false;
                 }
-            });
+            };
+        }
 
+        private View.OnLongClickListener likeParentLayoutLngCLick(LikeTaskModel task) {
+            return new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    Utils.showDialog(requireContext(),
+                            "Are you sure?",
+                            "Do you really want to delete this task?",
+                            "Yes",
+                            "No",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    databaseReference.child(Constants.LIKE_TASKS)
+                                            .child(task.getTaskKey())
+                                            .removeValue();
+
+                                    dialogInterface.dismiss();
+                                }
+                            }, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }, true);
+
+                    return false;
+                }
+            };
+        }
+
+        private View.OnLongClickListener subscribeParentLayoutLngCLick(SubscribeTaskModel task) {
+            return new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    Utils.showDialog(requireContext(),
+                            "Are you sure?",
+                            "Do you really want to delete this task?",
+                            "Yes",
+                            "No",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    databaseReference.child(Constants.SUBSCRIBE_TASKS)
+                                            .child(task.getTaskKey())
+                                            .removeValue();
+
+                                    dialogInterface.dismiss();
+                                }
+                            }, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }, true);
+
+                    return false;
+                }
+            };
         }
 
         @Override
         public int getItemCount() {
-            if (tasksArrayList == null)
+            if (allTasksArrayList == null)
                 return 0;
-            return tasksArrayList.size();
+            return allTasksArrayList.size();
+            /*if (tasksArrayList == null)
+                return 0;
+            return tasksArrayList.size();*/
         }
 
         public class ViewHolderRightMessage extends RecyclerView.ViewHolder {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddTaskActivity">
+    tools:context=".activities.AddTaskActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,20 +22,21 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/backBTnAddTask"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
-                android:src="@drawable/ic_logo_viewplus" />
+                android:src="@drawable/ic_baseline_arrow_back_24" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="casual"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
+                android:fontFamily="casual"
                 android:text="SubsBooster"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
@@ -84,6 +85,7 @@
         app:showFullScreenButton="false" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/viewTaskLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -114,8 +116,11 @@
                 android:textColor="#807F7F"
                 android:textSize="35sp" />
 
+<!--            SUBSCRIBERS LAYOUT-->
             <RelativeLayout
+                android:id="@+id/subscribersLayoutAddTask"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -127,11 +132,11 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Number of Views"
+                    android:text="Number of Subscribers"
                     android:textSize="17sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/select_view_quantity_button"
+                    android:id="@+id/select_subscribers_quantity_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -139,15 +144,18 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/darkerGrey"
-                    android:text="10" />
+                    android:background="@color/red"
+                    android:text="10"
+                    android:textColor="@color/white" />
 
             </RelativeLayout>
 
+<!--            LIKES LAYOUT-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:visibility="gone"
+                android:id="@+id/likesLayoutAddTask"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -158,11 +166,11 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Time Required (seconds)"
+                    android:text="Number of Likes"
                     android:textSize="17sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/select_view_time_button"
+                    android:id="@+id/select_likes_quantity_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -170,10 +178,84 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/darkerGrey"
-                    android:text="60" />
+                    android:background="@color/red"
+                    android:text="10"
+                    android:textColor="@color/white" />
 
             </RelativeLayout>
+
+<!--            VIEW LAYOUT-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/viewLayoutAddTask"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Number of Views"
+                        android:textSize="17sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/select_view_quantity_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/red"
+                        android:text="10"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Time Required (seconds)"
+                        android:textSize="17sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/select_view_time_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/red"
+                        android:text="60"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -188,7 +270,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-10dp">
+                android:layout_marginTop="-10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -221,7 +304,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="-10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -244,8 +327,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/darkerGrey"
-                    android:text="600" />
+                    android:background="@color/red"
+                    android:text="600"
+                    android:textColor="@color/white" />
 
             </RelativeLayout>
 
@@ -267,7 +351,9 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
-                android:text="done" />
+                android:background="@color/red"
+                android:text="done"
+                android:textColor="@color/white" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -278,7 +364,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="300dp"
-                android:text="caveat: It is recommended not to establish the same task at the same time, it is easy to be judged invalid, in a short period of time, the same use of viewing, will not increase the number of times"
+                android:text="Note: Your coins will be deducted after you create this campaign.\nThis action cannot be undone"
                 android:textSize="18sp" />
 
         </LinearLayout>
