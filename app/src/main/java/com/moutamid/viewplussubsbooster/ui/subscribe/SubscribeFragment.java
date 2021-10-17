@@ -1,66 +1,146 @@
 package com.moutamid.viewplussubsbooster.ui.subscribe;
 
+import static com.bumptech.glide.Glide.with;
+import static com.bumptech.glide.load.engine.DiskCacheStrategy.DATA;
+import static com.moutamid.viewplussubsbooster.R.color.lighterGrey;
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.moutamid.viewplussubsbooster.R;
+import com.moutamid.viewplussubsbooster.databinding.FragmentSubscribeBinding;
+import com.moutamid.viewplussubsbooster.models.SubscribeTaskModel;
+import com.moutamid.viewplussubsbooster.utils.Constants;
+import com.moutamid.viewplussubsbooster.utils.Helper;
+import com.moutamid.viewplussubsbooster.utils.Utils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SubscribeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class SubscribeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public SubscribeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SubscribeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SubscribeFragment newInstance(String param1, String param2) {
-        SubscribeFragment fragment = new SubscribeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private FragmentSubscribeBinding b;
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    ArrayList<SubscribeTaskModel> subscribeTaskModelArrayList = new ArrayList<>();
+    private ProgressDialog progressDialog;
+    int currentCounter = 0;
+
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        b = FragmentSubscribeBinding.inflate(inflater, container, false);
+
+        progressDialog = new ProgressDialog(requireContext());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        databaseReference.child(Constants.SUBSCRIBE_TASKS).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    progressDialog.dismiss();
+                    Utils.toast("No data exist!");
+                    return;
+                }
+
+                subscribeTaskModelArrayList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                    SubscribeTaskModel model = dataSnapshot.getValue(SubscribeTaskModel.class);
+                    model.setSubscribed(false);
+
+                    if (dataSnapshot.child(Constants.SUBSCRIBER_PATH).child(mAuth.getUid()).exists()) {
+                        model.setSubscribed(true);
+                    }
+
+                    subscribeTaskModelArrayList.add(model);
+
+                }
+                progressDialog.dismiss();
+                setDataOnViews(0);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        b.seeNextBtnSubscribe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentCounter++;
+
+                if (currentCounter >= subscribeTaskModelArrayList.size()) {
+                    Utils.toast("End of tasks!");
+
+                } else setDataOnViews(currentCounter);
+
+            }
+        });
+
+        b.subscribeBtnSubscribeActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Utils.toast("Coming soon!");
+
+            }
+        });
+
+        return b.getRoot();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_subscribe, container, false);
+    boolean isTimerRunning = false;
+
+    private void setDataOnViews(int counter) {
+        progressDialog.show();
+
+        with(requireContext())
+                .asBitmap()
+                .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())
+                .apply(new RequestOptions()
+                        .placeholder(lighterGrey)
+                        .error(lighterGrey)
+                )
+                .diskCacheStrategy(DATA)
+                .into(b.videoImageSubscribe);
+
+
+        b.videoIdSubscribe.setText(
+                "Video Id: " + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
+        );
+
+        progressDialog.dismiss();
+/*
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        })*/
     }
 }

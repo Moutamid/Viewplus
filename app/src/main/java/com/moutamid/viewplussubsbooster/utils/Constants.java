@@ -8,4 +8,5 @@ public class Constants {
     public static final String TYPE_SUBSCRIBE = "type_subscribe";
     public static final String LIKE_TASKS = "like_tasks";
     public static final String SUBSCRIBE_TASKS = "subscribe_tasks";
+    public static final String SUBSCRIBER_PATH = "subscribers";
 }

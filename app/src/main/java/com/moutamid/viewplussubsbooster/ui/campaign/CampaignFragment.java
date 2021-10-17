@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,20 +32,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.moutamid.viewplussubsbooster.activities.AddTaskActivity;
 import com.moutamid.viewplussubsbooster.R;
+import com.moutamid.viewplussubsbooster.activities.AddTaskActivity;
 import com.moutamid.viewplussubsbooster.models.LikeTaskModel;
 import com.moutamid.viewplussubsbooster.models.SubscribeTaskModel;
 import com.moutamid.viewplussubsbooster.models.TasksTypeModel;
 import com.moutamid.viewplussubsbooster.models.ViewTaskModel;
 import com.moutamid.viewplussubsbooster.utils.Constants;
+import com.moutamid.viewplussubsbooster.utils.Helper;
 import com.moutamid.viewplussubsbooster.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CampaignFragment extends Fragment {
+    private static final String TAG = "CampaignFragment";
+//    private Context context = CampaignFragment.this;
 
     //    private HomeViewModel homeViewModel;
     private View root;
@@ -64,11 +66,11 @@ public class CampaignFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_campaign, container, false);
-
-        LikeTaskModel model = new LikeTaskModel();
-        model.setCurrentLikesQuantity(76);
-
-        allTasksArrayList.add(new TasksTypeModel(model, ""));
+        Log.d(TAG, "onCreateView: ");
+//        LikeTaskModel model = new LikeTaskModel();
+//        model.setCurrentLikesQuantity(76);
+//
+//        allTasksArrayList.add(new TasksTypeModel(model, ""));
 
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -137,22 +139,29 @@ public class CampaignFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Log.d(TAG, "getViewTasksListFromDB onDataChange: ");
                         allTasksArrayList.clear();
                         if (!snapshot.exists()) {
+                            Log.d(TAG, "onDataChange: if (!snapshot.exists()) {");
                             getLikeTasksListFromDB();
 //                            progressDialog.dismiss();
                             return;
                         }
-
+                        Log.d(TAG, "onDataChange: running");
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-
+                            Log.d(TAG, "onDataChange: looping");
                             ViewTaskModel task = dataSnapshot.getValue(ViewTaskModel.class);
 
-                            allTasksArrayList.add(new TasksTypeModel(task, Constants.TYPE_VIEW));
+                            TasksTypeModel tasksTypeModel = new TasksTypeModel();
+                            tasksTypeModel.setViewTaskModel(task);
+                            tasksTypeModel.setType(Constants.TYPE_VIEW);
+
+                            allTasksArrayList.add(tasksTypeModel);
+//                            allTasksArrayList.add(new TasksTypeModel(task, Constants.TYPE_VIEW));
 
                         }
-
+                        Log.d(TAG, "onDataChange: loop ended");
 //                        initRecyclerView();
                         getLikeTasksListFromDB();
 
@@ -160,6 +169,7 @@ public class CampaignFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d(TAG, "onCancelled: error: " + error.toException().getMessage());
                         Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -171,22 +181,30 @@ public class CampaignFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Log.d(TAG, "getLikeTasksListFromDB onDataChange: ");
 //                        allTasksArrayList.clear();
                         if (!snapshot.exists()) {
+                            Log.d(TAG, "onDataChange: if (!snapshot.exists()) {");
                             getSubscribeTasksListFromDB();
 //                            progressDialog.dismiss();
                             return;
                         }
 
-
+                        Log.d(TAG, "onDataChange: started");
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-
+                            Log.d(TAG, "onDataChange: looping");
                             LikeTaskModel task = dataSnapshot.getValue(LikeTaskModel.class);
 
-                            allTasksArrayList.add(new TasksTypeModel(task, Constants.TYPE_LIKE));
+                            TasksTypeModel tasksTypeModel = new TasksTypeModel();
+                            tasksTypeModel.setLikeTaskModel(task);
+                            tasksTypeModel.setType(Constants.TYPE_LIKE);
+
+                            allTasksArrayList.add(tasksTypeModel);
+
+//                            allTasksArrayList.add(new TasksTypeModel(task, Constants.TYPE_LIKE));
 
                         }
-
+                        Log.d(TAG, "onDataChange: loop ended");
 //                        initRecyclerView();
                         getSubscribeTasksListFromDB();
 
@@ -194,6 +212,7 @@ public class CampaignFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d(TAG, "onCancelled: " + error.toException().getMessage());
                         Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -205,8 +224,10 @@ public class CampaignFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Log.d(TAG, "onDataChange: getSubscribeTasksListFromDB");
 //                        allTasksArrayList.clear();
                         if (!snapshot.exists()) {
+                            Log.d(TAG, "onDataChange: if (!snapshot.exists()) {");
                             initRecyclerView();
 //                            getSubscribeTasksListFromDB();
                             progressDialog.dismiss();
@@ -215,13 +236,22 @@ public class CampaignFragment extends Fragment {
 
 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Log.d(TAG, "onDataChange: looping");
 
                             SubscribeTaskModel task = dataSnapshot.getValue(SubscribeTaskModel.class);
 
-                            allTasksArrayList.add(new TasksTypeModel(task, Constants.TYPE_SUBSCRIBE));
+                            TasksTypeModel tasksTypeModel = new TasksTypeModel();
+                            tasksTypeModel.setSubscribeTaskModel(task);
+                            tasksTypeModel.setType(Constants.TYPE_SUBSCRIBE);
+
+                            allTasksArrayList.add(tasksTypeModel);
+
+//                            allTasksArrayList.add(new TasksTypeModel(task, Constants.TYPE_SUBSCRIBE));
 
                         }
-
+                        Log.d(TAG, "onDataChange: loop ended");
+                        Log.d(TAG, "onDataChange: RecyclerView Initialized");
+                        Log.d(TAG, "onDataChange: total list size: " + allTasksArrayList.size());
                         initRecyclerView();
 //                        getSubscribeTasksListFromDB();
 
@@ -229,6 +259,7 @@ public class CampaignFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d(TAG, "onCancelled: " + error.toException().getMessage());
                         Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -316,7 +347,7 @@ public class CampaignFragment extends Fragment {
             return;
         }
 
-        if (TextUtils.isEmpty(getVideoId(editText.getText().toString()))) {
+        if (TextUtils.isEmpty(Helper.getVideoId(editText.getText().toString()))) {
             editText.setError("Wrong url!");
         } else {
 
@@ -331,16 +362,6 @@ public class CampaignFragment extends Fragment {
         }
     }
 
-    private static String getVideoId(@NonNull String videoUrl) {
-        String videoId = "";
-        String regex = "http(?:s)?:\\/\\/(?:m.)?(?:www\\.)?youtu(?:\\.be\\/|be\\.com\\/(?:watch\\?(?:feature=youtu.be\\&)?v=|v\\/|embed\\/|user\\/(?:[\\w#]+\\/)+))([^&#?\\n]+)";
-        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(videoUrl);
-        if (matcher.find()) {
-            videoId = matcher.group(1);
-        }
-        return videoId;
-    }
 
     private void initRecyclerView() {
 
@@ -387,23 +408,20 @@ public class CampaignFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull final ViewHolderRightMessage holder, int position1) {
             int position = holder.getAdapterPosition();
-
-            switch (allTasksArrayList.get(position).getType()) {
-                case Constants.TYPE_VIEW:
-                    // VIEW TYPE VIDEO ITEM
-                    dealWithViewItemLayouts(holder, position);
-
-                    break;
-                case Constants.TYPE_LIKE:
-                    // LIKE TYPE VIDEO ITEM
-                    dealWithLikeItemLayouts(holder, position);
-
-                    break;
-                case Constants.TYPE_SUBSCRIBE:
-                    // SUBSCRIBE TYPE VIDEO ITEM
-                    dealWithSubscribeItemLayouts(holder, position);
-
-                    break;
+            Log.d(TAG, "onBindViewHolder: position: " + position);
+            Log.d(TAG, "onBindViewHolder: totalSize: " + allTasksArrayList.size());
+            if (Constants.TYPE_VIEW.equals(allTasksArrayList.get(position).getType())) {
+                Log.d(TAG, "onBindViewHolder: case Constants.TYPE_VIEW:");
+                // VIEW TYPE VIDEO ITEM
+                dealWithViewItemLayouts(holder, position);
+            } else if (Constants.TYPE_LIKE.equals(allTasksArrayList.get(position).getType())) {
+                Log.d(TAG, "onBindViewHolder: case Constants.TYPE_LIKE:");
+                // LIKE TYPE VIDEO ITEM
+                dealWithLikeItemLayouts(holder, position);
+            } else if (Constants.TYPE_SUBSCRIBE.equals(allTasksArrayList.get(position).getType())) {
+                Log.d(TAG, "onBindViewHolder: case Constants.TYPE_SUBSCRIBE:");
+                // SUBSCRIBE TYPE VIDEO ITEM
+                dealWithSubscribeItemLayouts(holder, position);
             }
 
 

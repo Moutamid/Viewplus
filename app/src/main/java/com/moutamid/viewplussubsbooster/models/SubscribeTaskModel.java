@@ -4,8 +4,9 @@ public class SubscribeTaskModel {
     private String videoUrl, thumbnailUrl, posterUid, taskKey,
             totalSubscribesQuantity, completedDate;
     private int currentSubscribesQuantity;
+    private boolean isSubscribed;
 
-    public SubscribeTaskModel(String videoUrl, String thumbnailUrl, String posterUid, String taskKey, String totalSubscribesQuantity, String completedDate, int currentSubscribesQuantity) {
+    public SubscribeTaskModel(String videoUrl, String thumbnailUrl, String posterUid, String taskKey, String totalSubscribesQuantity, String completedDate, int currentSubscribesQuantity, boolean isSubscribed) {
         this.videoUrl = videoUrl;
         this.thumbnailUrl = thumbnailUrl;
         this.posterUid = posterUid;
@@ -13,6 +14,15 @@ public class SubscribeTaskModel {
         this.totalSubscribesQuantity = totalSubscribesQuantity;
         this.completedDate = completedDate;
         this.currentSubscribesQuantity = currentSubscribesQuantity;
+        this.isSubscribed = isSubscribed;
+    }
+
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(boolean subscribed) {
+        isSubscribed = subscribed;
     }
 
     public String getVideoUrl() {
