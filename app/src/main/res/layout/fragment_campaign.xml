@@ -39,7 +39,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,9 +66,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/addBtnShowTasks"
         android:layout_marginBottom="-10dp"
-        android:visibility="gone"
         android:layout_toStartOf="@+id/viewTaskBtn"
         android:src="@drawable/ic_baseline_thumb_up_alt_24"
+        android:visibility="gone"
         app:backgroundTint="@color/red"
         app:fabSize="mini"
         app:tint="@color/white" />
@@ -79,10 +79,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
         android:layout_marginBottom="20dp"
         android:layout_toStartOf="@id/addBtnShowTasks"
         android:src="@drawable/ic_baseline_group_add_24"
+        android:visibility="gone"
         app:backgroundTint="@color/red"
         app:fabSize="mini"
         app:tint="@color/white" />
@@ -93,9 +93,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/addBtnShowTasks"
         android:layout_alignParentEnd="true"
-        android:visibility="gone"
         android:layout_marginEnd="10dp"
         android:src="@drawable/ic_baseline_play_arrow_24"
+        android:visibility="gone"
         app:backgroundTint="@color/red"
         app:fabSize="mini"
         app:tint="@color/white" />

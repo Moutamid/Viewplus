@@ -21,20 +21,21 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/video_image_subscribe"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_margin="10dp"
-                android:id="@+id/video_image_subscribe" />
+                android:layout_margin="10dp" />
 
 
             <TextView
+                android:id="@+id/videoId_subscribe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:gravity="center_horizontal"
-                android:id="@+id/videoId_subscribe"
                 android:text="Video Id: kadhgjasg87"
                 android:textColor="@color/black"
+                android:textIsSelectable="true"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -87,6 +88,7 @@
         android:weightSum="2">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/subscribeBtnSubscribeActivity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
@@ -95,13 +97,12 @@
             android:text="subscribe ( +126 )"
             android:textColor="@color/white"
             android:textSize="13sp"
-            android:id="@+id/subscribeBtnSubscribeActivity"
             app:backgroundTint="@color/red" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/seeNextBtnSubscribe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/seeNextBtnSubscribe"
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:text="see next"
@@ -111,5 +112,18 @@
 
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/outputTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="mnmn  " />
+
+    </ScrollView>
 
 </RelativeLayout>
