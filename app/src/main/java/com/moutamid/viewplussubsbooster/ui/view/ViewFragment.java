@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 import com.moutamid.viewplussubsbooster.activities.BottomNavigationActivity;
 import com.moutamid.viewplussubsbooster.R;
+import com.moutamid.viewplussubsbooster.utils.Helper;
 import com.moutamid.viewplussubsbooster.utils.Utils;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -124,7 +126,7 @@ public class ViewFragment extends Fragment {
 
     private ArrayList<Taskk> taskArrayList = new ArrayList<>();
 
-//    private GetVideoTitle getVideoTitle = new GetVideoTitle();
+    //    private GetVideoTitle getVideoTitle = new GetVideoTitle();
     private YouTubePlayerView youTubePlayerView;
     private String videoUrl;
 
@@ -153,7 +155,17 @@ public class ViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
         root = inflater.inflate(R.layout.fragment_view, container, false);
+        new CountDownTimer(87686, 678) {
+            @Override
+            public void onTick(long l) {
 
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
 //        videoUrl = getIntent().getStringExtra("url");
         videoUrl = "https://youtu.be/G393z8s8nFY";
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -181,7 +193,7 @@ public class ViewFragment extends Fragment {
                 }
 
                 for (int i = 0; i <= taskArrayList.size() - 1; i++) {
-                    Log.d(TAG, "onDataChange: "+i);
+                    Log.d(TAG, "onDataChange: " + i);
                     Taskk currentTask1 = taskArrayList.get(i);
                     if (!currentTask1.getCompletedDate().equals("error")) {
                         Log.d(TAG, "onDataChange: removed");
@@ -278,7 +290,7 @@ public class ViewFragment extends Fragment {
                 youTubePlayer1 = youTubePlayer;
 
 //                youTubePlayer.cueVideo(getVideoId(videoUrl), 0);
-                youTubePlayer.loadVideo(getVideoId(videoUrl), 0);
+                youTubePlayer.loadVideo(Helper.getVideoId(videoUrl), 0);
                 youTubePlayer.addListener(youTubePlayerListener());
 
                 addFullScreenListenerToPlayer(youTubePlayer);
@@ -340,7 +352,7 @@ public class ViewFragment extends Fragment {
 
     private boolean isRunning = false;
 
-    private static String getVideoId(@NonNull String videoUrl) {
+    /*private static String getVideoId(@NonNull String videoUrl) {
         String videoId = "";
         String regex = "http(?:s)?:\\/\\/(?:m.)?(?:www\\.)?youtu(?:\\.be\\/|be\\.com\\/(?:watch\\?(?:feature=youtu.be\\&)?v=|v\\/|embed\\/|user\\/(?:[\\w#]+\\/)+))([^&#?\\n]+)";
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
@@ -350,7 +362,7 @@ public class ViewFragment extends Fragment {
         }
         Log.d(TAG, "getVideoId: videoId "+videoId);
         return videoId;
-    }
+    }*/
 
     private int currentTime = 60;
 
@@ -385,7 +397,7 @@ public class ViewFragment extends Fragment {
 
             @Override
             public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
-                Log.d(TAG, "onCurrentSecond: "+Math.round(v));
+                Log.d(TAG, "onCurrentSecond: " + Math.round(v));
                 showToastOnDifferentSec(Math.round(v));
 
 //                if (Math.round(v) != prev) {
@@ -400,7 +412,7 @@ public class ViewFragment extends Fragment {
 
             @Override
             public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
-                Log.d(TAG, "onVideoDuration: "+Math.round(v));
+                Log.d(TAG, "onVideoDuration: " + Math.round(v));
                 currentVideoLength = Math.round(v);
 
                 //                new Handler().postDelayed(new Runnable() {
@@ -433,7 +445,7 @@ public class ViewFragment extends Fragment {
     boolean run = true;
 
     private void showToastOnDifferentSec(int sec) {
-        Log.d(TAG, "showToastOnDifferentSec: "+sec);
+        Log.d(TAG, "showToastOnDifferentSec: " + sec);
         if (!run)
             return;
 
@@ -489,7 +501,7 @@ public class ViewFragment extends Fragment {
 //            getVideoTitle.execute();
         }
 
-        youTubePlayer1.loadVideo(getVideoId(url), 0);
+        youTubePlayer1.loadVideo(Helper.getVideoId(url), 0);
 
         if (!isAutoPlayEnabled)
             youTubePlayer1.pause();

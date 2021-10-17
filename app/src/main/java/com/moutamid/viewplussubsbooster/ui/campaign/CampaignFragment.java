@@ -74,6 +74,7 @@ public class CampaignFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.keepSynced(true);
 
         fabViewBtn = root.findViewById(R.id.viewTaskBtn);
         fabLikeBtn = root.findViewById(R.id.likeTaskBtn);
@@ -88,7 +89,7 @@ public class CampaignFragment extends Fragment {
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        getViewTasksListFromDB();
+//        getViewTasksListFromDB();
 
         /*databaseReference.child("tasks").orderByChild("posterUid")
                 .equalTo(mAuth.getCurrentUser().getUid())
@@ -362,6 +363,11 @@ public class CampaignFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getViewTasksListFromDB();
+    }
 
     private void initRecyclerView() {
 
@@ -412,14 +418,31 @@ public class CampaignFragment extends Fragment {
             Log.d(TAG, "onBindViewHolder: totalSize: " + allTasksArrayList.size());
             if (Constants.TYPE_VIEW.equals(allTasksArrayList.get(position).getType())) {
                 Log.d(TAG, "onBindViewHolder: case Constants.TYPE_VIEW:");
+                Log.d(TAG, "onBindViewHolder: " +
+                        "CURRENT VIEWS: " + allTasksArrayList.get(position).getViewTaskModel().getCurrentViewsQuantity()
+                        + "\n"
+                        + "TOTAL VIEWS: " + allTasksArrayList.get(position).getViewTaskModel().getTotalViewsQuantity()
+                );
                 // VIEW TYPE VIDEO ITEM
                 dealWithViewItemLayouts(holder, position);
-            } else if (Constants.TYPE_LIKE.equals(allTasksArrayList.get(position).getType())) {
+            }
+            if (Constants.TYPE_LIKE.equals(allTasksArrayList.get(position).getType())) {
                 Log.d(TAG, "onBindViewHolder: case Constants.TYPE_LIKE:");
+                Log.d(TAG, "onBindViewHolder: " +
+                        "CURRENT LIKES: " + allTasksArrayList.get(position).getLikeTaskModel().getCurrentLikesQuantity()
+                        + "\n"
+                        + "TOTAL LIKES: " + allTasksArrayList.get(position).getLikeTaskModel().getTotalLikesQuantity()
+                );
                 // LIKE TYPE VIDEO ITEM
                 dealWithLikeItemLayouts(holder, position);
-            } else if (Constants.TYPE_SUBSCRIBE.equals(allTasksArrayList.get(position).getType())) {
+            }
+            if (Constants.TYPE_SUBSCRIBE.equals(allTasksArrayList.get(position).getType())) {
                 Log.d(TAG, "onBindViewHolder: case Constants.TYPE_SUBSCRIBE:");
+                Log.d(TAG, "onBindViewHolder: " +
+                        "CURRENT SUBS: " + allTasksArrayList.get(position).getSubscribeTaskModel().getCurrentSubscribesQuantity()
+                        + "\n"
+                        + "TOTAL SUBS: " + allTasksArrayList.get(position).getSubscribeTaskModel().getTotalSubscribesQuantity()
+                );
                 // SUBSCRIBE TYPE VIDEO ITEM
                 dealWithSubscribeItemLayouts(holder, position);
             }

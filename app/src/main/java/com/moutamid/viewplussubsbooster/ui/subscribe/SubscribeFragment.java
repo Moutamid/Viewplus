@@ -16,23 +16,25 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.util.Util;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
@@ -54,6 +56,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.moutamid.viewplussubsbooster.R;
 import com.moutamid.viewplussubsbooster.databinding.FragmentSubscribeBinding;
 import com.moutamid.viewplussubsbooster.models.SubscribeTaskModel;
 import com.moutamid.viewplussubsbooster.utils.Constants;
@@ -71,7 +74,9 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class SubscribeFragment extends Fragment implements EasyPermissions.PermissionCallbacks {
+    private static final String TAG = "SubscribeFragment";
 
+    int remainingDailyLimitInt = Utils.getInt(Utils.getDate(), 0);
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -128,14 +133,15 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                 subscribeTaskModelArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
-                    SubscribeTaskModel model = dataSnapshot.getValue(SubscribeTaskModel.class);
-                    model.setSubscribed(false);
+//                    model.setSubscribed(false);
 
                     if (dataSnapshot.child(Constants.SUBSCRIBER_PATH).child(mAuth.getUid()).exists()) {
-                        model.setSubscribed(true);
+//                        model.setSubscribed(true);
+                    } else {
+                        SubscribeTaskModel model = dataSnapshot.getValue(SubscribeTaskModel.class);
+                        subscribeTaskModelArrayList.add(model);
                     }
 
-                    subscribeTaskModelArrayList.add(model);
 
                 }
                 progressDialog.dismiss();
@@ -183,10 +189,33 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                 requireContext().getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
 
+        b.autoPlaySwitchSubscribe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bi) {
+                if (bi) {
+                    b.autoPlaySwitchSubscribe.setText(
+                            "Auto Play ( Daily Limit: "
+                                    + remainingDailyLimitInt + "/30)"
+                    );
+                    isAutoPlay = true;
+                    subscribeUserToChannel();
+                } else {
+                    b.autoPlaySwitchSubscribe.setText("Auto Play");
+                    isAutoPlay = false;
+                }
+            }
+        });
+
         return b.getRoot();
     }
 
     private void subscribeUserToChannel() {
+
+        if (remainingDailyLimitInt == 30){
+            Utils.toast("Your daily limit reached!");
+            return;
+        }
+
 //        if (currentVideoLink.isEmpty()) {
 //            currentVideoLink.setError("Required");
 //            return;
@@ -456,8 +485,9 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                         public void run() {
 
                             b.outputTextView.setText(response.toString());
+                            uploadAddedSubscribers();
 //                            mOutputText.setText(mOutputText + response.toString());
-                            Toast.makeText(requireContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(requireContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
                             //Toast.makeText(MainActivity.this, "Subscribed", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -468,6 +498,142 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
         }).start();
 
     }
+
+    private void uploadAddedSubscribers() {
+//        mProgress.hide();
+//        progressDialog.show();
+
+        /*databaseReference.child("tasks")
+                .child(taskArrayList.get(currentPosition).getTaskKey())*/
+        //.child("currentViewsQuantity")
+        databaseReference
+                .child(Constants.SUBSCRIBE_TASKS)
+                .child(subscribeTaskModelArrayList.get(currentCounter).getTaskKey())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        SubscribeTaskModel taskk = snapshot.getValue(SubscribeTaskModel.class);
+
+                        String currentViews = String.valueOf(taskk.getCurrentSubscribesQuantity());
+
+                        if (currentViews.equals(taskk.getTotalSubscribesQuantity())) {
+
+                            databaseReference
+                                    .child(Constants.SUBSCRIBE_TASKS)
+                                    .child(subscribeTaskModelArrayList.get(currentCounter).getTaskKey())
+                                    .child("completedDate")
+                                    .setValue(Utils.getDate())
+//                                    .setValue(new Utils().getDate())
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                            subscribeTaskModelArrayList.remove(currentCounter);
+
+                                            uploadAddedCoins();
+                                            // UPLOAD COINS AND THEN RESTART VIDEO PLAYER
+
+                                        }
+                                    });
+
+                        } else {
+
+                            databaseReference
+                                    .child(Constants.SUBSCRIBE_TASKS)
+                                    .child(subscribeTaskModelArrayList.get(currentCounter).getTaskKey())
+                                    .child("currentSubscribesQuantity")
+                                    .setValue(taskk.getCurrentSubscribesQuantity() + 1)
+                                    .addOnSuccessListener(
+                                            new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+
+                                                    uploadAddedCoins();
+                                                }
+                                            }
+                                    );
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d(TAG, "onCancelled: " + error.getMessage());
+                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        mProgress.hide();
+                    }
+                });
+    }
+
+    private void uploadAddedCoins() {
+        databaseReference.child("userinfo").child(mAuth.getCurrentUser().getUid())
+                .child("coins").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                int value = snapshot.getValue(Integer.class);
+
+                databaseReference.child("userinfo").child(mAuth.getCurrentUser().getUid())
+                        .child("coins")
+                        .setValue(value + 120)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                databaseReference
+                                        .child(Constants.SUBSCRIBE_TASKS)
+                                        .child(subscribeTaskModelArrayList.get(currentCounter).getTaskKey())
+                                        .child(Constants.SUBSCRIBER_PATH)
+                                        .child(mAuth.getUid())
+                                        .setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                        mProgress.hide();
+                                        Utils.toast("Subscribed!");
+
+
+                                        // INCREMENT DAILY LIMIT
+                                        remainingDailyLimitInt++;
+                                        Utils.store(Utils.getDate(),
+                                                remainingDailyLimitInt);
+                                        b.autoPlaySwitchSubscribe.setText(
+                                                "Auto Play ( Daily Limit: "
+                                                        + remainingDailyLimitInt + "/30)"
+                                        );
+
+                                        currentCounter++;
+
+                                        if (currentCounter >= subscribeTaskModelArrayList.size()) {
+                                            Utils.toast("End of tasks!");
+                                            b.videoImageSubscribe.setBackgroundResource(0);
+                                            b.videoIdSubscribe.setText("Empty");
+                                        } else setDataOnViews(currentCounter);
+
+                                    }
+                                });
+
+                            }
+                        });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: " + error.getMessage());
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                mProgress.hide();
+            }
+        });
+    }
+
+    /*private void uploadSubscribeDoneToDB() {
+
+
+
+    }*/
 
     /*private void likeVideo() throws GeneralSecurityException, IOException {
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
@@ -573,7 +739,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
         @Override
         protected void onPostExecute(List<String> output) {
-            mProgress.hide();
+
             if (output == null || output.size() == 0) {
 //                mOutputText.setText("No results returned.");
                 b.outputTextView.setText("No results returned.");
@@ -583,7 +749,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 //                mOutputText.setText(TextUtils.join("\n", output));
                 String text = TextUtils.join("\n", output);
                 b.outputTextView.setText(text);
-                Utils.toast(text);
+//                Utils.toast(text);
             }
 
             try {
@@ -614,7 +780,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                             + mLastError.getMessage());
                     Utils.toast("The following error occurred:\n"
                             + mLastError.getMessage());
-                    Log.d("TAGSUB", "onCancelled: "+ "The following error occurred:\n"
+                    Log.d("TAGSUB", "onCancelled: " + "The following error occurred:\n"
                             + mLastError.getMessage());
                 }
             } else {
@@ -625,31 +791,81 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
         }
     }
 
+    boolean isAutoPlay = false;
 
     //-------------------------------------------------------------------------------------------------
     boolean isTimerRunning = false;
 
     private void setDataOnViews(int counter) {
-        progressDialog.show();
 
-        with(requireContext())
-                .asBitmap()
-                .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())
-                .apply(new RequestOptions()
-                        .placeholder(lighterGrey)
-                        .error(lighterGrey)
-                )
-                .diskCacheStrategy(DATA)
-                .into(b.videoImageSubscribe);
+        // IF FIRST TIME
+        if (counter == 0) {
+            progressDialog.show();
+
+            with(requireContext())
+                    .asBitmap()
+                    .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())
+                    .apply(new RequestOptions()
+                            .placeholder(lighterGrey)
+                            .error(lighterGrey)
+                    )
+                    .diskCacheStrategy(DATA)
+                    .into(b.videoImageSubscribe);
 
 
-        b.videoIdSubscribe.setText(
-                "Video Id: " + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
-        );
+            b.videoIdSubscribe.setText(
+                    "Video Id: " + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
+            );
 
-        currentVideoLink = subscribeTaskModelArrayList.get(counter).getVideoUrl();
+            currentVideoLink = subscribeTaskModelArrayList.get(counter).getVideoUrl();
 
-        progressDialog.dismiss();
+            progressDialog.dismiss();
+
+            if (isAutoPlay)
+                subscribeUserToChannel();
+            return;
+        }
+
+        // IF SECOND OR THIRD TIME
+        b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
+        new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                b.videoImageSubscribe.animate().rotation(b.videoImageSubscribe.getRotation() + 20)
+                        .setDuration(100).start();
+                b.videoIdSubscribe.setText("" + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                b.videoImageSubscribe.setRotation(0);
+
+                progressDialog.show();
+
+                with(requireContext())
+                        .asBitmap()
+                        .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())
+                        .apply(new RequestOptions()
+                                .placeholder(lighterGrey)
+                                .error(lighterGrey)
+                        )
+                        .diskCacheStrategy(DATA)
+                        .into(b.videoImageSubscribe);
+
+
+                b.videoIdSubscribe.setText(
+                        "Video Id: " + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
+                );
+
+                currentVideoLink = subscribeTaskModelArrayList.get(counter).getVideoUrl();
+
+                progressDialog.dismiss();
+
+
+                if (isAutoPlay)
+                    subscribeUserToChannel();
+            }
+        }.start();
+
+
 /*
         new Handler().postDelayed(new Runnable() {
             @Override
