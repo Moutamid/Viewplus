@@ -798,6 +798,9 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
     private void setDataOnViews(int counter) {
 
+        if (subscribeTaskModelArrayList.size() == 0)
+            return;
+
         // IF FIRST TIME
         if (counter == 0) {
             progressDialog.show();

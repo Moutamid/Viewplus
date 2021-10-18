@@ -155,17 +155,17 @@ public class ViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
         root = inflater.inflate(R.layout.fragment_view, container, false);
-        new CountDownTimer(87686, 678) {
-            @Override
-            public void onTick(long l) {
-
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
+//        new CountDownTimer(87686, 678) {
+//            @Override
+//            public void onTick(long l) {
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//
+//            }
+//        }.start();
 //        videoUrl = getIntent().getStringExtra("url");
         videoUrl = "https://youtu.be/G393z8s8nFY";
         databaseReference = FirebaseDatabase.getInstance().getReference();
