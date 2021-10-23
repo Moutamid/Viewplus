@@ -211,16 +211,19 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
     private void subscribeUserToChannel() {
 
-        if (remainingDailyLimitInt == 30){
+        if (remainingDailyLimitInt == 30) {
             Utils.toast("Your daily limit reached!");
             return;
         }
+
+        if (subscribeTaskModelArrayList.size() == 0)
+            return;
 
 //        if (currentVideoLink.isEmpty()) {
 //            currentVideoLink.setError("Required");
 //            return;
 //        } else {
-        currentVideoId = Helper.getVideoId(currentVideoLink);
+            currentVideoId = Helper.getVideoId(currentVideoLink);
 //        }
 
 //        if (currentVideoId.isEmpty()) {

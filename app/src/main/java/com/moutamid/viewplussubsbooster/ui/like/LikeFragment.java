@@ -213,6 +213,9 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
             return;
         }
 
+        if (likeTaskModelArrayList.size() == 0)
+            return;
+
 //        if (currentVideoLink.isEmpty()) {
 //            currentVideoLink.setError("Required");
 //            return;

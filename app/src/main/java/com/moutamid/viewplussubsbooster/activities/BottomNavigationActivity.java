@@ -1,8 +1,12 @@
 package com.moutamid.viewplussubsbooster.activities;
 
+import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -165,11 +169,45 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
                 break;
             case R.id.exit_nav_option:
                 closeDrawer();
-                finish();
+                clearAppData();
                 break;
 
         }
         return true;
+    }
+
+    private void clearAppData() {
+
+        new AlertDialog.Builder(BottomNavigationActivity.this)
+                .setTitle("Are you sure?")
+                .setMessage("Do you really want to logout? \n\nNote: This will clear app data and the app will be closed!")
+                .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        try {
+                            // clearing app data
+                            if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
+                                ((ActivityManager)getSystemService(ACTIVITY_SERVICE))
+                                        .clearApplicationUserData(); // note: it has a return value!
+                            } else {
+                                String packageName = getApplicationContext().getPackageName();
+                                Runtime runtime = Runtime.getRuntime();
+                                runtime.exec("pm clear "+packageName);
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setPositiveButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setCancelable(true)
+                .show();
     }
 
     private void closeDrawer() {
