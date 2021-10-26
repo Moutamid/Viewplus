@@ -111,7 +111,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
             MenuItem menuItem = navigationView.getMenu().getItem(itemIndex).setChecked(true);
             onNavigationItemSelected(menuItem);
         }
-        navView.setSelectedItemId(R.id.navigation_view);
+        navView.setSelectedItemId(R.id.navigation_subscribe);
     }
 
     private void toggleDrawer() {

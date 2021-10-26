@@ -33,6 +33,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:id="@+id/buyPointsBtn"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@color/accentColor"
@@ -69,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginHorizontal="20dp"
+                android:id="@+id/vipBtn"
                 android:layout_marginTop="20dp"
                 android:background="@color/accentColor"
                 android:text="vip membership"
@@ -103,6 +105,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:id="@+id/feedbackBtn"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@color/accentColor"
@@ -170,7 +173,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/logout_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -196,6 +199,6 @@
             android:text="LogOut"
             android:textSize="25sp" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 </LinearLayout>

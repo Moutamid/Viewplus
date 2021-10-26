@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.moutamid.viewplussubsbooster">
-    <!--.subsbooster-->
-
+    <!-- .subsbooster -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
+        android:name=".AppContext"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".AppContext"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Viewplus">
-        <activity android:name="com.moutamid.viewplussubsbooster.activities.AddTaskActivity"></activity>
-        <activity android:name="com.moutamid.viewplussubsbooster.activities.PersonalInfoActivity" />
-        <activity android:name="com.moutamid.viewplussubsbooster.activities.BuyCoinsActivity" />
         <activity
-            android:name="com.moutamid.viewplussubsbooster.activities.BottomNavigationActivity"
+            android:name=".activities.VipActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.BuyPointsActivity"
+            android:exported="true" />
+        <activity android:name=".activities.AddTaskActivity" />
+        <activity android:name=".activities.PersonalInfoActivity" />
+        <activity android:name=".activities.BuyCoinsActivity" />
+        <activity
+            android:name=".activities.BottomNavigationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:label="@string/title_activity_bottom_navigation" />
-        <activity android:name="com.moutamid.viewplussubsbooster.activities.MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

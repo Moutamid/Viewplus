@@ -223,7 +223,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 //            currentVideoLink.setError("Required");
 //            return;
 //        } else {
-            currentVideoId = Helper.getVideoId(currentVideoLink);
+        currentVideoId = Helper.getVideoId(currentVideoLink);
 //        }
 
 //        if (currentVideoId.isEmpty()) {
@@ -808,15 +808,16 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
         if (counter == 0) {
             progressDialog.show();
 
-            with(requireContext())
-                    .asBitmap()
-                    .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())
-                    .apply(new RequestOptions()
-                            .placeholder(lighterGrey)
-                            .error(lighterGrey)
-                    )
-                    .diskCacheStrategy(DATA)
-                    .into(b.videoImageSubscribe);
+            if (getActivity() != null)
+                with(requireActivity())
+                        .asBitmap()
+                        .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())
+                        .apply(new RequestOptions()
+                                .placeholder(lighterGrey)
+                                .error(lighterGrey)
+                        )
+                        .diskCacheStrategy(DATA)
+                        .into(b.videoImageSubscribe);
 
 
             b.videoIdSubscribe.setText(

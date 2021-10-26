@@ -87,4 +87,10 @@ dependencies {
     implementation('com.google.apis:google-api-services-youtube:v3-rev183-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+
+    def billing_version = "3.0.0"
+    implementation "com.android.billingclient:billing:$billing_version"
+
+    implementation 'androidx.preference:preference:1.1.1'
+
 }
