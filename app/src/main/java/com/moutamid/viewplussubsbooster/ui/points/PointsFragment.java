@@ -52,7 +52,7 @@ public class PointsFragment extends Fragment {
         /*root.findViewById(R.id.buy_coins_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(getActivity(), BuyCoinsActivity.class));
+//                startActivity(new Intent(getActivity(), TestCoinsActivity.class));
             }
         });
 

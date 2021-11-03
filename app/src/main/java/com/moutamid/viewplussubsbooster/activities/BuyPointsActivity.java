@@ -22,6 +22,8 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.PurchaseInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,16 +32,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.viewplussubsbooster.R;
 import com.moutamid.viewplussubsbooster.databinding.ActivityBuyPointsBinding;
+import com.moutamid.viewplussubsbooster.utils.Constants;
 import com.moutamid.viewplussubsbooster.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuyPointsActivity extends AppCompatActivity {
+public class BuyPointsActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
     private static final String TAG = "BuyPointsActivity";
     private Context context = BuyPointsActivity.this;
 
     private ActivityBuyPointsBinding b;
+
+    BillingProcessor bp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +54,16 @@ public class BuyPointsActivity extends AppCompatActivity {
 
         getCoinsAmount();
 
-        inAppPurchases();
+        bp = BillingProcessor.newBillingProcessor(this, Constants.LICENSE_KEY, this);
+        bp.initialize();
+//        inAppPurchases();
 
         b.buyPoints1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (getPurchaseSharedPreference()) {
+
+
+                /*if (getPurchaseSharedPreference()) {
                     Toast.makeText(context, "Already Subscribed", Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -64,10 +73,48 @@ public class BuyPointsActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(context, "Something wrong!", Toast.LENGTH_SHORT).show();
                     }
-                }
+                }*/
             }
         });
     }
+
+    public void btSubscribe(View view) {
+
+    }
+
+    @Override
+    public void onProductPurchased(@NonNull String productId, @Nullable PurchaseInfo details) {
+        Utils.toast("onProductPurchased");
+        Utils.toast(productId);
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+        Utils.toast("onPurchaseHistoryRestored");
+    }
+
+    @Override
+    public void onBillingError(int errorCode, @Nullable Throwable error) {
+        Utils.toast("onBillingError: code: " + errorCode + " \n" + error.getMessage());
+    }
+
+    @Override
+    public void onBillingInitialized() {
+        Utils.toast("onBillingInitialized");
+
+        if (bp.isConnected()){
+            Utils.toast("CONNECTED!");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (bp != null) {
+            bp.release();
+        }
+        super.onDestroy();
+    }
+
 
     private void getCoinsAmount() {
 
@@ -97,9 +144,9 @@ public class BuyPointsActivity extends AppCompatActivity {
         });
     }
 
-    //------------------------------------------------------------------------------------------
-    private BillingClient billingClient;
-    private List<String> skuList;
+    /*//------------------------------------------------------------------------------------------
+//    private BillingClient billingClient;
+//    private List<String> skuList;
 
     public void inAppPurchases() {
         // To be implemented in a later section.
@@ -132,7 +179,7 @@ public class BuyPointsActivity extends AppCompatActivity {
 
             }
         });
-        skuProductList();
+//        skuProductList();
     }
 
     public void btSubscribe(View view) {
@@ -199,5 +246,5 @@ public class BuyPointsActivity extends AppCompatActivity {
     public boolean getPurchaseSharedPreference() {
         SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         return prefs.getBoolean(this.getString(R.string.adsubscribed), false);
-    }
+    }*/
 }

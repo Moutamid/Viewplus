@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/nav_header_circleimageview_id"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher_foreground" />
 
@@ -39,19 +39,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="User name"
+        android:text="Email address"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
 
     <TextView
-        android:id="@+id/nav_header_phone_nmbr_id"
+        android:id="@+id/nav_header_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:text="Points: 294"
+        android:text="Points: loading..."
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
         android:textSize="14sp" />

@@ -37,7 +37,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:fontFamily="casual"
-                android:text="SubsBooster"
+                android:text="@string/app_name"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 

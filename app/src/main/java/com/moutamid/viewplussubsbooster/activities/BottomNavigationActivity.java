@@ -98,12 +98,12 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
         }
         initNavigationMenu();
 
-        getCoinsAmount();
-
         initializeViews();
+
         toggleDrawer();
         initializeDefaultFragment(savedInstanceState, 0);
 
+        getCoinsAmount();
     }
 
     private void initializeDefaultFragment(Bundle savedInstanceState, int itemIndex) {
@@ -187,12 +187,12 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
                         try {
                             // clearing app data
                             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
-                                ((ActivityManager)getSystemService(ACTIVITY_SERVICE))
+                                ((ActivityManager) getSystemService(ACTIVITY_SERVICE))
                                         .clearApplicationUserData(); // note: it has a return value!
                             } else {
                                 String packageName = getApplicationContext().getPackageName();
                                 Runtime runtime = Runtime.getRuntime();
-                                runtime.exec("pm clear "+packageName);
+                                runtime.exec("pm clear " + packageName);
                             }
 
                         } catch (Exception e) {
@@ -223,6 +223,15 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
         navigationView = findViewById(R.id.navigationview_id);
         navigationView.setNavigationItemSelectedListener(this);
 
+        TextView emailTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_user_name_id);
+        try {
+            emailTextView.setText(mAuth.getCurrentUser().getEmail());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pointsTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_points);
+
         findViewById(R.id.menu_option_bottomm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -230,6 +239,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
             }
         });
     }
+    TextView pointsTextView;
 
     private void getCoinsAmount() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -239,8 +249,10 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
                 if (snapshot.exists()) {
                     String value = String.valueOf(snapshot.child("coins").getValue(Integer.class));
                     coinsTextView.setText(value);
+                    pointsTextView.setText("Points: "+value);
                 } else {
                     coinsTextView.setText("0");
+                    pointsTextView.setText("Points: "+"0");
                 }
             }
 

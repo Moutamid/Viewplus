@@ -22,7 +22,7 @@
             android:exported="true" />
         <activity android:name=".activities.AddTaskActivity" />
         <activity android:name=".activities.PersonalInfoActivity" />
-        <activity android:name=".activities.BuyCoinsActivity" />
+        <activity android:name=".activities.TestCoinsActivity" />
         <activity
             android:name=".activities.BottomNavigationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
