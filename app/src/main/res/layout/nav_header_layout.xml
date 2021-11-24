@@ -15,8 +15,9 @@
 
         <ImageView
             android:id="@+id/nav_header_circleimageview_id"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="-20dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher_foreground" />
 
@@ -28,7 +29,7 @@
             android:layout_marginLeft="10dp"
             android:text="Subs"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@color/white"
+            android:textColor="@android:color/black"
             android:textSize="34sp"
             android:visibility="invisible" />
 
@@ -41,7 +42,7 @@
         android:paddingTop="8dp"
         android:text="Email address"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="14sp" />
 
 
@@ -53,7 +54,7 @@
         android:paddingBottom="4dp"
         android:text="Points: loading..."
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="14sp" />
 
     <View

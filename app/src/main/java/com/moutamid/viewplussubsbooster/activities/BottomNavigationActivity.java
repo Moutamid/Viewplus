@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.viewplussubsbooster.R;
+import com.moutamid.viewplussubsbooster.utils.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -36,6 +38,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem;
+import np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView;
 
 public class BottomNavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "BottomNavigationActivit";
@@ -104,14 +109,35 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
         initializeDefaultFragment(savedInstanceState, 0);
 
         getCoinsAmount();
+
+        try {
+            ImageView imageView = navigationView.findViewById(R.id.signOutBtnNavigation);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                closeDrawer();
+                clearAppData();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "onCreate: " + e.getMessage());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Utils.toast(e.getMessage());
+                }
+            });
+        }
+
     }
 
     private void initializeDefaultFragment(Bundle savedInstanceState, int itemIndex) {
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             MenuItem menuItem = navigationView.getMenu().getItem(itemIndex).setChecked(true);
             onNavigationItemSelected(menuItem);
         }
-        navView.setSelectedItemId(R.id.navigation_subscribe);
+        navView.setSelectedItemId(R.id.navigation_subscribe);*/
     }
 
     private void toggleDrawer() {
@@ -239,6 +265,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
             }
         });
     }
+
     TextView pointsTextView;
 
     private void getCoinsAmount() {
@@ -249,10 +276,10 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
                 if (snapshot.exists()) {
                     String value = String.valueOf(snapshot.child("coins").getValue(Integer.class));
                     coinsTextView.setText(value);
-                    pointsTextView.setText("Points: "+value);
+                    pointsTextView.setText("Points: " + value);
                 } else {
                     coinsTextView.setText("0");
-                    pointsTextView.setText("Points: "+"0");
+                    pointsTextView.setText("Points: " + "0");
                 }
             }
 
@@ -272,6 +299,26 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        //ic_baseline_subscriptions_24
+        //ic_baseline_thumb_up_alt_24
+        //ic_baseline_play_arrow_24
+        //ic_baseline_campaign_24
+        //ic_money_points_24
+
+        CurvedBottomNavigationView navigationView = findViewById(R.id.curveNavView);
+
+        CbnMenuItem[] items = {
+                new CbnMenuItem(R.drawable.ic_baseline_subscriptions_24, R.drawable.avd_subscription, R.id.navigation_subscribe),
+                new CbnMenuItem(R.drawable.ic_baseline_thumb_up_alt_24, R.drawable.avd_like, R.id.navigation_like),
+                new CbnMenuItem(R.drawable.ic_baseline_play_arrow_24, R.drawable.avd_view, R.id.navigation_view),
+                new CbnMenuItem(R.drawable.ic_baseline_campaign_24, R.drawable.avd_campaign, R.id.navigation_campaign),
+                new CbnMenuItem(R.drawable.ic_money_points_24, R.drawable.avd_points, R.id.navigation_points)
+        };
+
+        navigationView.setMenuItems(items, 0);
+        navigationView.setupWithNavController(navController);
+
     }
 
     @Override

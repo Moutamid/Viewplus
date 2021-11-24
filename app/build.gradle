@@ -10,10 +10,10 @@ android {
 
     defaultConfig {
         applicationId "com.moutamid.viewplussubsbooster"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
 
         multiDexEnabled true
 
@@ -94,5 +94,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
 
     implementation 'com.anjlab.android.iab.v3:library:2.0.0'
+
+    implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
 
 }

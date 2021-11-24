@@ -10,7 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/accentColor">
+        android:background="@color/white"
+        android:elevation="4dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -28,6 +29,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
+                app:tint="@color/red"
                 android:src="@drawable/ic_baseline_arrow_back_24" />
 
             <TextView
@@ -38,7 +40,7 @@
                 android:layout_marginLeft="10dp"
                 android:fontFamily="casual"
                 android:text="@string/app_name"
-                android:textColor="@color/white"
+                android:textColor="@color/red"
                 android:textSize="25sp" />
 
         </LinearLayout>
@@ -60,7 +62,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:text="0"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp" />
 
             <ImageView

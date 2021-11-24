@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEF4FA"
     android:orientation="vertical"
     tools:context=".ui.view.ViewFragment">
-
+<!--    android:background="#EEF4FA"-->
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
         android:id="@+id/youtube_player_view_fragment_view"
         android:layout_width="match_parent"
@@ -42,6 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:text="(Turn on automatic dialing and get 20% reduction in points)"
             android:textColor="@color/red" />
 
@@ -130,7 +130,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:id="@+id/other_btn"
         android:layout_marginTop="40dp"

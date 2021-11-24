@@ -10,7 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/accentColor">
+        android:background="@color/white"
+        android:elevation="4dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,7 +38,7 @@
                 android:layout_marginLeft="10dp"
                 android:fontFamily="casual"
                 android:text="@string/app_name"
-                android:textColor="@color/white"
+                android:textColor="@color/red"
                 android:textSize="25sp" />
 
         </LinearLayout>
@@ -59,7 +60,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:text="0"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp" />
 
             <ImageView
@@ -108,13 +109,13 @@
 
                     <TextView
                         style="@style/textviewStyle"
-                        android:textSize="20sp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
                         android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:gravity="center_horizontal"
-                        android:text="20% Off on Campaigns \nIncreased Daily Limits (+50)\nRemove Ads" />
+                        android:text="20% Off on Campaigns \nIncreased Daily Limits (+50)\nRemove Ads"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
 
@@ -131,42 +132,8 @@
 
                         <TextView
                             style="@style/textviewStyle"
-                            android:textSize="20sp"
-                            android:text="1 Week" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:textSize="20sp"
-                        android:text="0.99$"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        app:backgroundTint="@color/red"
-                        app:cornerRadius="10dp" />
-
-                </RelativeLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/cardLayout"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="10dp">
-
-                <RelativeLayout style="@style/relativeLayout">
-
-                    <LinearLayout style="@style/linearLayout">
-
-                        <TextView
-                            android:textSize="20sp"
-
-                            style="@style/textviewStyle"
-                            android:text="1 Week" />
+                            android:text="1 Week"
+                            android:textSize="20sp" />
 
                     </LinearLayout>
 
@@ -179,7 +146,6 @@
                         android:text="0.99$"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-
                         android:textStyle="bold"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="10dp" />
@@ -199,9 +165,9 @@
 
                         <TextView
                             style="@style/textviewStyle"
-                            android:textSize="20sp"
 
-                            android:text="1 Week" />
+                            android:text="1 Week"
+                            android:textSize="20sp" />
 
                     </LinearLayout>
 
@@ -212,9 +178,9 @@
                         android:layout_marginVertical="10dp"
                         android:layout_marginEnd="20dp"
                         android:text="0.99$"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
 
-                        android:textColor="@color/black"
                         android:textStyle="bold"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="10dp" />
@@ -234,11 +200,46 @@
 
                         <TextView
                             style="@style/textviewStyle"
-                            android:textSize="20sp"
+                            android:text="1 Week"
 
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginVertical="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="0.99$"
+                        android:textColor="@color/black"
+
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/red"
+                        app:cornerRadius="10dp" />
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/cardLayout"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="10dp">
+
+                <RelativeLayout style="@style/relativeLayout">
+
+                    <LinearLayout style="@style/linearLayout">
+
+                        <TextView
+                            style="@style/textviewStyle"
                             android:layout_marginVertical="20dp"
+
+                            android:text="Note: Subscriptions are renewed according to specified period. In case you want to stop, renew at anytime, you must enter Google Play Store - Menu - Subscriptions - Palcon Booster - Cancel Subscription"
                             android:textColor="@color/gray"
-                            android:text="Note: Subscriptions are renewed according to specified period. In case you want to stop, renew at anytime, you must enter Google Play Store - Menu - Subscriptions - Palcon Booster - Cancel Subscription" />
+                            android:textSize="20sp" />
 
                     </LinearLayout>
 

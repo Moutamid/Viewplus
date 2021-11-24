@@ -8,11 +8,12 @@
     tools:context=".ui.subscribe.SubscribeFragment">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/toplayoutlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="30dp"
-        app:cardCornerRadius="7dp"
+        app:cardCornerRadius="15dp"
         app:cardElevation="7dp">
 
         <LinearLayout
@@ -23,25 +24,47 @@
             <ImageView
                 android:id="@+id/video_image_subscribe"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_margin="10dp" />
+                android:layout_height="250dp"
+                android:scaleType="centerCrop" />
 
 
             <TextView
                 android:id="@+id/videoId_subscribe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center_horizontal"
                 android:text="Video Id: kadhgjasg87"
                 android:textColor="@color/black"
                 android:textIsSelectable="true"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomLayoutSubscribe"
+        android:layout_below="@+id/toplayoutlayout"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:src="@drawable/mask_group" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/group_dots" />
+
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -50,6 +73,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="15dp"
+        android:visibility="gone"
         app:cardCornerRadius="7dp"
         app:cardElevation="7dp">
 
@@ -61,11 +85,11 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/autoPlaySwitchSubscribe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="Auto play"
-                android:id="@+id/autoPlaySwitchSubscribe"
                 app:thumbTint="@color/accentColor"
                 app:trackTint="@color/lighterRed" />
 
@@ -91,25 +115,29 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/subscribeBtnSubscribeActivity"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:maxLines="1"
             android:text="subscribe ( +126 )"
             android:textColor="@color/white"
             android:textSize="13sp"
-            app:backgroundTint="@color/red" />
+            app:backgroundTint="@color/red"
+            app:cornerRadius="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/seeNextBtnSubscribe"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:text="see next"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="13sp"
-            app:backgroundTint="@color/red" />
+            app:backgroundTint="@color/white"
+            app:cornerRadius="8dp"
+            app:strokeColor="@color/black"
+            app:strokeWidth="1dp" />
 
     </LinearLayout>
 

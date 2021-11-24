@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEF4FA"
+
     android:orientation="vertical"
     tools:context=".ui.points.PointsFragment">
-
+    <!--android:background="#EEF4FA"-->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -40,7 +40,7 @@
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/ic_logo_viewplus" />
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/buyPointsBtn"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -48,7 +48,9 @@
                         android:layout_marginTop="20dp"
                         android:background="@color/accentColor"
                         android:text="buy points"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/red"
+                        app:cornerRadius="8dp" />
 
 
                 </LinearLayout>
@@ -76,7 +78,7 @@
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/ic_logo_viewplus" />
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/vipBtn"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -84,7 +86,9 @@
                         android:layout_marginTop="20dp"
                         android:background="@color/accentColor"
                         android:text="vip membership"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/red"
+                        app:cornerRadius="8dp" />
 
 
                 </LinearLayout>
@@ -112,7 +116,7 @@
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/ic_logo_viewplus" />
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/feedbackBtn"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -120,7 +124,9 @@
                         android:layout_marginTop="20dp"
                         android:background="@color/accentColor"
                         android:text="leave feedback"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/red"
+                        app:cornerRadius="8dp" />
 
 
                 </LinearLayout>
