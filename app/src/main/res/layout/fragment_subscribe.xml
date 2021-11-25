@@ -44,11 +44,23 @@
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/autoPlaySwitchSubscribe"
+        android:layout_width="match_parent"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toplayoutlayout"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="10dp"
+        android:text="Auto play"
+        app:thumbTint="@color/accentColor"
+        app:trackTint="@color/lighterRed" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomLayoutSubscribe"
-        android:layout_below="@+id/toplayoutlayout"
+        android:layout_below="@+id/autoPlaySwitchSubscribe"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
@@ -66,14 +78,14 @@
 
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
+    <!--<androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/bottomLayoutSubscribe"
+        android:visibility="gone"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="15dp"
-        android:visibility="gone"
         app:cardCornerRadius="7dp"
         app:cardElevation="7dp">
 
@@ -100,7 +112,7 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>-->
 
     <LinearLayout
         android:id="@+id/bottomLayoutSubscribe"
