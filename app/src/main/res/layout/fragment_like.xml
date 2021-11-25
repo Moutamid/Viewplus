@@ -53,8 +53,10 @@
         android:textColor="@color/black"
         android:layout_marginTop="20dp"
         android:text="Auto play"
-        app:thumbTint="@color/accentColor"
-        app:trackTint="@color/lighterRed" />
+        app:thumbTint="@color/black"
+        app:trackTint="#99000000"/>
+        <!--app:thumbTint="@color/accentColor"
+        app:trackTint="@color/lighterRed" />-->
 
     <!--<androidx.cardview.widget.CardView
         android:layout_width="match_parent"

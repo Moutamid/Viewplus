@@ -62,7 +62,8 @@ public class CampaignFragment extends Fragment {
     private DatabaseReference databaseReference;
     private ProgressDialog progressDialog;
 
-    FloatingActionButton fabViewBtn, fabLikeBtn, fabSubscribeBtn;
+    ImageView fabViewBtn, fabLikeBtn, fabSubscribeBtn;
+//    FloatingActionButton fabViewBtn, fabLikeBtn, fabSubscribeBtn;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_campaign, container, false);
@@ -327,11 +328,15 @@ public class CampaignFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (fabSubscribeBtn.getVisibility() == View.VISIBLE) {
+                    root.findViewById(R.id.viewview).setVisibility(View.GONE);
+
                     fabViewBtn.setVisibility(View.GONE);
                     fabLikeBtn.setVisibility(View.GONE);
                     fabSubscribeBtn.setVisibility(View.GONE);
 
                 } else {
+                    root.findViewById(R.id.viewview).setVisibility(View.VISIBLE);
+
                     fabViewBtn.setVisibility(View.VISIBLE);
                     fabLikeBtn.setVisibility(View.VISIBLE);
                     fabSubscribeBtn.setVisibility(View.VISIBLE);
@@ -395,6 +400,11 @@ public class CampaignFragment extends Fragment {
             Utils.store( "canAddNewTask", true);
 
         }*/
+
+        if (adapter.getItemCount() != 0) {
+            root.findViewById(R.id.noChatsLayout).setVisibility(View.GONE);
+            conversationRecyclerView.setVisibility(View.VISIBLE);
+        }
 
         progressDialog.dismiss();
 
