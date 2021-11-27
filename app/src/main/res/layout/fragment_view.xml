@@ -128,17 +128,34 @@
 
     </LinearLayout>
 
-    <ImageView
+    <com.denzcoskun.imageslider.ImageSlider
+        android:id="@+id/image_slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:src="@drawable/mask_group" />
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:iss_title_background="@color/transparent"
+        app:iss_auto_cycle="true"
+        app:iss_delay="2000"
+        app:iss_period="2000"
+        app:iss_selected_dot="@drawable/selected_dot"
+        app:iss_unselected_dot="@drawable/unselected_dot" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:src="@drawable/group_dots" />
+
+    <!--
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:src="@drawable/mask_group" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/group_dots" />
+    -->
 
     <!--    <LinearLayout
             android:layout_width="match_parent"

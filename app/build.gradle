@@ -97,4 +97,7 @@ dependencies {
 
     implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
 
+    implementation 'com.tbuonomo:dotsindicator:4.2'
+
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
 }
