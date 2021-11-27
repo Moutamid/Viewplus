@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -808,7 +809,8 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
         if (counter == 0) {
             progressDialog.show();
 
-            if (getActivity() != null)
+            if (getActivity() != null) {
+                b.videoImageSubscribe.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 with(requireActivity())
                         .asBitmap()
                         .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())
@@ -818,7 +820,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                         )
                         .diskCacheStrategy(DATA)
                         .into(b.videoImageSubscribe);
-
+            }
 
             b.videoIdSubscribe.setText(
                     "Video Id: " + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
@@ -834,6 +836,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
         }
 
         // IF SECOND OR THIRD TIME
+        b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
         b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
         new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -847,6 +850,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
                 progressDialog.show();
 
+                b.videoImageSubscribe.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 with(requireContext())
                         .asBitmap()
                         .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())

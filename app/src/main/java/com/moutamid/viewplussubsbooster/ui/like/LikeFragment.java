@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -806,6 +807,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
         if (counter == 0) {
             progressDialog.show();
 
+            b.videoImageLike.setScaleType(ImageView.ScaleType.CENTER_CROP);
             with(requireContext())
                     .asBitmap()
                     .load(likeTaskModelArrayList.get(counter).getThumbnailUrl())
@@ -831,6 +833,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
         }
 
         // IF SECOND OR THIRD TIME
+        b.videoImageLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
         b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
         new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -844,6 +847,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
                 progressDialog.show();
 
+                b.videoImageLike.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 with(requireContext())
                         .asBitmap()
                         .load(likeTaskModelArrayList.get(counter).getThumbnailUrl())

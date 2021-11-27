@@ -64,7 +64,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="In publishing and be used as a be graphic may be used Loremipsum Dolllar signplaceholder before final copy is available." />
+            android:text="Your campaign appears here. Click add button to create campaign to get subscribers for your channel." />
 
     </LinearLayout>
 

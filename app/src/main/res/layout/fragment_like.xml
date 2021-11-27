@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="30dp"
-        app:cardCornerRadius="7dp"
+        app:cardCornerRadius="15dp"
         app:cardElevation="7dp">
 
         <LinearLayout
@@ -24,6 +24,7 @@
             <ImageView
                 android:id="@+id/video_image_like"
                 android:layout_width="match_parent"
+                android:scaleType="centerCrop"
                 android:layout_height="250dp" />
 
             <TextView
@@ -50,13 +51,35 @@
         android:layout_below="@+id/toplayoutlayoutt"
         android:layout_gravity="end"
         android:layout_marginHorizontal="30dp"
-        android:textColor="@color/black"
         android:layout_marginTop="20dp"
         android:text="Auto play"
+        android:textColor="@color/black"
         app:thumbTint="@color/black"
-        app:trackTint="#99000000"/>
+        app:trackTint="#99000000" />
         <!--app:thumbTint="@color/accentColor"
         app:trackTint="@color/lighterRed" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/autoPlaySwitch_like"
+        android:gravity="center"
+        android:layout_above="@+id/bottomLayout_like"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:src="@drawable/mask_group" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/group_dots" />
+
+    </LinearLayout>
 
     <!--<androidx.cardview.widget.CardView
         android:layout_width="match_parent"

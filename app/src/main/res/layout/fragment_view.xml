@@ -7,14 +7,25 @@
     android:orientation="vertical"
     tools:context=".ui.view.ViewFragment">
     <!--    android:background="#EEF4FA"-->
-    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-        android:id="@+id/youtube_player_view_fragment_view"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/toplayoutlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
-        app:enableAutomaticInitialization="true"
-        app:handleNetworkEvents="true"
-        app:showFullScreenButton="false" />
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="30dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="7dp">
+
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/youtube_player_view_fragment_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:enableAutomaticInitialization="true"
+            app:handleNetworkEvents="true"
+            app:showFullScreenButton="false" />
+
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,22 +116,29 @@
 
         </LinearLayout>
 
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/other_btn"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:background="@color/accentColor"
-            android:text="Watch other"
+            android:text="Watch next"
             android:textColor="@color/white"
-            android:textSize="13sp"
             app:backgroundTint="@color/red"
             app:cornerRadius="8dp" />
 
-
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:src="@drawable/mask_group" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:src="@drawable/group_dots" />
 
     <!--    <LinearLayout
             android:layout_width="match_parent"
