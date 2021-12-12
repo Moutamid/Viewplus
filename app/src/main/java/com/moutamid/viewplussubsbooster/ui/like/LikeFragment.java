@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.Glide.with;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.DATA;
 import static com.moutamid.viewplussubsbooster.R.color.lighterGrey;
+import static com.moutamid.viewplussubsbooster.R.color.red;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -12,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -27,9 +29,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.common.ConnectionResult;
@@ -808,6 +815,8 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
     //-------------------------------------------------------------------------------------------------
     boolean isTimerRunning = false;
 
+    int isError = 0;
+
     private void setDataOnViews(int counter) {
 
         if (likeTaskModelArrayList.size() == 0)
@@ -825,6 +834,37 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                             .placeholder(lighterGrey)
                             .error(lighterGrey)
                     )
+                    .addListener(new RequestListener<Bitmap>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                            isError++;
+
+                            /*currentCounter++;
+
+                            b.videoImageLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                            b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
+
+                            if (currentCounter >= likeTaskModelArrayList.size()) {
+                                Utils.toast("End of tasks!");
+                                b.videoImageLike.setBackgroundResource(0);
+                                b.videoIdLike.setText("Empty");
+                            } else setDataOnViews(currentCounter);*/
+
+
+                            currentCounter++;
+
+                            if (currentCounter >= likeTaskModelArrayList.size()) {
+                                Utils.toast("End of tasks!");
+
+                            } else setDataOnViews(currentCounter);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
                     .diskCacheStrategy(DATA)
                     .into(b.videoImageLike);
 
@@ -837,6 +877,12 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
             progressDialog.dismiss();
 
+            if (isError > 0) {
+                b.videoImageLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
+                return;
+            }
+
             if (isAutoPlay)
                 likeUserToVideo();
             return;
@@ -847,12 +893,16 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
         b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
         new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
+                b.videoImageLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
                 b.videoImageLike.animate().rotation(b.videoImageLike.getRotation() + 20)
                         .setDuration(100).start();
                 b.videoIdLike.setText("" + millisUntilFinished / 1000);
+                b.autoPlaySwitchLike.setEnabled(false);
             }
 
             public void onFinish() {
+                b.autoPlaySwitchLike.setEnabled(true);
                 b.videoImageLike.setRotation(0);
 
                 progressDialog.show();
@@ -865,6 +915,37 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                 .placeholder(lighterGrey)
                                 .error(lighterGrey)
                         )
+                        .addListener(new RequestListener<Bitmap>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                                isError++;
+
+                                /*b.videoImageLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                                b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
+
+                                currentCounter++;
+
+                                if (currentCounter >= likeTaskModelArrayList.size()) {
+                                    Utils.toast("End of tasks!");
+                                    b.videoImageLike.setBackgroundResource(0);
+                                    b.videoIdLike.setText("Empty");
+                                } else setDataOnViews(currentCounter);
+*/
+
+                                currentCounter++;
+
+                                if (currentCounter >= likeTaskModelArrayList.size()) {
+                                    Utils.toast("End of tasks!");
+
+                                } else setDataOnViews(currentCounter);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                return false;
+                            }
+                        })
                         .diskCacheStrategy(DATA)
                         .into(b.videoImageLike);
 
@@ -877,6 +958,11 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
                 progressDialog.dismiss();
 
+                if (isError>0) {
+                    b.videoImageLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
+                    return;
+                }
 
                 if (isAutoPlay)
                     likeUserToVideo();

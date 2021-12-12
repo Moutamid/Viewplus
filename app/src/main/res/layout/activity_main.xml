@@ -18,17 +18,18 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:src="@drawable/ic_logo_viewplus" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:src="@drawable/ic_header" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="casual"
             android:gravity="center"
-            android:layout_marginHorizontal="20dp"
-            android:text="Welcome to Palcon Booster!"
+            android:text="Welcome!"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />

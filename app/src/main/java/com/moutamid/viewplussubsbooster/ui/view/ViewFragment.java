@@ -354,7 +354,6 @@ public class ViewFragment extends Fragment {
         tv.setText(taskArrayList.get(currentPosition).getTotalViewTimeQuantity());
 
         // INIT PLAYER VIEW
-
         if (!isRunning) {
             new GetVideoTitle(videoUrl).execute();
 //            getVideoTitle.setId(videoUrl);
@@ -402,6 +401,8 @@ public class ViewFragment extends Fragment {
 
             @Override
             public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
+                Log.e(TAG, "onError: ");
+                setNewVideoPlayerDetails();
 
             }
 
@@ -723,13 +724,15 @@ public class ViewFragment extends Fragment {
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    getActivity().runOnUiThread(new Runnable() {
+                    requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
+//                            setNewVideoPlayerDetails();
+
+//                            Toast.makeText(getActivity(),
+//                                    "Json parsing error: " + e.getMessage(),
+//                                    Toast.LENGTH_LONG)
+//                                    .show();
                         }
                     });
 
@@ -737,13 +740,15 @@ public class ViewFragment extends Fragment {
                 }
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
-                getActivity().runOnUiThread(new Runnable() {
+                requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(),
-                                "Couldn't get json from server!",
-                                Toast.LENGTH_LONG)
-                                .show();
+//                        setNewVideoPlayerDetails();
+
+//                        Toast.makeText(getActivity(),
+//                                "Couldn't get json from server!",
+//                                Toast.LENGTH_LONG)
+//                                .show();
                     }
                 });
 

@@ -41,7 +41,13 @@
                     android:src="@drawable/ic_baseline_menu_24"
                     app:tint="@color/red" />
 
-                <TextView
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:src="@drawable/ic_header_white"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"/>
+
+                <!--<TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -51,7 +57,7 @@
                     android:gravity="center"
                     android:text="@string/app_name"
                     android:textColor="@color/red"
-                    android:textSize="25sp" />
+                    android:textSize="25sp" />-->
 
             </LinearLayout>
 

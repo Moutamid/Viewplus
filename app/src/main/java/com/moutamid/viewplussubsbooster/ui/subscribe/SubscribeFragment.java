@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.Glide.with;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.DATA;
 import static com.moutamid.viewplussubsbooster.R.color.lighterGrey;
+import static com.moutamid.viewplussubsbooster.R.color.red;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -12,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -27,9 +29,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.util.Util;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
@@ -743,8 +750,12 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
             );
 
+            status = video.getSnippet().getTitle();
+
             return channelInfo;
         }
+
+        String status = "nothing";
 
         @Override
         protected void onPreExecute() {
@@ -754,6 +765,8 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
         @Override
         protected void onPostExecute(List<String> output) {
+
+            Utils.toast(status);
 
             if (output == null || output.size() == 0) {
 //                mOutputText.setText("No results returned.");
@@ -811,6 +824,8 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
     //-------------------------------------------------------------------------------------------------
     boolean isTimerRunning = false;
 
+    int isError = 0;
+
     private void setDataOnViews(int counter) {
 
         if (subscribeTaskModelArrayList.size() == 0)
@@ -830,6 +845,30 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                 .error(lighterGrey)
                         )
                         .diskCacheStrategy(DATA)
+                        .addListener(new RequestListener<Bitmap>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                                isError++;
+
+                                b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                                b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
+
+                                currentCounter++;
+
+                                if (currentCounter >= subscribeTaskModelArrayList.size()) {
+                                    Utils.toast("End of tasks!");
+                                    b.videoImageSubscribe.setBackgroundResource(0);
+                                    b.videoIdSubscribe.setText("Empty");
+                                } else setDataOnViews(currentCounter);
+
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                return false;
+                            }
+                        })
                         .into(b.videoImageSubscribe);
             }
 
@@ -841,6 +880,10 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
             progressDialog.dismiss();
 
+            if (isError > 0) {
+                return;
+            }
+
             if (isAutoPlay)
                 subscribeUserToChannel();
             return;
@@ -851,12 +894,16 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
         b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
         new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
+                b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
                 b.videoImageSubscribe.animate().rotation(b.videoImageSubscribe.getRotation() + 20)
                         .setDuration(100).start();
                 b.videoIdSubscribe.setText("" + millisUntilFinished / 1000);
+                b.autoPlaySwitchSubscribe.setEnabled(false);
             }
 
             public void onFinish() {
+                b.autoPlaySwitchSubscribe.setEnabled(true);
                 b.videoImageSubscribe.setRotation(0);
 
                 progressDialog.show();
@@ -869,6 +916,30 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                 .placeholder(lighterGrey)
                                 .error(lighterGrey)
                         )
+                        .addListener(new RequestListener<Bitmap>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                                isError++;
+
+                                b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                                b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
+
+                                currentCounter++;
+
+                                if (currentCounter >= subscribeTaskModelArrayList.size()) {
+                                    Utils.toast("End of tasks!");
+                                    b.videoImageSubscribe.setBackgroundResource(0);
+                                    b.videoIdSubscribe.setText("Empty");
+                                } else setDataOnViews(currentCounter);
+
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                return false;
+                            }
+                        })
                         .diskCacheStrategy(DATA)
                         .into(b.videoImageSubscribe);
 
@@ -881,6 +952,9 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
                 progressDialog.dismiss();
 
+                if (isError > 0) {
+                    return;
+                }
 
                 if (isAutoPlay)
                     subscribeUserToChannel();

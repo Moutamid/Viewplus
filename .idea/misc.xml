@@ -19,10 +19,10 @@
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/drawable/selected_dot.xml" value="0.21614583333333334" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/drawable/unselected_dot.xml" value="0.21614583333333334" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_add_task.xml" value="0.2" />
-        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_bottom_navigation.xml" value="0.2" />
+        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_bottom_navigation.xml" value="0.22" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_buy_coins.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_buy_points.xml" value="0.2" />
-        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_main.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_personal_info.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_tse_coins.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/layout/activity_vip.xml" value="0.2" />
@@ -44,6 +44,8 @@
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/menu/admin_nav_drawer_menu.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2" />
         <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/menu/nav_drawer_menu.xml" value="0.2" />
+        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.14722222222222223" />
+        <entry key="..\:/Users/Azan Comp/AndroidStudioProjects/Viewplus/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.14722222222222223" />
       </map>
     </option>
   </component>

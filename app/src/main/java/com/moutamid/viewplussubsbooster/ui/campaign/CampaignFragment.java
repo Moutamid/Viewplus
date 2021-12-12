@@ -269,7 +269,7 @@ public class CampaignFragment extends Fragment {
 
     String videoType = Constants.TYPE_VIEW;
 
-    private void showAddTaskDialog() {
+    private void showAddTaskDialog(String title) {
         Dialog dialog = new Dialog(requireContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_add_video_task);
@@ -278,6 +278,9 @@ public class CampaignFragment extends Fragment {
         layoutParams.copyFrom(dialog.getWindow().getAttributes());
         layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        TextView titleTv = dialog.findViewById(R.id.titleDialog);
+        titleTv.setText(title);
 
         dialog.findViewById(R.id.addTaskButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,7 +298,7 @@ public class CampaignFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 videoType = Constants.TYPE_VIEW;
-                showAddTaskDialog();
+                showAddTaskDialog("Add your video for views");
 
             }
         };
@@ -306,7 +309,7 @@ public class CampaignFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 videoType = Constants.TYPE_LIKE;
-                showAddTaskDialog();
+                showAddTaskDialog("Add your video for likes");
 
             }
         };
@@ -317,7 +320,7 @@ public class CampaignFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 videoType = Constants.TYPE_SUBSCRIBE;
-                showAddTaskDialog();
+                showAddTaskDialog("Add your video for subscribers");
 
             }
         };
