@@ -22,7 +22,7 @@
             android:layout_marginLeft="10dp"
             android:orientation="horizontal">
 
-            <ImageView
+            <!--<ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center_vertical"
@@ -40,14 +40,22 @@
                 android:text="Buy Points"
                 android:textColor="@color/red"
                 android:textSize="25sp" />
-
+-->
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/ic_header_white"
+            android:layout_gravity="center_vertical"
+            android:layout_toStartOf="@+id/endLayoutBottom"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:id="@+id/endLayoutBottom"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:orientation="horizontal">

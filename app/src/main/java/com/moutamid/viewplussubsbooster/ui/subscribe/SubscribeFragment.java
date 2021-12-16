@@ -19,6 +19,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -156,7 +157,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
                 }
                 progressDialog.dismiss();
-                setDataOnViews(0);
+                setDataOnViews(0, false);
 
             }
 
@@ -174,7 +175,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                 if (currentCounter >= subscribeTaskModelArrayList.size()) {
                     Utils.toast("End of tasks!");
 
-                } else setDataOnViews(currentCounter);
+                } else setDataOnViews(currentCounter, false);
 
             }
         });
@@ -632,7 +633,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                             Utils.toast("End of tasks!");
                                             b.videoImageSubscribe.setBackgroundResource(0);
                                             b.videoIdSubscribe.setText("Empty");
-                                        } else setDataOnViews(currentCounter);
+                                        } else setDataOnViews(currentCounter, true);
 
                                     }
                                 });
@@ -825,52 +826,58 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
     boolean isTimerRunning = false;
 
     int isError = 0;
+    Handler handler = new Handler();
 
-    private void setDataOnViews(int counter) {
+    private void setDataOnViews(int counter, boolean isTaskCompleted) {
 
         if (subscribeTaskModelArrayList.size() == 0)
             return;
 
         // IF FIRST TIME
-        if (counter == 0) {
+        if (counter == 0 || !isTaskCompleted) {
             progressDialog.show();
 
-            if (getActivity() != null) {
-                b.videoImageSubscribe.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                with(requireActivity())
-                        .asBitmap()
-                        .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())
-                        .apply(new RequestOptions()
-                                .placeholder(lighterGrey)
-                                .error(lighterGrey)
-                        )
-                        .diskCacheStrategy(DATA)
-                        .addListener(new RequestListener<Bitmap>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                                isError++;
+            b.videoImageSubscribe.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            with(requireActivity())
+                    .asBitmap()
+                    .load(subscribeTaskModelArrayList.get(counter).getThumbnailUrl())
+                    .apply(new RequestOptions()
+                            .placeholder(lighterGrey)
+                            .error(lighterGrey)
+                    )
+                    .diskCacheStrategy(DATA)
+                    .addListener(new RequestListener<Bitmap>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                                b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
+                                    isError++;
 
-                                currentCounter++;
+                                    b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                                    b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
 
-                                if (currentCounter >= subscribeTaskModelArrayList.size()) {
-                                    Utils.toast("End of tasks!");
-                                    b.videoImageSubscribe.setBackgroundResource(0);
-                                    b.videoIdSubscribe.setText("Empty");
-                                } else setDataOnViews(currentCounter);
+                                    currentCounter++;
 
-                                return false;
-                            }
+                                    if (currentCounter >= subscribeTaskModelArrayList.size()) {
+                                        Utils.toast("End of tasks!");
+                                        b.videoImageSubscribe.setBackgroundResource(0);
+                                        b.videoIdSubscribe.setText("Empty");
+                                    } else setDataOnViews(currentCounter, false);
 
-                            @Override
-                            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                                return false;
-                            }
-                        })
-                        .into(b.videoImageSubscribe);
-            }
+                                }
+                            });
+
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(b.videoImageSubscribe);
 
             b.videoIdSubscribe.setText(
                     "Video Id: " + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
@@ -900,10 +907,15 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                         .setDuration(100).start();
                 b.videoIdSubscribe.setText("" + millisUntilFinished / 1000);
                 b.autoPlaySwitchSubscribe.setEnabled(false);
+                b.subscribeBtnSubscribeActivity.setEnabled(false);
+                b.seeNextBtnSubscribe.setEnabled(false);
             }
 
             public void onFinish() {
                 b.autoPlaySwitchSubscribe.setEnabled(true);
+                b.subscribeBtnSubscribeActivity.setEnabled(true);
+                b.seeNextBtnSubscribe.setEnabled(true);
+
                 b.videoImageSubscribe.setRotation(0);
 
                 progressDialog.show();
@@ -919,19 +931,25 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                         .addListener(new RequestListener<Bitmap>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                                isError++;
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                                b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
 
-                                currentCounter++;
+                                        isError++;
 
-                                if (currentCounter >= subscribeTaskModelArrayList.size()) {
-                                    Utils.toast("End of tasks!");
-                                    b.videoImageSubscribe.setBackgroundResource(0);
-                                    b.videoIdSubscribe.setText("Empty");
-                                } else setDataOnViews(currentCounter);
+                                        b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                                        b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
 
+                                        currentCounter++;
+
+                                        if (currentCounter >= subscribeTaskModelArrayList.size()) {
+                                            Utils.toast("End of tasks!");
+                                            b.videoImageSubscribe.setBackgroundResource(0);
+                                            b.videoIdSubscribe.setText("Empty");
+                                        } else setDataOnViews(currentCounter, false);
+                                    }
+                                });
                                 return false;
                             }
 

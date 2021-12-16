@@ -19,6 +19,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -152,7 +153,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
                 }
                 progressDialog.dismiss();
-                setDataOnViews(0);
+                setDataOnViews(0, false);
 
             }
 
@@ -170,7 +171,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                 if (currentCounter >= likeTaskModelArrayList.size()) {
                     Utils.toast("End of tasks!");
 
-                } else setDataOnViews(currentCounter);
+                } else setDataOnViews(currentCounter, false);
 
             }
         });
@@ -628,7 +629,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                             Utils.toast("End of tasks!");
                                             b.videoImageLike.setBackgroundResource(0);
                                             b.videoIdLike.setText("Empty");
-                                        } else setDataOnViews(currentCounter);
+                                        } else setDataOnViews(currentCounter, true);
 
                                     }
                                 });
@@ -816,15 +817,18 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
     boolean isTimerRunning = false;
 
     int isError = 0;
+    Handler handler = new Handler();
 
-    private void setDataOnViews(int counter) {
+    private void setDataOnViews(int counter, boolean isTaskCompleted) {
 
         if (likeTaskModelArrayList.size() == 0)
             return;
+//        Log.e(TAG, "setDataOnViews: URLL: "+likeTaskModelArrayList.get(counter).getThumbnailUrl() );
 
         // IF FIRST TIME
-        if (counter == 0) {
+        if (counter == 0 || !isTaskCompleted) {
             progressDialog.show();
+            Log.e(TAG, "setDataOnViews: URLL: if (counter == 0 || !isTaskCompleted) {" );
 
             b.videoImageLike.setScaleType(ImageView.ScaleType.CENTER_CROP);
             with(requireContext())
@@ -837,31 +841,28 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                     .addListener(new RequestListener<Bitmap>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                            isError++;
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
 
-                            /*currentCounter++;
+                                    isError++;
 
-                            b.videoImageLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                            b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
+                                    currentCounter++;
 
-                            if (currentCounter >= likeTaskModelArrayList.size()) {
-                                Utils.toast("End of tasks!");
-                                b.videoImageLike.setBackgroundResource(0);
-                                b.videoIdLike.setText("Empty");
-                            } else setDataOnViews(currentCounter);*/
+                                    if (currentCounter >= likeTaskModelArrayList.size()) {
+                                        Utils.toast("End of tasks!");
 
+                                    } else setDataOnViews(currentCounter, false);
 
-                            currentCounter++;
-
-                            if (currentCounter >= likeTaskModelArrayList.size()) {
-                                Utils.toast("End of tasks!");
-
-                            } else setDataOnViews(currentCounter);
+                                }
+                            });
                             return false;
                         }
 
                         @Override
                         public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                            Log.e(TAG, "setDataOnViews: URLL: onResourceReady");
+
                             return false;
                         }
                     })
@@ -899,10 +900,15 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                         .setDuration(100).start();
                 b.videoIdLike.setText("" + millisUntilFinished / 1000);
                 b.autoPlaySwitchLike.setEnabled(false);
+                b.likeBtnLikeActivity.setEnabled(false);
+                b.seeNextBtnLike.setEnabled(false);
             }
 
             public void onFinish() {
                 b.autoPlaySwitchLike.setEnabled(true);
+                b.likeBtnLikeActivity.setEnabled(true);
+                b.seeNextBtnLike.setEnabled(true);
+
                 b.videoImageLike.setRotation(0);
 
                 progressDialog.show();
@@ -918,26 +924,21 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                         .addListener(new RequestListener<Bitmap>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                                isError++;
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                /*b.videoImageLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                                b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
 
-                                currentCounter++;
+                                        isError++;
 
-                                if (currentCounter >= likeTaskModelArrayList.size()) {
-                                    Utils.toast("End of tasks!");
-                                    b.videoImageLike.setBackgroundResource(0);
-                                    b.videoIdLike.setText("Empty");
-                                } else setDataOnViews(currentCounter);
-*/
+                                        currentCounter++;
 
-                                currentCounter++;
+                                        if (currentCounter >= likeTaskModelArrayList.size()) {
+                                            Utils.toast("End of tasks!");
 
-                                if (currentCounter >= likeTaskModelArrayList.size()) {
-                                    Utils.toast("End of tasks!");
-
-                                } else setDataOnViews(currentCounter);
+                                        } else setDataOnViews(currentCounter, false);
+                                    }
+                                });
                                 return false;
                             }
 
@@ -958,7 +959,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
                 progressDialog.dismiss();
 
-                if (isError>0) {
+                if (isError > 0) {
                     b.videoImageLike.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     b.videoImageLike.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
                     return;
