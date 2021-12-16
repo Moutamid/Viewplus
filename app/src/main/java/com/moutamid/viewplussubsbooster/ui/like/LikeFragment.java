@@ -4,7 +4,6 @@ import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.Glide.with;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.DATA;
 import static com.moutamid.viewplussubsbooster.R.color.lighterGrey;
-import static com.moutamid.viewplussubsbooster.R.color.red;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -828,7 +827,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
         // IF FIRST TIME
         if (counter == 0 || !isTaskCompleted) {
             progressDialog.show();
-            Log.e(TAG, "setDataOnViews: URLL: if (counter == 0 || !isTaskCompleted) {" );
+            Log.e(TAG, "setDataOnViews: URLL: if (counter == 0 || !isTaskCompleted) {");
 
             b.videoImageLike.setScaleType(ImageView.ScaleType.CENTER_CROP);
             with(requireContext())

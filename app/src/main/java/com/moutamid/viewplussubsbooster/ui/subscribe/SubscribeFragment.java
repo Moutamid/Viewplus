@@ -4,7 +4,6 @@ import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.Glide.with;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.DATA;
 import static com.moutamid.viewplussubsbooster.R.color.lighterGrey;
-import static com.moutamid.viewplussubsbooster.R.color.red;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -38,8 +37,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.util.Util;
-import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.common.ConnectionResult;
