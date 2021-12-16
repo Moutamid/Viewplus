@@ -142,12 +142,12 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                 subscribeTaskModelArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
-//                    model.setSubscribed(false);
+                    SubscribeTaskModel model = dataSnapshot.getValue(SubscribeTaskModel.class);
 
-                    if (dataSnapshot.child(Constants.SUBSCRIBER_PATH).child(mAuth.getUid()).exists()) {
+                    if (snapshot.child(model.getTaskKey()).child(Constants.SUBSCRIBER_PATH).child(mAuth.getUid()).exists()) {
 //                        model.setSubscribed(true);
                     } else {
-                        SubscribeTaskModel model = dataSnapshot.getValue(SubscribeTaskModel.class);
+
                         subscribeTaskModelArrayList.add(model);
                     }
 
@@ -549,7 +549,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                         @Override
                                         public void onSuccess(Void aVoid) {
 
-                                            subscribeTaskModelArrayList.remove(currentCounter);
+//                                            subscribeTaskModelArrayList.remove(currentCounter);
 
                                             uploadAddedCoins();
                                             // UPLOAD COINS AND THEN RESTART VIDEO PLAYER

@@ -140,12 +140,11 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                 likeTaskModelArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
-//                    model.setSubscribed(false);
+                    LikeTaskModel model = dataSnapshot.getValue(LikeTaskModel.class);
 
-                    if (dataSnapshot.child(Constants.LIKERS_PATH).child(mAuth.getUid()).exists()) {
+                    if (snapshot.child(model.getTaskKey()).child(Constants.LIKERS_PATH).child(mAuth.getUid()).exists()) {
 //                        model.setSubscribed(true);
                     } else {
-                        LikeTaskModel model = dataSnapshot.getValue(LikeTaskModel.class);
                         likeTaskModelArrayList.add(model);
                     }
 
@@ -547,7 +546,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                         @Override
                                         public void onSuccess(Void aVoid) {
 
-                                            likeTaskModelArrayList.remove(currentCounter);
+//                                            likeTaskModelArrayList.remove(currentCounter);
 
                                             uploadAddedCoins();
                                             // UPLOAD COINS AND THEN RESTART VIDEO PLAYER

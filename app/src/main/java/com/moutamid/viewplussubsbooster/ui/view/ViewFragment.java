@@ -24,7 +24,9 @@ import androidx.fragment.app.Fragment;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,6 +59,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ViewFragment extends Fragment {
     private static final String TAG = "ViewFragment";
@@ -156,18 +160,14 @@ public class ViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
         root = inflater.inflate(R.layout.fragment_view, container, false);
-//        new CountDownTimer(87686, 678) {
-//            @Override
-//            public void onTick(long l) {
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//
-//            }
-//        }.start();
-//        videoUrl = getIntent().getStringExtra("url");
+
+        /*new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Log.e(TAG, "SIZE: " + taskArrayList.size());
+            }
+        }, 100, 100);*/
+
         videoUrl = "https://youtu.be/G393z8s8nFY";
         databaseReference = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -183,16 +183,20 @@ public class ViewFragment extends Fragment {
                     Log.d(TAG, "onDataChange: snapshot not exist");
                     return;
                 }
-
+                /*databaseReference
+                        .child("tasks")
+                        .child(taskArrayList.get(currentPosition).getTaskKey())
+                        .child(Constants.VIEWER_PATH)
+                        .child(mAuth.getUid())
+                        .setValue(true)*/
                 taskArrayList.clear();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-
-                    if (dataSnapshot.child(Constants.VIEWER_PATH).child(mAuth.getUid()).exists()) {
+                    Taskk tasks = dataSnapshot.getValue(Taskk.class);
+                    if (snapshot.child(tasks.getTaskKey()).child(Constants.VIEWER_PATH).child(mAuth.getUid()).exists()) {
 //                        model.setSubscribed(true);
                     } else {
 
-                        Taskk tasks = dataSnapshot.getValue(Taskk.class);
                         taskArrayList.add(tasks);
                     }
                 }
@@ -203,7 +207,8 @@ public class ViewFragment extends Fragment {
                     if (currentTask1.getCompletedDate() != null)
                         if (!currentTask1.getCompletedDate().equals("error")) {
                             Log.d(TAG, "onDataChange: removed");
-                            taskArrayList.remove(currentTask1);
+                            taskArrayList.remove(i);
+//                            taskArrayList.remove(currentTask1);
                         }
                 }
 
@@ -222,6 +227,7 @@ public class ViewFragment extends Fragment {
                     currentPointTextview.setText(currentPoints + "");
 //                    percentage;
                     initYoutubePlayer();
+                    Log.e(TAG, "onError: 1234: " + videoUrl);
                 } else {
                     Toast.makeText(requireContext(), "No video found to watch!", Toast.LENGTH_SHORT).show();
                 }
@@ -405,6 +411,10 @@ public class ViewFragment extends Fragment {
             @Override
             public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
                 Log.e(TAG, "onError: ");
+                Log.e(TAG, "onError: 1234: " + taskArrayList.get(currentPosition).getTaskKey());
+                taskArrayList.remove(currentPosition);
+                databaseReference.child("tasks").child(taskArrayList.get(currentPosition).getTaskKey())
+                        .removeValue();
                 setNewVideoPlayerDetails();
 
             }
@@ -501,7 +511,7 @@ public class ViewFragment extends Fragment {
     }
 
     private void setNewVideoPlayerDetails() {
-        if (youTubePlayer1 == null){
+        if (youTubePlayer1 == null) {
             Toast.makeText(requireContext(), "Player is getting ready!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -572,7 +582,7 @@ public class ViewFragment extends Fragment {
                                         @Override
                                         public void onSuccess(Void aVoid) {
 
-                                            taskArrayList.remove(currentPosition);
+//                                            taskArrayList.remove(currentPosition);
 
                                             uploadAddedCoins();
                                             // UPLOAD COINS AND THEN RESTART VIDEO PLAYER
@@ -624,15 +634,20 @@ public class ViewFragment extends Fragment {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-
+                                Log.e(TAG, "onError: 1234: position " + currentPosition);
+                                Log.e(TAG, "onError: 1234: current " + taskArrayList.get(currentPosition).getVideoUrl());
                                 databaseReference
                                         .child("tasks")
                                         .child(taskArrayList.get(currentPosition).getTaskKey())
                                         .child(Constants.VIEWER_PATH)
                                         .child(mAuth.getUid())
-                                        .setValue(true);
+                                        .setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        setNewVideoPlayerDetails();
 
-                                setNewVideoPlayerDetails();
+                                    }
+                                });
 
                             }
                         });
