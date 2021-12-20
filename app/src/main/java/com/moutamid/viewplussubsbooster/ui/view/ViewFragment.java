@@ -412,7 +412,7 @@ public class ViewFragment extends Fragment {
             public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
                 Log.e(TAG, "onError: ");
                 Log.e(TAG, "onError: 1234: " + taskArrayList.get(currentPosition).getTaskKey());
-                taskArrayList.remove(currentPosition);
+//                taskArrayList.remove(currentPosition);
                 databaseReference.child("tasks").child(taskArrayList.get(currentPosition).getTaskKey())
                         .removeValue();
                 setNewVideoPlayerDetails();

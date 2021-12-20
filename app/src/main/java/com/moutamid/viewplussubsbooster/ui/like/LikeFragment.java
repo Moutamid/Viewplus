@@ -198,6 +198,13 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
         b.autoPlaySwitchLike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bi) {
+                if (isTimerRunning) {
+                    b.autoPlaySwitchLike.setChecked(false);
+                    b.autoPlaySwitchLike.setText("Auto Play");
+                    isAutoPlay = false;
+                    return;
+                }
+
                 if (bi) {
                     b.autoPlaySwitchLike.setText(
                             "Auto Play ( Daily Limit: "
@@ -845,6 +852,10 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
                                     isError++;
 
+                                    databaseReference.child(Constants.LIKE_TASKS)
+                                            .child(likeTaskModelArrayList.get(counter)
+                                                    .getTaskKey()).removeValue();
+
                                     currentCounter++;
 
                                     if (currentCounter >= likeTaskModelArrayList.size()) {
@@ -897,13 +908,15 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                 b.videoImageLike.animate().rotation(b.videoImageLike.getRotation() + 20)
                         .setDuration(100).start();
                 b.videoIdLike.setText("" + millisUntilFinished / 1000);
-                b.autoPlaySwitchLike.setEnabled(false);
+//                b.autoPlaySwitchLike.setEnabled(false);
+                isTimerRunning = true;
                 b.likeBtnLikeActivity.setEnabled(false);
                 b.seeNextBtnLike.setEnabled(false);
             }
 
             public void onFinish() {
-                b.autoPlaySwitchLike.setEnabled(true);
+//                b.autoPlaySwitchLike.setEnabled(true);
+                isTimerRunning = false;
                 b.likeBtnLikeActivity.setEnabled(true);
                 b.seeNextBtnLike.setEnabled(true);
 
@@ -926,8 +939,11 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                     @Override
                                     public void run() {
 
-
                                         isError++;
+
+                                        databaseReference.child(Constants.LIKE_TASKS)
+                                                .child(likeTaskModelArrayList.get(counter)
+                                                        .getTaskKey()).removeValue();
 
                                         currentCounter++;
 

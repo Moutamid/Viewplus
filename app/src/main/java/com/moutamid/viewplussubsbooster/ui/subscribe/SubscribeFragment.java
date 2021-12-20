@@ -201,6 +201,13 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
         b.autoPlaySwitchSubscribe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bi) {
+                if (isTimerRunning) {
+                    b.autoPlaySwitchSubscribe.setChecked(false);
+                    b.autoPlaySwitchSubscribe.setText("Auto Play");
+                    isAutoPlay = false;
+                    return;
+                }
+
                 if (bi) {
                     b.autoPlaySwitchSubscribe.setText(
                             "Auto Play ( Daily Limit: "
@@ -852,6 +859,10 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
                                     isError++;
 
+                                    databaseReference.child(Constants.SUBSCRIBE_TASKS)
+                                            .child(subscribeTaskModelArrayList.get(counter)
+                                                    .getTaskKey()).removeValue();
+
                                     b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
                                     b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
 
@@ -903,13 +914,15 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                 b.videoImageSubscribe.animate().rotation(b.videoImageSubscribe.getRotation() + 20)
                         .setDuration(100).start();
                 b.videoIdSubscribe.setText("" + millisUntilFinished / 1000);
-                b.autoPlaySwitchSubscribe.setEnabled(false);
+//                b.autoPlaySwitchSubscribe.setEnabled(false);
+                isTimerRunning = true;
                 b.subscribeBtnSubscribeActivity.setEnabled(false);
                 b.seeNextBtnSubscribe.setEnabled(false);
             }
 
             public void onFinish() {
-                b.autoPlaySwitchSubscribe.setEnabled(true);
+                isTimerRunning = false;
+//                b.autoPlaySwitchSubscribe.setEnabled(true);
                 b.subscribeBtnSubscribeActivity.setEnabled(true);
                 b.seeNextBtnSubscribe.setEnabled(true);
 
@@ -934,6 +947,10 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
 
                                         isError++;
+
+                                        databaseReference.child(Constants.SUBSCRIBE_TASKS)
+                                                .child(subscribeTaskModelArrayList.get(counter)
+                                                        .getTaskKey()).removeValue();
 
                                         b.videoImageSubscribe.setScaleType(ImageView.ScaleType.FIT_CENTER);
                                         b.videoImageSubscribe.setImageResource(R.drawable.ic_baseline_access_time_filled_24);
