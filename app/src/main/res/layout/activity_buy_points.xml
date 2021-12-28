@@ -145,7 +145,6 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buyPoints2"
                         style="@style/buttonStyle"
-                        android:onClick="btSubscribe"
                         android:text="1.99$"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="10dp" />
@@ -176,7 +175,6 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buyPoints3"
                         style="@style/buttonStyle"
-                        android:onClick="btSubscribe"
                         android:text="4.99$"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="10dp" />
@@ -207,7 +205,6 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buyPoints4"
                         style="@style/buttonStyle"
-                        android:onClick="btSubscribe"
                         android:text="9.99$"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="10dp" />
@@ -238,7 +235,6 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buyPoints5"
                         style="@style/buttonStyle"
-                        android:onClick="btSubscribe"
                         android:text="24.99$"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="10dp" />

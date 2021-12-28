@@ -105,6 +105,9 @@ public class AddTaskActivity extends AppCompatActivity {
         videoType = getIntent().getStringExtra(Constants.PARAMS);
         videoUrl = getIntent().getStringExtra("url");
 
+        isVipDiscount = Utils.getBoolean(Constants.VIP_STATUS, false);
+//        isVipDiscount = true;
+
         initViews();
 
         showHideLayoutsBasedOnTaskType();
@@ -909,11 +912,11 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 totalCostInt = viewQuantityInteger * viewTimeInteger;
 
-                /*TODO: COMMENTED
-                   if (isVipDiscount) {
-                    int percentage = (int) (totalCostInt * (10.0f / 100.0f));
+                if (isVipDiscount) {
+                    int percentage = (int) (totalCostInt * (20.0f / 100.0f));
                     vipDiscountButton.setText(String.valueOf(percentage));
-                    totalCostInt = totalCostInt - percentage;}*/
+                    totalCostInt = totalCostInt - percentage;
+                }
 
                 totalCostButton.setText(String.valueOf(totalCostInt));
 

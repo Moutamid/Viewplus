@@ -1,6 +1,7 @@
 package com.moutamid.viewplussubsbooster.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -11,6 +12,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.PurchaseData;
+import com.anjlab.android.iab.v3.PurchaseInfo;
+import com.anjlab.android.iab.v3.PurchaseState;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,8 +34,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.viewplussubsbooster.R;
+import com.moutamid.viewplussubsbooster.utils.Constants;
+import com.moutamid.viewplussubsbooster.utils.Utils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
     private ProgressDialog progressDialog;
 
 
@@ -43,13 +50,69 @@ public class MainActivity extends AppCompatActivity {
     // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
+    BillingProcessor bp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
+        bp = BillingProcessor.newBillingProcessor(this, Constants.LICENSE_KEY, this);
+        bp.initialize();
 
+        bp.loadOwnedPurchasesFromGoogleAsync(new BillingProcessor.IPurchasesResponseListener() {
+            @Override
+            public void onPurchasesSuccess() {
+                String currentPurchasedSubscription = Constants.ONE_WEEK_SUBSCRIPTION;
+
+                if (Utils.getBoolean(Constants.ONE_WEEK_SUBSCRIPTION))
+                    currentPurchasedSubscription = Constants.ONE_WEEK_SUBSCRIPTION;
+                if (Utils.getBoolean(Constants.ONE_MONTH_SUBSCRIPTION))
+                    currentPurchasedSubscription = Constants.ONE_MONTH_SUBSCRIPTION;
+                if (Utils.getBoolean(Constants.THREE_MONTHS_SUBSCRIPTION))
+                    currentPurchasedSubscription = Constants.THREE_MONTHS_SUBSCRIPTION;
+
+                try {
+                    PurchaseInfo info = bp.getPurchaseInfo(currentPurchasedSubscription);
+                    Log.i(TAG, "onCreate12345: ResponseData: " + info.responseData);
+                    PurchaseData data = info.purchaseData;
+                    Log.i(TAG, "onCreate12345: Auto-renewing: " + data.autoRenewing);
+                    PurchaseState purchaseState = data.purchaseState;
+
+                    // IF PURCHASE IS NOT ACTIVE WHATSOEVER
+                    if (purchaseState == PurchaseState.Canceled
+                            || purchaseState == PurchaseState.Refunded
+                            || purchaseState == PurchaseState.SubscriptionExpired
+                            || !data.autoRenewing
+                    ) {
+
+                        Log.i(TAG, "onCreate12345: PurchaseState: NOT ACTIVE");
+                        Utils.store(Constants.VIP_STATUS, false);
+
+                        Utils.store(currentPurchasedSubscription, false);
+                    }
+
+                } catch (Exception e) {
+                    Log.i(TAG, "onCreate12345: " + e.getMessage());
+                    Log.i(TAG, "onCreate12345: PurchaseState: NOT ACTIVE");
+                    Utils.store(Constants.VIP_STATUS, false);
+
+                    Utils.store(currentPurchasedSubscription, false);
+                }
+                initViewsAndData();
+            }
+
+            @Override
+            public void onPurchasesError() {
+                Log.i(TAG, "onPurchasesError: 12345");
+                initViewsAndData();
+
+            }
+        });
+
+    }
+
+    private void initViewsAndData() {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -58,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, BottomNavigationActivity.class));
             return;
         }
+
+        findViewById(R.id.main_activity_layout).setVisibility(View.VISIBLE);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
@@ -83,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
 
     }
 
@@ -196,6 +260,26 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         });
+
+    }
+
+    @Override
+    public void onProductPurchased(@NonNull String productId, @Nullable PurchaseInfo details) {
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+
+    }
+
+    @Override
+    public void onBillingError(int errorCode, @Nullable Throwable error) {
+
+    }
+
+    @Override
+    public void onBillingInitialized() {
 
     }
 

@@ -282,7 +282,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-10dp"
-                android:visibility="gone">
+                android:layout_marginBottom="20dp"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -295,19 +296,20 @@
                     android:layout_marginTop="10dp"
                     android:layout_toStartOf="@id/vip_discount_button"
                     android:layout_toLeftOf="@id/vip_discount_button"
-                    android:text="VIP account (reduce 10%)"
+                    android:text="VIP account (reduce 20%)"
                     android:textSize="17sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/vip_discount_button"
                     android:layout_width="wrap_content"
+                    android:textColor="@color/white"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/darkerGrey"
+                    android:background="@color/red"
                     android:text="0" />
 
             </RelativeLayout>

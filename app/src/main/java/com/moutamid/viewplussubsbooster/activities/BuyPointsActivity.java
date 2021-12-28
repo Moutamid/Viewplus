@@ -1,27 +1,15 @@
 package com.moutamid.viewplussubsbooster.activities;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
-import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.PurchaseInfo;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,14 +23,16 @@ import com.moutamid.viewplussubsbooster.databinding.ActivityBuyPointsBinding;
 import com.moutamid.viewplussubsbooster.utils.Constants;
 import com.moutamid.viewplussubsbooster.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class BuyPointsActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
     private static final String TAG = "BuyPointsActivity";
     private Context context = BuyPointsActivity.this;
 
     private ActivityBuyPointsBinding b;
+
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     BillingProcessor bp;
 
@@ -56,41 +46,146 @@ public class BuyPointsActivity extends AppCompatActivity implements BillingProce
 
         bp = BillingProcessor.newBillingProcessor(this, Constants.LICENSE_KEY, this);
         bp.initialize();
-//        inAppPurchases();
 
         b.buyPoints1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                buyProduct(Constants.ONE_DOLLAR_PRODUCT);
+                bp.purchase(BuyPointsActivity.this, Constants.ONE_DOLLAR_PRODUCT);
+            }
+        });
 
+        b.buyPoints2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                buyProduct(Constants.TWO_DOLLAR_PRODUCT);
+                bp.purchase(BuyPointsActivity.this, Constants.TWO_DOLLAR_PRODUCT);
+            }
+        });
+        b.buyPoints3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                buyProduct(Constants.FIVE_DOLLAR_PRODUCT);
+                bp.purchase(BuyPointsActivity.this, Constants.FIVE_DOLLAR_PRODUCT);
+            }
+        });
 
-                /*if (getPurchaseSharedPreference()) {
-                    Toast.makeText(context, "Already Subscribed", Toast.LENGTH_SHORT).show();
-                } else {
+        b.buyPoints4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                buyProduct(Constants.TEN_DOLLAR_PRODUCT);
+                bp.purchase(BuyPointsActivity.this, Constants.TEN_DOLLAR_PRODUCT);
+            }
+        });
+        b.buyPoints5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                buyProduct(Constants.TWENTY_FIVE_DOLLAR_PRODUCT);
+                bp.purchase(BuyPointsActivity.this, Constants.TWENTY_FIVE_DOLLAR_PRODUCT);
+            }
+        });
 
-                    if (billingClient.isReady()) {
-                        Utils.toast("continue");
-                        skuQueryOnContinue();
-                    } else {
-                        Toast.makeText(context, "Something wrong!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void buyProduct(String productId) {
+        bp.consumePurchaseAsync(productId, new BillingProcessor.IPurchasesResponseListener() {
+            @Override
+            public void onPurchasesSuccess() {
+                Utils.toast("Purchase Successful!");
+                int AMOUNT = getBoughtCoinsAmount(productId);
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put(Constants.USER_ID, mAuth.getUid());
+                hashMap.put(Constants.PRODUCT_TYPE, productId);
+                hashMap.put(Constants.PURCHASE_DATE, Utils.getDate());
+
+                // ADD VALUES OF NEW PURCHASE TO DATABASE
+                databaseReference.child(Constants.PATH_PRODUCTS)
+                        .push()
+                        .setValue(hashMap);
+
+                // INCREASE USER AMOUNT
+                databaseReference.child(Constants.USER_INFO).child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String value = String.valueOf(snapshot.child(Constants.COINS).getValue(Integer.class));
+                            databaseReference.child(Constants.USER_INFO)
+                                    .child(mAuth.getUid())
+                                    .child(Constants.COINS)
+                                    .setValue(value + AMOUNT);
+
+                        }
                     }
-                }*/
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+            }
+
+            @Override
+            public void onPurchasesError() {
+                Utils.toast("Purchased was not successful!");
             }
         });
     }
 
-    public void btSubscribe(View view) {
+    private int getBoughtCoinsAmount(String productId) {
 
+        switch (productId) {
+            case Constants.ONE_DOLLAR_PRODUCT:
+                return Constants.FIFTEEN_K;
+            case Constants.TWO_DOLLAR_PRODUCT:
+                return Constants.FORTY_FIVE_K;
+            case Constants.FIVE_DOLLAR_PRODUCT:
+                return Constants.ONE_HUNDRED_N_TWENTY_FIVE_K;
+            case Constants.TEN_DOLLAR_PRODUCT:
+                return Constants.THREE_HUNDRED_K;
+            case Constants.TWENTY_FIVE_DOLLAR_PRODUCT:
+                return Constants.SEVEN_HUNDRED_K;
+            default:
+                return Constants.FIFTEEN_K;
+
+        }
     }
 
     @Override
     public void onProductPurchased(@NonNull String productId, @Nullable PurchaseInfo details) {
-        Utils.toast("onProductPurchased");
-        Utils.toast(productId);
+        Utils.toast("Purchase Successful!");
+        int AMOUNT = getBoughtCoinsAmount(productId);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put(Constants.USER_ID, mAuth.getUid());
+        hashMap.put(Constants.PRODUCT_TYPE, productId);
+        hashMap.put(Constants.PURCHASE_DATE, Utils.getDate());
+
+        // ADD VALUES OF NEW PURCHASE TO DATABASE
+        databaseReference.child(Constants.PATH_PRODUCTS)
+                .push()
+                .setValue(hashMap);
+
+        // INCREASE USER AMOUNT
+        databaseReference.child(Constants.USER_INFO).child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String value = String.valueOf(snapshot.child(Constants.COINS).getValue(Integer.class));
+                    databaseReference.child(Constants.USER_INFO)
+                            .child(mAuth.getUid())
+                            .child(Constants.COINS)
+                            .setValue(value + AMOUNT);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     @Override
     public void onPurchaseHistoryRestored() {
-        Utils.toast("onPurchaseHistoryRestored");
+//        Utils.toast("onPurchaseHistoryRestored");
     }
 
     @Override
@@ -100,11 +195,11 @@ public class BuyPointsActivity extends AppCompatActivity implements BillingProce
 
     @Override
     public void onBillingInitialized() {
-        Utils.toast("onBillingInitialized");
+//        Utils.toast("onBillingInitialized");
 
-        if (bp.isConnected()){
-            Utils.toast("CONNECTED!");
-        }
+//        if (bp.isConnected()) {
+//            Utils.toast("CONNECTED!");
+//        }
     }
 
     @Override
@@ -115,21 +210,16 @@ public class BuyPointsActivity extends AppCompatActivity implements BillingProce
         super.onDestroy();
     }
 
-
     private void getCoinsAmount() {
 
-        FirebaseAuth mAuth;
         TextView coinsTextView;
-        String USER_INFO = "userinfo";
-        coinsTextView = findViewById(R.id.coins_text_view_buy_points);
-        mAuth = FirebaseAuth.getInstance();
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child(USER_INFO).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+        coinsTextView = findViewById(R.id.coins_text_view_buy_points);
+        databaseReference.child(Constants.USER_INFO).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String value = String.valueOf(snapshot.child("coins").getValue(Integer.class));
+                    String value = String.valueOf(snapshot.child(Constants.COINS).getValue(Integer.class));
                     coinsTextView.setText(value);
                 } else {
                     coinsTextView.setText("0");

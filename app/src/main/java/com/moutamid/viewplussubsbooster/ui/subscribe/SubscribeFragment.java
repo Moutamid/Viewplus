@@ -120,6 +120,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
     private ProgressDialog progressDialog;
     int currentCounter = 0;
 
+    String totall = "30";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -130,6 +131,8 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
+        if (vipStatus)
+            totall = "80";
         databaseReference.child(Constants.SUBSCRIBE_TASKS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -211,7 +214,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                 if (bi) {
                     b.autoPlaySwitchSubscribe.setText(
                             "Auto Play ( Daily Limit: "
-                                    + remainingDailyLimitInt + "/30)"
+                                    + remainingDailyLimitInt + "/)"+totall
                     );
                     isAutoPlay = true;
                     subscribeUserToChannel();
@@ -229,15 +232,23 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
         imageList.add(new SlideModel(R.drawable.mask_group, "", ScaleTypes.CENTER_INSIDE));
 
         b.imageSlider.setImageList(imageList);
-
+        vipStatus = Utils.getBoolean(Constants.VIP_STATUS, false);
         return b.getRoot();
     }
+    boolean vipStatus;
 
     private void subscribeUserToChannel() {
 
-        if (remainingDailyLimitInt == 30) {
-            Utils.toast("Your daily limit reached!");
-            return;
+        if (vipStatus) {
+            if (remainingDailyLimitInt == 80) {
+                Utils.toast("Your daily limit reached!");
+                return;
+            }
+        } else {
+            if (remainingDailyLimitInt == 30) {
+                Utils.toast("Your daily limit reached!");
+                return;
+            }
         }
 
         if (subscribeTaskModelArrayList.size() == 0)
@@ -628,7 +639,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                                 remainingDailyLimitInt);
                                         b.autoPlaySwitchSubscribe.setText(
                                                 "Auto Play ( Daily Limit: "
-                                                        + remainingDailyLimitInt + "/30)"
+                                                        + remainingDailyLimitInt + "/)"+totall
                                         );
 
                                         currentCounter++;

@@ -118,6 +118,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
     public LikeFragment() {
         // Required empty public constructor
     }
+    String totall = "30";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,7 +128,8 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-
+        if (vipStatus)
+            totall = "80";
         databaseReference.child(Constants.LIKE_TASKS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -208,7 +210,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                 if (bi) {
                     b.autoPlaySwitchLike.setText(
                             "Auto Play ( Daily Limit: "
-                                    + remainingDailyLimitInt + "/30)"
+                                    + remainingDailyLimitInt + "/)"+totall
                     );
                     isAutoPlay = true;
                     likeUserToVideo();
@@ -226,15 +228,23 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
         imageList.add(new SlideModel(R.drawable.mask_group, "", ScaleTypes.CENTER_INSIDE));
 
         b.imageSlider.setImageList(imageList);
-
+        vipStatus = Utils.getBoolean(Constants.VIP_STATUS, false);
         return b.getRoot();
     }
+    boolean vipStatus;
 
     private void likeUserToVideo() {
 
-        if (remainingDailyLimitInt == 30) {
-            Utils.toast("Your daily limit reached!");
-            return;
+        if (vipStatus) {
+            if (remainingDailyLimitInt == 80) {
+                Utils.toast("Your daily limit reached!");
+                return;
+            }
+        } else {
+            if (remainingDailyLimitInt == 30) {
+                Utils.toast("Your daily limit reached!");
+                return;
+            }
         }
 
         if (likeTaskModelArrayList.size() == 0)
@@ -625,7 +635,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                                 remainingDailyLimitInt);
                                         b.autoPlaySwitchLike.setText(
                                                 "Auto Play ( Daily Limit: "
-                                                        + remainingDailyLimitInt + "/30)"
+                                                        + remainingDailyLimitInt + "/)"+totall
                                         );
 
                                         currentCounter++;
