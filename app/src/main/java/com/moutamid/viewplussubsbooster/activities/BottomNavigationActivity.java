@@ -191,7 +191,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
                 break;
             case R.id.privacy_policy_nav_option:
                 closeDrawer();
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.stackoverflow.com")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://palconbooster.blogspot.com/p/privacy-policy.html")));
                 break;
             case R.id.exit_nav_option:
                 closeDrawer();

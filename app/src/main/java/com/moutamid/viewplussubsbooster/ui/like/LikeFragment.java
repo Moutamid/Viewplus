@@ -203,6 +203,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                 if (isTimerRunning) {
                     b.autoPlaySwitchLike.setChecked(false);
                     b.autoPlaySwitchLike.setText("Auto Play");
+                    b.autoPlaySwitchLike.setBackgroundColor(getResources().getColor(R.color.grey));
                     isAutoPlay = false;
                     return;
                 }

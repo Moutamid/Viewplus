@@ -54,8 +54,9 @@
         android:layout_marginTop="20dp"
         android:text="Auto play"
         android:textColor="@color/black"
-        app:thumbTint="@color/red"
-        app:trackTint="#99FF3E3E" />
+        android:theme="@style/SelectionSwitch"/>
+        <!--app:thumbTint="@color/red"
+        app:trackTint="#99FF3E3E" />-->
         <!--app:thumbTint="@color/accentColor"
         app:trackTint="@color/lighterRed" />-->
 

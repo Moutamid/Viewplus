@@ -48,13 +48,14 @@
         android:id="@+id/autoPlaySwitchSubscribe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/SelectionSwitch"
         android:layout_below="@+id/toplayoutlayout"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="10dp"
         android:text="Auto play"
-        android:textColor="@color/black"
-        app:thumbTint="@color/red"
-        app:trackTint="#99FF3E3E" />
+        android:textColor="@color/black"/>
+        <!--app:thumbTint="@color/red"
+        app:trackTint="#99FF3E3E" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
