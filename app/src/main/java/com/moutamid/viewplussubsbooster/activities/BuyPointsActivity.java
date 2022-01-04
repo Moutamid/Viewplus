@@ -85,6 +85,17 @@ public class BuyPointsActivity extends AppCompatActivity implements BillingProce
             }
         });
 
+        /*int AMOUNT = getBoughtCoinsAmount(Constants.TEN_DOLLAR_PRODUCT);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put(Constants.USER_ID, mAuth.getUid());
+        hashMap.put(Constants.PRODUCT_TYPE, Constants.TEN_DOLLAR_PRODUCT);
+        hashMap.put(Constants.PURCHASE_DATE, Utils.getDate());
+
+        // ADD VALUES OF NEW PURCHASE TO DATABASE
+        databaseReference.child(Constants.PATH_PRODUCTS)
+                .push()
+                .setValue(hashMap);*/
+
     }
 
     private void buyProduct(String productId) {

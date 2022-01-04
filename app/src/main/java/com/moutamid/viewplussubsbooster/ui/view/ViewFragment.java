@@ -287,14 +287,32 @@ public class ViewFragment extends Fragment {
             }
         });
 
-        ArrayList<SlideModel> imageList = new ArrayList<>();
+        databaseReference.child("Banners").child("view").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<SlideModel> imageList = new ArrayList<>();
 
-        imageList.add(new SlideModel(R.drawable.mask_group, "", ScaleTypes.CENTER_INSIDE));
-        imageList.add(new SlideModel(R.drawable.mask_group, "", ScaleTypes.CENTER_INSIDE));
-        imageList.add(new SlideModel(R.drawable.mask_group, "", ScaleTypes.CENTER_INSIDE));
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        imageList.add(new SlideModel(dataSnapshot.getValue(String.class), "", ScaleTypes.CENTER_INSIDE));
+                    }
 
-        ImageSlider imageSlider = root.findViewById(R.id.image_slider);
-        imageSlider.setImageList(imageList);
+                } else {
+                    imageList.add(new SlideModel(R.drawable.mask_group, "", ScaleTypes.CENTER_INSIDE));
+                    imageList.add(new SlideModel(R.drawable.mask_group, "", ScaleTypes.CENTER_INSIDE));
+                    imageList.add(new SlideModel(R.drawable.mask_group, "", ScaleTypes.CENTER_INSIDE));
+                }
+
+                ImageSlider imageSlider = root.findViewById(R.id.image_slider);
+                imageSlider.setImageList(imageList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         return root;
     }

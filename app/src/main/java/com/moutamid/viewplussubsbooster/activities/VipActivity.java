@@ -73,6 +73,16 @@ public class VipActivity extends AppCompatActivity implements BillingProcessor.I
             }
         });
 
+        /*HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put(Constants.USER_ID, mAuth.getUid());
+        hashMap.put(Constants.PRODUCT_TYPE, Constants.ONE_MONTH_SUBSCRIPTION);
+        hashMap.put(Constants.PURCHASE_DATE, Utils.getDate());
+
+        // ADD VALUES OF NEW PURCHASE TO DATABASE
+        databaseReference.child(Constants.PATH_SUBSCRIPTIONS)
+                .push()
+                .setValue(hashMap);*/
+
     }
 
     private void getCoinsAmount() {
