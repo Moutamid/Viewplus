@@ -59,8 +59,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ViewFragment extends Fragment {
     private static final String TAG = "ViewFragment";

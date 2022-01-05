@@ -37,7 +37,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.common.ConnectionResult;
@@ -129,8 +128,12 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
+
+        vipStatus = Utils.getBoolean(Constants.VIP_STATUS, false);
+
         if (vipStatus)
             totall = "80";
+
         databaseReference.child(Constants.LIKE_TASKS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -249,7 +252,6 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
             }
         });
 
-        vipStatus = Utils.getBoolean(Constants.VIP_STATUS, false);
         return b.getRoot();
     }
     boolean vipStatus;
