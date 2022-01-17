@@ -37,6 +37,9 @@ import com.moutamid.viewplussubsbooster.R;
 import com.moutamid.viewplussubsbooster.utils.Constants;
 import com.moutamid.viewplussubsbooster.utils.Utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
     private ProgressDialog progressDialog;
 

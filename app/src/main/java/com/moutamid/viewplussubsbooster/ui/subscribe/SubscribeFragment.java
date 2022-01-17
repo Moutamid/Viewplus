@@ -119,6 +119,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
     ArrayList<SubscribeTaskModel> subscribeTaskModelArrayList = new ArrayList<>();
     private ProgressDialog progressDialog;
     int currentCounter = 0;
+    int currentPoints = 120;
 
     String totall = "30";
 
@@ -135,6 +136,21 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
         if (vipStatus)
             totall = "80";
+
+        databaseReference.child(Constants.COINS_PATH).child(Constants.SUBSCRIBE_COINS)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            currentPoints = snapshot.getValue(Integer.class);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         databaseReference.child(Constants.SUBSCRIBE_TASKS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -636,7 +652,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
                 databaseReference.child("userinfo").child(mAuth.getCurrentUser().getUid())
                         .child("coins")
-                        .setValue(value + 120)
+                        .setValue(value + currentPoints)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

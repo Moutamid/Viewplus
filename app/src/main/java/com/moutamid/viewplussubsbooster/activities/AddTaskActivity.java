@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 import com.moutamid.viewplussubsbooster.R;
+import com.moutamid.viewplussubsbooster.models.ArrayModel;
 import com.moutamid.viewplussubsbooster.models.LikeTaskModel;
 import com.moutamid.viewplussubsbooster.models.SubscribeTaskModel;
 import com.moutamid.viewplussubsbooster.utils.Constants;
@@ -48,6 +49,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,29 +59,6 @@ public class AddTaskActivity extends AppCompatActivity {
 
     int totalCostInt = 600;
     int currentCoinsValue = 0;
-
-    int[] viewQuantityArrayInt = {10, 20, 30, 40, 50,
-            100, 150, 200, 250, 300, 350, 400, 450, 500, 550,
-            600, 700, 800, 900, 1000, 1500, 2000, 2500,
-            3000, 3500, 4000, 4500, 5000
-    };
-
-    String[] viewQuantityArray = {"10", "20", "30", "40", "50",
-            "100", "150", "200", "250", "300", "350", "400", "450", "500", "550",
-            "600", "700", "800", "900", "1000", "1500", "2000", "2500",
-            "3000", "3500", "4000", "4500", "5000"
-    };
-    int viewQuantityInteger = 10;
-
-    int[] viewTimeArrayInt = {60, 90, 120, 150, 180, 210, 240,
-            270, 300, 330, 360, 390, 420, 450, 480, 510, 540,
-            570, 600, 660, 720, 780, 840, 900
-    };
-
-    String[] viewTimeArray = {"60", "90", "120", "150", "180", "210", "240",
-            "270", "300", "330", "360", "390", "420", "450", "480", "510", "540",
-            "570", "600", "660", "720", "780", "840", "900"
-    };
 
     int viewTimeInteger = 60;
 
@@ -93,9 +73,21 @@ public class AddTaskActivity extends AppCompatActivity {
     private YouTubePlayerView youTubePlayerView;
     private String videoUrl;
     private String thumbnailUrl;
-
+    int viewQuantityInteger = 10;
     //    private Utils utils = new Utils();
     String videoType = Constants.TYPE_VIEW;
+
+    Integer[] viewQuantityArrayInt;
+    String[] viewQuantityArray;
+    Integer[] viewTimeArrayInt;
+    String[] viewTimeArray;
+
+    List<Integer> viewQuantityListInt = new ArrayList<>();
+    List<Integer> viewTimeListInt = new ArrayList<>();
+    List<String> viewQuantityListString = new ArrayList<>();
+    List<String> viewTimeListString = new ArrayList<>();
+    List<ArrayModel> viewQuantityListModel = new ArrayList<>();
+    List<ArrayModel> viewTimeListModel = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +98,109 @@ public class AddTaskActivity extends AppCompatActivity {
         videoUrl = getIntent().getStringExtra("url");
 
         isVipDiscount = Utils.getBoolean(Constants.VIP_STATUS, false);
-//        isVipDiscount = true;
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child(Constants.ADD_TASK_VARIABLES).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+
+                    viewQuantityListInt.clear();
+                    viewTimeListInt.clear();
+                    viewQuantityListString.clear();
+                    viewTimeListString.clear();
+                    viewQuantityListModel.clear();
+                    viewTimeListModel.clear();
+
+                    if (snapshot.child(Constants.TIME_ARRAY).exists()) {
+
+                        for (DataSnapshot dataSnapshot : snapshot
+                                .child(Constants.TIME_ARRAY).getChildren()) {
+                            ArrayModel model = new ArrayModel();
+                            model.setValue(dataSnapshot.getValue(Integer.class));
+                            model.setKey(dataSnapshot.getKey());
+                            viewTimeListModel.add(model);
+
+                            viewTimeListInt.add(dataSnapshot.getValue(Integer.class));
+
+                            viewTimeListString.add(String.valueOf(dataSnapshot.getValue(Integer.class)));
+
+                        }
+
+                        viewTimeArrayInt = viewTimeListInt.toArray(new Integer[viewTimeListInt.size()]);
+                        viewTimeArray = viewTimeListString.toArray(new String[viewTimeListString.size()]);
+
+                    } else {
+                        viewTimeArrayInt = new Integer[]{60, 90, 120, 150, 180, 210, 240,
+                                270, 300, 330, 360, 390, 420, 450, 480, 510, 540,
+                                570, 600, 660, 720, 780, 840, 900
+                        };
+                        viewTimeArray = new String[]{"60", "90", "120", "150", "180", "210", "240",
+                                "270", "300", "330", "360", "390", "420", "450", "480", "510", "540",
+                                "570", "600", "660", "720", "780", "840", "900"
+                        };
+                    }
+
+                    if (snapshot.child(Constants.QUANTITY_ARRAY).exists()) {
+                        for (DataSnapshot dataSnapshot : snapshot.child(Constants.QUANTITY_ARRAY)
+                                .getChildren()) {
+                            ArrayModel model = new ArrayModel();
+                            model.setValue(dataSnapshot.getValue(Integer.class));
+                            model.setKey(dataSnapshot.getKey());
+                            viewQuantityListModel.add(model);
+
+                            viewQuantityListInt.add(dataSnapshot.getValue(Integer.class));
+
+                            viewQuantityListString.add(String.valueOf(dataSnapshot.getValue(Integer.class)));
+
+                        }
+
+                        viewQuantityArrayInt = viewQuantityListInt.toArray(new Integer[viewQuantityListInt.size()]);
+                        viewQuantityArray = viewQuantityListString.toArray(new String[viewQuantityListString.size()]);
+
+                    } else {
+                        viewQuantityArrayInt = new Integer[]{10, 20, 30, 40, 50,
+                                100, 150, 200, 250, 300, 350, 400, 450, 500, 550,
+                                600, 700, 800, 900, 1000, 1500, 2000, 2500,
+                                3000, 3500, 4000, 4500, 5000
+                        };
+                        viewQuantityArray = new String[]{"10", "20", "30", "40", "50",
+                                "100", "150", "200", "250", "300", "350", "400", "450", "500", "550",
+                                "600", "700", "800", "900", "1000", "1500", "2000", "2500",
+                                "3000", "3500", "4000", "4500", "5000"
+                        };
+
+                    }
+
+                } else {
+                    viewQuantityArrayInt = new Integer[]{10, 20, 30, 40, 50,
+                            100, 150, 200, 250, 300, 350, 400, 450, 500, 550,
+                            600, 700, 800, 900, 1000, 1500, 2000, 2500,
+                            3000, 3500, 4000, 4500, 5000
+                    };
+                    viewQuantityArray = new String[]{"10", "20", "30", "40", "50",
+                            "100", "150", "200", "250", "300", "350", "400", "450", "500", "550",
+                            "600", "700", "800", "900", "1000", "1500", "2000", "2500",
+                            "3000", "3500", "4000", "4500", "5000"
+                    };
+                    viewTimeArrayInt = new Integer[]{60, 90, 120, 150, 180, 210, 240,
+                            270, 300, 330, 360, 390, 420, 450, 480, 510, 540,
+                            570, 600, 660, 720, 780, 840, 900
+                    };
+                    viewTimeArray = new String[]{"60", "90", "120", "150", "180", "210", "240",
+                            "270", "300", "330", "360", "390", "420", "450", "480", "510", "540",
+                            "570", "600", "660", "720", "780", "840", "900"
+                    };
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         initViews();
 

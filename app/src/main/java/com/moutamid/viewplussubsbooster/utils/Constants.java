@@ -38,4 +38,11 @@ public class Constants {
     public static final int THREE_HUNDRED_K = 300000;
     public static final int SEVEN_HUNDRED_K = 700000;
     public static final String PATH_SUBSCRIPTIONS = "purchased_subscriptions";
+    public static final String COINS_PATH = "coins_path";
+    public static final String VIEW_COINS = "view_coins";
+    public static final String LIKE_COINS = "like_coins";
+    public static final String SUBSCRIBE_COINS = "subscribe_coins";
+    public static final String ADD_TASK_VARIABLES = "add_tasks_variable";
+    public static final String TIME_ARRAY = "time_array";
+    public static final String QUANTITY_ARRAY = "quantity_array";
 }

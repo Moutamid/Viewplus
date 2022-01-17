@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.BuyPointsActivity">
-
+<!--TODO: RENAME ALL VARIABLES OF COINS IN JAVA AS WELL-->
+<!--TODO: CHANGE ALL THE VALUES OF DOLLARS IN PLAY CONSOLE ALSO  -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -104,7 +105,7 @@
 
                         <TextView
                             style="@style/textviewStyle"
-                            android:text="+15000" />
+                            android:text="+8000" />
 
                         <ImageView
                             style="@style/imageStyle"
@@ -114,66 +115,6 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buyPoints1"
-                        style="@style/buttonStyle"
-                        android:text="0.99$"
-                        app:backgroundTint="@color/red"
-                        app:cornerRadius="10dp" />
-
-                </RelativeLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/cardLayout"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="10dp">
-
-                <RelativeLayout style="@style/relativeLayout">
-
-                    <LinearLayout style="@style/linearLayout">
-
-                        <TextView
-                            style="@style/textviewStyle"
-                            android:text="+45000" />
-
-                        <ImageView
-                            style="@style/imageStyle"
-                            android:src="@drawable/ic_coin" />
-
-                    </LinearLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buyPoints2"
-                        style="@style/buttonStyle"
-                        android:text="1.99$"
-                        app:backgroundTint="@color/red"
-                        app:cornerRadius="10dp" />
-
-                </RelativeLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/cardLayout"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="10dp">
-
-                <RelativeLayout style="@style/relativeLayout">
-
-                    <LinearLayout style="@style/linearLayout">
-
-                        <TextView
-                            style="@style/textviewStyle"
-                            android:text="+125000" />
-
-                        <ImageView
-                            style="@style/imageStyle"
-                            android:src="@drawable/ic_coin" />
-
-                    </LinearLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buyPoints3"
                         style="@style/buttonStyle"
                         android:text="4.99$"
                         app:backgroundTint="@color/red"
@@ -194,7 +135,7 @@
 
                         <TextView
                             style="@style/textviewStyle"
-                            android:text="+300000" />
+                            android:text="+1800" />
 
                         <ImageView
                             style="@style/imageStyle"
@@ -203,7 +144,7 @@
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buyPoints4"
+                        android:id="@+id/buyPoints2"
                         style="@style/buttonStyle"
                         android:text="9.99$"
                         app:backgroundTint="@color/red"
@@ -224,7 +165,67 @@
 
                         <TextView
                             style="@style/textviewStyle"
-                            android:text="+700000" />
+                            android:text="+10000" />
+
+                        <ImageView
+                            style="@style/imageStyle"
+                            android:src="@drawable/ic_coin" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buyPoints3"
+                        style="@style/buttonStyle"
+                        android:text="49.99$"
+                        app:backgroundTint="@color/red"
+                        app:cornerRadius="10dp" />
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/cardLayout"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <RelativeLayout style="@style/relativeLayout">
+
+                    <LinearLayout style="@style/linearLayout">
+
+                        <TextView
+                            style="@style/textviewStyle"
+                            android:text="+22000" />
+
+                        <ImageView
+                            style="@style/imageStyle"
+                            android:src="@drawable/ic_coin" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buyPoints4"
+                        style="@style/buttonStyle"
+                        android:text="99.99$"
+                        app:backgroundTint="@color/red"
+                        app:cornerRadius="10dp" />
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/cardLayout"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+
+                <RelativeLayout style="@style/relativeLayout">
+
+                    <LinearLayout style="@style/linearLayout">
+
+                        <TextView
+                            style="@style/textviewStyle"
+                            android:text="+120000" />
 
                         <ImageView
                             style="@style/imageStyle"
@@ -235,7 +236,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buyPoints5"
                         style="@style/buttonStyle"
-                        android:text="24.99$"
+                        android:text="499.99$"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="10dp" />
 

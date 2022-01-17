@@ -150,7 +150,7 @@ public class ViewFragment extends Fragment {
     private boolean isAutoPlayEnabled = false;
     private TextView currentPointTextview;
 
-    private int currentPoints = 60;
+    private int currentPoints = 120;
 
     private int currentPosition = 0;
     private int currentVideoLength = 0;
@@ -159,16 +159,24 @@ public class ViewFragment extends Fragment {
         Log.d(TAG, "onCreateView: ");
         root = inflater.inflate(R.layout.fragment_view, container, false);
 
-        /*new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Log.e(TAG, "SIZE: " + taskArrayList.size());
-            }
-        }, 100, 100);*/
-
         videoUrl = "https://youtu.be/G393z8s8nFY";
         databaseReference = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
+
+        databaseReference.child(Constants.COINS_PATH).child(Constants.VIEW_COINS)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            currentPoints = snapshot.getValue(Integer.class);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         progressDialog = new ProgressDialog(getActivity());
 //        progressDialog.setCancelable(false);
