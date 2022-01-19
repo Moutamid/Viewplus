@@ -9,7 +9,7 @@
 <img src="https://raw.githubusercontent.com/Moutamid/Viewplus/master/viewplusmockups/image1.png" width="220"/> <img src="https://raw.githubusercontent.com/Moutamid/Viewplus/master/viewplusmockups/image2.png" width="220"/> <img src="https://raw.githubusercontent.com/Moutamid/Viewplus/master/viewplusmockups/image3.png" width="220"/> <img src="https://raw.githubusercontent.com/Moutamid/Viewplus/master/viewplusmockups/image4.png" width="220"/> 
 <img src="https://raw.githubusercontent.com/Moutamid/Viewplus/master/viewplusmockups/image5.png" width="220"/> <img src="https://raw.githubusercontent.com/Moutamid/Viewplus/master/viewplusmockups/image6.png" width="220"/> <img src="https://raw.githubusercontent.com/Moutamid/Viewplus/master/viewplusmockups/image7.png" width="220"/>
 
-<img src="https://raw.githubusercontent.com/Moutamid/Viewplus/master/viewplusmockups/video-meusom.gif" width="250"/>
+<img src="https://raw.githubusercontent.com/Moutamid/Viewplus/master/viewplusmockups/viewplus.gif" width="250"/>
 
 <!-- ### Specifications ###
 
