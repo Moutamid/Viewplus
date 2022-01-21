@@ -251,7 +251,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        imageList.add(new SlideModel(dataSnapshot.getValue(String.class), "", ScaleTypes.CENTER_INSIDE));
+                        imageList.add(new SlideModel(dataSnapshot.child("link").getValue(String.class), "", ScaleTypes.CENTER_INSIDE));
                     }
 
                 } else {

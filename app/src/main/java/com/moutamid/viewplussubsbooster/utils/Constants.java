@@ -45,4 +45,5 @@ public class Constants {
     public static final String ADD_TASK_VARIABLES = "add_tasks_variable";
     public static final String TIME_ARRAY = "time_array";
     public static final String QUANTITY_ARRAY = "quantity_array";
+    public static final String CUT_OFF_AMOUNT_OF_TASKS = "cut_of_amount_of_tasks";
 }

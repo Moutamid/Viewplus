@@ -105,7 +105,7 @@
 
                         <TextView
                             style="@style/textviewStyle"
-                            android:text="+8000" />
+                            android:text="+800" />
 
                         <ImageView
                             style="@style/imageStyle"

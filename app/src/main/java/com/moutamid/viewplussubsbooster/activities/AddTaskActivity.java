@@ -61,7 +61,7 @@ public class AddTaskActivity extends AppCompatActivity {
     int currentCoinsValue = 0;
 
     int viewTimeInteger = 60;
-
+    //IF ACTIVITY IS LIKE SUBSCRIBE THEN RETRIEVE ABOVE VALUE FROM DATABASE
     private Button viewQuantityButton, viewTimeButton, vipDiscountButton,
             totalCostButton, doneButton;
 
@@ -209,6 +209,31 @@ public class AddTaskActivity extends AppCompatActivity {
         getCoinsAmount();
 
         initYoutubePlayer();
+
+        if (videoType.equals(Constants.TYPE_LIKE) || videoType.equals(Constants.TYPE_SUBSCRIBE)) {
+
+            databaseReference.child(Constants.ADD_TASK_VARIABLES)
+                    .child(Constants.CUT_OFF_AMOUNT_OF_TASKS)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                viewTimeInteger = snapshot.getValue(Integer.class);
+//                                Utils.toast("" + viewTimeInteger);
+                            }
+//                            else {
+//                                Utils.toast("NULL");
+//                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+        }
+
     }
 
     private void showHideLayoutsBasedOnTaskType() {
