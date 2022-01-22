@@ -145,7 +145,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:maxLines="1"
-            android:text="subscribe ( +120 )"
+            android:text="subscribe"
             android:textColor="@color/white"
             android:textSize="11sp"
             app:backgroundTint="@color/red"

@@ -169,6 +169,8 @@ public class ViewFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             currentPoints = snapshot.getValue(Integer.class);
+                            currentPointTextview.setText(currentPoints + "");
+
                         }
                     }
 
@@ -226,12 +228,14 @@ public class ViewFragment extends Fragment {
                 if (taskArrayList.size() > 0) {
                     Log.d(TAG, "onDataChange: if (taskArrayList.size() > 0) {");
                     videoUrl = taskArrayList.get(0).getVideoUrl();
+/*TODO: REMOVEDD
 
                     currentPoints = Integer.parseInt(taskArrayList.get(0)
                             .getTotalViewTimeQuantity());
 
                     currentPointTextview.setText(currentPoints + "");
-//                    percentage;
+*/
+
                     initYoutubePlayer();
                     Log.e(TAG, "onError: 1234: " + videoUrl);
                 } else {
@@ -286,7 +290,7 @@ public class ViewFragment extends Fragment {
                 else
                     currentPoints = currentPoints + percentage;
 
-                currentPointTextview.setText(currentPoints + "");
+//                currentPointTextview.setText(currentPoints + "");
 
                 isAutoPlayEnabled = b;
 
@@ -692,22 +696,22 @@ public class ViewFragment extends Fragment {
         if (currentPosition < taskArrayList.size() - 1) {
 
             currentPosition = currentPosition + 1;
-
+/*TODO: REMOVEDD
             currentPoints = Integer.parseInt(taskArrayList.get(currentPosition)
-                    .getTotalViewTimeQuantity());
+                    .getTotalViewTimeQuantity());*/
 
-            currentPointTextview.setText(currentPoints + "");
+//            currentPointTextview.setText(currentPoints + "");
 
             return taskArrayList.get(currentPosition).getVideoUrl();
         } else {
             currentPosition = 0;
 
             if (taskArrayList.size() > 0) {
-
+/*TODO: REMOVEDD
                 currentPoints = Integer.parseInt(taskArrayList.get(0)
-                        .getTotalViewTimeQuantity());
+                        .getTotalViewTimeQuantity());*/
 
-                currentPointTextview.setText(currentPoints + "");
+//                currentPointTextview.setText(currentPoints + "");
 
                 return taskArrayList.get(0).getVideoUrl();
 

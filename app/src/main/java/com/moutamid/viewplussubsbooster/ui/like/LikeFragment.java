@@ -119,6 +119,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
     public LikeFragment() {
         // Required empty public constructor
     }
+
     String totall = "30";
 
     @Override
@@ -141,6 +142,8 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             currentPoints = snapshot.getValue(Integer.class);
+                            b.likeBtnLikeActivity.setText("Like (" + currentPoints + ")");
+
                         }
                     }
 
@@ -231,7 +234,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                 if (bi) {
                     b.autoPlaySwitchLike.setText(
                             "Auto Play ( Daily Limit: "
-                                    + remainingDailyLimitInt + "/)"+totall
+                                    + remainingDailyLimitInt + "/)" + totall
                     );
                     isAutoPlay = true;
                     likeUserToVideo();
@@ -270,6 +273,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
         return b.getRoot();
     }
+
     boolean vipStatus;
 
     private void likeUserToVideo() {
@@ -674,7 +678,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                                 remainingDailyLimitInt);
                                         b.autoPlaySwitchLike.setText(
                                                 "Auto Play ( Daily Limit: "
-                                                        + remainingDailyLimitInt + "/)"+totall
+                                                        + remainingDailyLimitInt + "/)" + totall
                                         );
 
                                         currentCounter++;

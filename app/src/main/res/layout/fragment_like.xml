@@ -151,7 +151,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:maxLines="1"
-            android:text="like ( +120 )"
+            android:text="like"
             android:textColor="@color/white"
             android:textSize="13sp"
             app:backgroundTint="@color/red"

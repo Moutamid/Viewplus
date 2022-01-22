@@ -143,6 +143,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             currentPoints = snapshot.getValue(Integer.class);
+                            b.subscribeBtnSubscribeActivity.setText("Subscribe (" + currentPoints + ")");
                         }
                     }
 
@@ -233,7 +234,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                 if (bi) {
                     b.autoPlaySwitchSubscribe.setText(
                             "Auto Play ( Daily Limit: "
-                                    + remainingDailyLimitInt + "/)"+totall
+                                    + remainingDailyLimitInt + "/)" + totall
                     );
                     isAutoPlay = true;
                     subscribeUserToChannel();
@@ -272,6 +273,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
         return b.getRoot();
     }
+
     boolean vipStatus;
 
     private void subscribeUserToChannel() {
@@ -676,7 +678,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                                 remainingDailyLimitInt);
                                         b.autoPlaySwitchSubscribe.setText(
                                                 "Auto Play ( Daily Limit: "
-                                                        + remainingDailyLimitInt + "/)"+totall
+                                                        + remainingDailyLimitInt + "/)" + totall
                                         );
 
                                         currentCounter++;
