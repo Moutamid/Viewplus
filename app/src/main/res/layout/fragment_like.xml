@@ -79,6 +79,8 @@
             android:maxLines="1"
             android:text="like"
             android:textColor="@color/white"
+            app:iconSize="20dp"
+            app:icon="@drawable/youtube"
             android:textSize="13sp"
             app:backgroundTint="@color/red"
             app:cornerRadius="8dp" />

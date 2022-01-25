@@ -48,14 +48,14 @@
         android:id="@+id/autoPlaySwitchSubscribe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/SelectionSwitch"
         android:layout_below="@+id/toplayoutlayout"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="10dp"
         android:text="Auto play"
-        android:textColor="@color/black"/>
-        <!--app:thumbTint="@color/red"
-        app:trackTint="#99FF3E3E" />-->
+        android:textColor="@color/black"
+        android:theme="@style/SelectionSwitch" />
+    <!--app:thumbTint="@color/red"
+    app:trackTint="#99FF3E3E" />-->
 
     <LinearLayout
         android:id="@+id/bottomLayoutSubscribe"
@@ -72,13 +72,16 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginHorizontal="10dp"
+            app:iconSize="20dp"
             android:layout_weight="1"
             android:maxLines="1"
             android:text="subscribe"
             android:textColor="@color/white"
             android:textSize="11sp"
             app:backgroundTint="@color/red"
-            app:cornerRadius="8dp" />
+            app:cornerRadius="8dp"
+            app:icon="@drawable/youtube"
+            app:iconGravity="start" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/seeNextBtnSubscribe"
@@ -124,11 +127,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            app:iss_title_background="@color/transparent"
             app:iss_auto_cycle="true"
             app:iss_delay="2000"
             app:iss_period="2000"
             app:iss_selected_dot="@drawable/selected_dot"
+            app:iss_title_background="@color/transparent"
             app:iss_unselected_dot="@drawable/unselected_dot" />
 
     </LinearLayout>
