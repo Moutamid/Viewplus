@@ -24,8 +24,8 @@
             <ImageView
                 android:id="@+id/video_image_like"
                 android:layout_width="match_parent"
-                android:scaleType="centerCrop"
-                android:layout_height="230dp" />
+                android:layout_height="230dp"
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/videoId_like"
@@ -54,85 +54,11 @@
         android:layout_marginTop="20dp"
         android:text="Auto play"
         android:textColor="@color/black"
-        android:theme="@style/SelectionSwitch"/>
-        <!--app:thumbTint="@color/red"
-        app:trackTint="#99FF3E3E" />-->
-        <!--app:thumbTint="@color/accentColor"
-        app:trackTint="@color/lighterRed" />-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/autoPlaySwitch_like"
-        android:gravity="center"
-        android:layout_above="@+id/bottomLayout_like"
-        android:orientation="vertical">
-
-        <com.denzcoskun.imageslider.ImageSlider
-            android:id="@+id/image_slider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            app:iss_title_background="@color/transparent"
-            app:iss_auto_cycle="true"
-            app:iss_delay="2000"
-            app:iss_period="2000"
-            app:iss_selected_dot="@drawable/selected_dot"
-            app:iss_unselected_dot="@drawable/unselected_dot" />
-
-
-        <!--
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="40dp"
-                    android:src="@drawable/mask_group" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:src="@drawable/group_dots" />
-        -->
-
-    </LinearLayout>
-
-    <!--<androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottomLayout_like"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="30dp"
-        android:visibility="gone"
-        android:layout_marginBottom="15dp"
-        app:cardCornerRadius="7dp"
-        app:cardElevation="7dp">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/autoPlaySwitch_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="Auto play"
-                app:thumbTint="@color/accentColor"
-                app:trackTint="@color/lighterRed" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Like to your favourite channel % get bonus, DO NOT cancel like, We will block your account if you cancel like on any video." />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>-->
+        android:theme="@style/SelectionSwitch" />
+    <!--app:thumbTint="@color/red"
+    app:trackTint="#99FF3E3E" />-->
+    <!--app:thumbTint="@color/accentColor"
+    app:trackTint="@color/lighterRed" />-->
 
     <LinearLayout
         android:id="@+id/bottomLayout_like"
@@ -186,5 +112,40 @@
             android:text="mnmn  " />
 
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomLayout_like"
+        android:layout_below="@+id/autoPlaySwitch_like"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/image_sliderLike"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:iss_auto_cycle="true"
+            app:iss_delay="2000"
+            app:iss_period="2000"
+            app:iss_selected_dot="@drawable/selected_dot"
+            app:iss_title_background="@color/transparent"
+            app:iss_unselected_dot="@drawable/unselected_dot" />
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/sliderLayoutLike"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomLayout_like"
+        android:layout_below="@+id/autoPlaySwitch_like" />
 
 </RelativeLayout>

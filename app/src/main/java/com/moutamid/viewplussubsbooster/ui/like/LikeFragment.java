@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -38,6 +39,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -121,6 +124,8 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
     }
 
     String totall = "30";
+    ArrayList<String> linkList = new ArrayList<>();
+    int currentClick = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -143,7 +148,6 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                         if (snapshot.exists()) {
                             currentPoints = snapshot.getValue(Integer.class);
                             b.likeBtnLikeActivity.setText("Like (" + currentPoints + ")");
-
                         }
                     }
 
@@ -250,9 +254,16 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<SlideModel> imageList = new ArrayList<>();
 
+                linkList.clear();
+
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         imageList.add(new SlideModel(dataSnapshot.child("link").getValue(String.class), "", ScaleTypes.CENTER_INSIDE));
+
+                        if (dataSnapshot.child("click").exists())
+                            linkList.add(dataSnapshot.child("click").getValue(String.class));
+                        else linkList.add("google.com");
+
                     }
 
                 } else {
@@ -261,13 +272,32 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                     imageList.add(new SlideModel(R.drawable.mask_group, "", ScaleTypes.CENTER_INSIDE));
                 }
 
-                b.imageSlider.setImageList(imageList);
+                b.imageSliderLike.setImageList(imageList);
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        b.sliderLayoutLike.setOnClickListener(view -> {
+            if (linkList.size() > 0) {
+                String url = linkList.get(currentClick);
+
+                if (!url.startsWith("https://") && !url.startsWith("http://")){
+                    url = "http://" + url;
+                }
+                Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(openUrlIntent);
+            }
+        });
+
+        b.imageSliderLike.setItemChangeListener(new ItemChangeListener() {
+            @Override
+            public void onItemChanged(int i) {
+                currentClick = i;
             }
         });
 
@@ -561,7 +591,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                         @Override
                         public void run() {
 
-                            b.outputTextViewLike.setText(response.toString());
+                            Log.d(TAG, response.toString());
                             uploadAddedSubscribers();
 //                            mOutputText.setText(mOutputText + response.toString());
 //                            Toast.makeText(requireContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
@@ -733,7 +763,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-//                            b.outputTextViewLike.setText(response.toString());
+//                            Log.d(TAG, response.toString());
                             uploadAddedLikers();
 //                            Toast.makeText(MainActivity.this, "Liked", Toast.LENGTH_SHORT).show();
 
@@ -820,13 +850,13 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
             if (output == null || output.size() == 0) {
 //                mOutputText.setText("No results returned.");
-                b.outputTextViewLike.setText("No results returned.");
+                Log.d(TAG, "No results returned.");
                 Utils.toast("No results returned.");
             } else {
                 output.add(0, "Data retrieved using the YouTube Data API:");
 //                mOutputText.setText(TextUtils.join("\n", output));
                 String text = TextUtils.join("\n", output);
-                b.outputTextViewLike.setText(text);
+                Log.d(TAG, text);
 //                Utils.toast(text);
             }
 
@@ -854,7 +884,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                 } else {
 //                    mOutputText.setText("The following error occurred:\n"
 //                            + mLastError.getMessage());
-                    b.outputTextViewLike.setText("The following error occurred:\n"
+                    Log.d(TAG, "The following error occurred:\n"
                             + mLastError.getMessage());
                     Utils.toast("The following error occurred:\n"
                             + mLastError.getMessage());
@@ -863,7 +893,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                 }
             } else {
 //                mOutputText.setText("Request cancelled.");
-                b.outputTextViewLike.setText("Request cancelled.");
+                Log.d(TAG, "Request cancelled.");
                 Utils.toast("Request cancelled.");
             }
         }

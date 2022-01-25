@@ -61,6 +61,7 @@ public class AddTaskActivity extends AppCompatActivity {
     int currentCoinsValue = 0;
 
     int viewTimeInteger = 60;
+    int taskCutOfAmount = 60;
     //IF ACTIVITY IS LIKE SUBSCRIBE THEN RETRIEVE ABOVE VALUE FROM DATABASE
     private Button viewQuantityButton, viewTimeButton, vipDiscountButton,
             totalCostButton, doneButton;
@@ -210,29 +211,48 @@ public class AddTaskActivity extends AppCompatActivity {
 
         initYoutubePlayer();
 
-        if (videoType.equals(Constants.TYPE_LIKE) || videoType.equals(Constants.TYPE_SUBSCRIBE)) {
+        databaseReference.child(Constants.ADD_TASK_VARIABLES)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            taskCutOfAmount = snapshot.child(Constants.CUT_OFF_AMOUNT_OF_TASKS)
+                                    .getValue(Integer.class);
 
-            databaseReference.child(Constants.ADD_TASK_VARIABLES)
-                    .child(Constants.CUT_OFF_AMOUNT_OF_TASKS)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                viewTimeInteger = snapshot.getValue(Integer.class);
-//                                Utils.toast("" + viewTimeInteger);
+                            if (videoType.equals(Constants.TYPE_VIEW) && snapshot.child(Constants.CUT_OFF_AMOUNT_OF_VIEWS).exists()) {
+                                taskCutOfAmount = snapshot.child(Constants.CUT_OFF_AMOUNT_OF_VIEWS)
+                                        .getValue(Integer.class);
                             }
-//                            else {
-//                                Utils.toast("NULL");
-//                            }
+
+                            if (videoType.equals(Constants.TYPE_LIKE) && snapshot.child(Constants.CUT_OFF_AMOUNT_OF_LIKE).exists()) {
+                                taskCutOfAmount = snapshot.child(Constants.CUT_OFF_AMOUNT_OF_LIKE)
+                                        .getValue(Integer.class);
+                            }
+
+                            if (videoType.equals(Constants.TYPE_SUBSCRIBE) && snapshot.child(Constants.CUT_OFF_AMOUNT_OF_SUBSCRIBE).exists()) {
+                                taskCutOfAmount = snapshot.child(Constants.CUT_OFF_AMOUNT_OF_SUBSCRIBE)
+                                        .getValue(Integer.class);
+                            }
+
+                            totalCostInt = viewQuantityInteger * taskCutOfAmount;
+
+                            if (isVipDiscount) {
+                                int percentage = (int) (totalCostInt * (20.0f / 100.0f));
+                                vipDiscountButton.setText(String.valueOf(percentage));
+                                totalCostInt = totalCostInt - percentage;
+                            }
+
+                            totalCostButton.setText(String.valueOf(totalCostInt));
+
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
+                    }
+                });
 
-        }
 
     }
 
@@ -1029,7 +1049,7 @@ public class AddTaskActivity extends AppCompatActivity {
                             .setText(String.valueOf(viewQuantityInteger));
                 }
 
-                totalCostInt = viewQuantityInteger * viewTimeInteger;
+                totalCostInt = viewQuantityInteger * taskCutOfAmount;
 
                 if (isVipDiscount) {
                     int percentage = (int) (totalCostInt * (20.0f / 100.0f));

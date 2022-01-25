@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -38,6 +39,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -253,6 +255,10 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         imageList.add(new SlideModel(dataSnapshot.child("link").getValue(String.class), "", ScaleTypes.CENTER_INSIDE));
+
+                        if (dataSnapshot.child("click").exists())
+                            linkList.add(dataSnapshot.child("click").getValue(String.class));
+                        else linkList.add("google.com");
                     }
 
                 } else {
@@ -271,10 +277,31 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
             }
         });
 
+        b.sliderLayoutSubscribe.setOnClickListener(view -> {
+            if (linkList.size() > 0) {
+                String url = linkList.get(currentClick);
+
+                if (!url.startsWith("https://") && !url.startsWith("http://")){
+                    url = "http://" + url;
+                }
+                Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(openUrlIntent);
+            }
+        });
+
+        b.imageSlider.setItemChangeListener(new ItemChangeListener() {
+            @Override
+            public void onItemChanged(int i) {
+                currentClick = i;
+            }
+        });
+
         return b.getRoot();
     }
 
     boolean vipStatus;
+    ArrayList<String> linkList = new ArrayList<>();
+    int currentClick = 0;
 
     private void subscribeUserToChannel() {
 

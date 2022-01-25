@@ -2,8 +2,10 @@ package com.moutamid.viewplussubsbooster.ui.view;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +25,7 @@ import androidx.fragment.app.Fragment;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -260,19 +263,6 @@ public class ViewFragment extends Fragment {
 
                 setNewVideoPlayerDetails();
 
-//                if (array == 0) {
-//                    youTubePlayer1.cueVideo(url2, 0);
-//                    array = 1;
-//                }
-//                if (array == 1) {
-//                    youTubePlayer1.cueVideo(url3, 0);
-//                    array = 2;
-//                }
-//                if (array == 2) {
-//                    youTubePlayer1.cueVideo(url1, 0);
-//                    array = 0;
-//                }
-
             }
         });
 
@@ -305,6 +295,10 @@ public class ViewFragment extends Fragment {
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         imageList.add(new SlideModel(dataSnapshot.child("link").getValue(String.class), "", ScaleTypes.CENTER_INSIDE));
+
+                        if (dataSnapshot.child("click").exists())
+                            linkList.add(dataSnapshot.child("click").getValue(String.class));
+                        else linkList.add("google.com");
                     }
 
                 } else {
@@ -324,8 +318,32 @@ public class ViewFragment extends Fragment {
             }
         });
 
+        ImageSlider imageSlider = root.findViewById(R.id.image_slider);
+
+        root.findViewById(R.id.imageSliderLayoutView).setOnClickListener(view -> {
+            if (linkList.size() > 0) {
+                String url = linkList.get(currentClick);
+
+                if (!url.startsWith("https://") && !url.startsWith("http://")){
+                    url = "http://" + url;
+                }
+                Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(openUrlIntent);
+            }
+        });
+
+        imageSlider.setItemChangeListener(new ItemChangeListener() {
+            @Override
+            public void onItemChanged(int i) {
+                currentClick = i;
+            }
+        });
+
         return root;
     }
+
+    ArrayList<String> linkList = new ArrayList<>();
+    int currentClick = 0;
 
     private void initYoutubePlayer() {
         Log.d(TAG, "initYoutubePlayer: ");
