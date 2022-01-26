@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -37,8 +38,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.moutamid.viewplussubsbooster.ContextWrapper;
 import com.moutamid.viewplussubsbooster.R;
+import com.moutamid.viewplussubsbooster.notifications.FirebaseMessagingService;
 import com.moutamid.viewplussubsbooster.utils.Constants;
 import com.moutamid.viewplussubsbooster.utils.Utils;
 
@@ -77,11 +80,17 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
         super.attachBaseContext(context);
     }
 
+    String Texttoken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        Utils.changeLanguage(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
         setContentView(R.layout.activity_bottom_navigation);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+        this.Texttoken = getSharedPreferences(FirebaseMessagingService.MY_PREFS_NAME, 0)
+                .getString("name", "No name defined");
 
         coinsTextView = findViewById(R.id.coins_text_view_bottom_navigation);
         topHeaderLayout = findViewById(R.id.top_header_layout_bottom_navigation);
