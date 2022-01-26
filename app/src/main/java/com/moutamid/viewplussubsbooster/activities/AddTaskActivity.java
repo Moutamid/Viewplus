@@ -2,6 +2,7 @@ package com.moutamid.viewplussubsbooster.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
+import com.moutamid.viewplussubsbooster.ContextWrapper;
 import com.moutamid.viewplussubsbooster.R;
 import com.moutamid.viewplussubsbooster.models.ArrayModel;
 import com.moutamid.viewplussubsbooster.models.LikeTaskModel;
@@ -51,6 +53,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -91,8 +94,17 @@ public class AddTaskActivity extends AppCompatActivity {
     List<ArrayModel> viewTimeListModel = new ArrayList<>();
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale newLocale = new Locale(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
+
+        Context context = ContextWrapper.wrap(newBase, newLocale);
+        super.attachBaseContext(context);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Utils.changeLanguage(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
         setContentView(R.layout.activity_add_task);
 
         videoType = getIntent().getStringExtra(Constants.PARAMS);
@@ -298,7 +310,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
         // Showing Video Title
         youTubePlayerView.getPlayerUiController().showVideoTitle(true);
-        youTubePlayerView.getPlayerUiController().setVideoTitle("Loading...");
+        youTubePlayerView.getPlayerUiController().setVideoTitle(getString(R.string.loading));
 
         // Showing Custom Forward and Backward Icons
         youTubePlayerView.getPlayerUiController().showCustomAction1(false);
@@ -534,7 +546,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
 //                Toast.makeText(this, "You can buy views " + String.valueOf(totalCostInt), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Your coins are low so You cannot buy views", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.low_coins_mcg), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -552,7 +564,7 @@ public class AddTaskActivity extends AppCompatActivity {
         ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -568,7 +580,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                                 if (!snapshot.exists()) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(AddTaskActivity.this, "No coins exist!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddTaskActivity.this, getString(R.string.no_coins_exist), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
 
@@ -604,7 +616,7 @@ public class AddTaskActivity extends AppCompatActivity {
                                                                             if (task.isSuccessful()) {
 
                                                                                 progressDialog.dismiss();
-                                                                                Toast.makeText(AddTaskActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                                                                                Toast.makeText(AddTaskActivity.this, getString(R.string.done), Toast.LENGTH_SHORT).show();
                                                                                 finish();
 
                                                                             } else {
@@ -639,7 +651,7 @@ public class AddTaskActivity extends AppCompatActivity {
         ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -655,7 +667,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                                 if (!snapshot.exists()) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(AddTaskActivity.this, "No coins exist!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddTaskActivity.this, getString(R.string.no_coins_exist), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
 
@@ -691,7 +703,7 @@ public class AddTaskActivity extends AppCompatActivity {
                                                                             if (task.isSuccessful()) {
 
                                                                                 progressDialog.dismiss();
-                                                                                Toast.makeText(AddTaskActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                                                                                Toast.makeText(AddTaskActivity.this, getString(R.string.done), Toast.LENGTH_SHORT).show();
                                                                                 finish();
 
                                                                             } else {
@@ -812,7 +824,7 @@ public class AddTaskActivity extends AppCompatActivity {
         ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -828,7 +840,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                                 if (!snapshot.exists()) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(AddTaskActivity.this, "No coins exist!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddTaskActivity.this, getString(R.string.no_coins_exist), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
 
@@ -865,7 +877,7 @@ public class AddTaskActivity extends AppCompatActivity {
                                                                             if (task.isSuccessful()) {
 
                                                                                 progressDialog.dismiss();
-                                                                                Toast.makeText(AddTaskActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                                                                                Toast.makeText(AddTaskActivity.this, getString(R.string.done), Toast.LENGTH_SHORT).show();
                                                                                 finish();
 
                                                                             } else {
@@ -901,7 +913,7 @@ public class AddTaskActivity extends AppCompatActivity {
         ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(AddTaskActivity.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
         FirebaseAuth mAuth;

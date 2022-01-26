@@ -47,7 +47,7 @@
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="20dp"
                         android:background="@color/accentColor"
-                        android:text="buy points"
+                        android:text="@string/buy_points"
                         android:textColor="@color/white"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="8dp" />
@@ -86,7 +86,7 @@
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="20dp"
                         android:background="@color/accentColor"
-                        android:text="vip membership"
+                        android:text="@string/vip_membership"
                         android:textColor="@color/white"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="8dp" />
@@ -125,7 +125,7 @@
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="20dp"
                         android:background="@color/accentColor"
-                        android:text="leave feedback"
+                        android:text="@string/leave_feedback"
                         android:textColor="@color/white"
                         app:backgroundTint="@color/red"
                         app:cornerRadius="8dp" />
@@ -158,7 +158,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:text="Buy Coins"
+                    android:text="@string/buy_coins"
                     android:textSize="25sp" />
 
             </LinearLayout>
@@ -186,7 +186,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:text="Personal information"
+                    android:text="@string/personal_information"
                     android:textSize="25sp" />
 
             </LinearLayout>

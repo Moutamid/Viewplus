@@ -86,7 +86,7 @@ public class CampaignFragment extends Fragment {
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
 //        getViewTasksListFromDB();
@@ -297,7 +297,7 @@ public class CampaignFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 videoType = Constants.TYPE_VIEW;
-                showAddTaskDialog("Add your video for views");
+                showAddTaskDialog(getString(R.string.addvideoforviews));
 
             }
         };
@@ -308,7 +308,7 @@ public class CampaignFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 videoType = Constants.TYPE_LIKE;
-                showAddTaskDialog("Add your video for likes");
+                showAddTaskDialog(getString(R.string.addvideoforlikes));
 
             }
         };
@@ -319,7 +319,7 @@ public class CampaignFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 videoType = Constants.TYPE_SUBSCRIBE;
-                showAddTaskDialog("Add your video for subscribers");
+                showAddTaskDialog(getString(R.string.advideoforsubscribers));
 
             }
         };
@@ -351,12 +351,12 @@ public class CampaignFragment extends Fragment {
         EditText editText = dialog.findViewById(R.id.youtube_video_url_edittext);
 
         if (TextUtils.isEmpty(editText.getText().toString())) {
-            editText.setError("Please enter a url!");
+            editText.setError(getString(R.string.pleaseenterurl));
             return;
         }
 
         if (TextUtils.isEmpty(Helper.getVideoId(editText.getText().toString()))) {
-            editText.setError("Wrong url!");
+            editText.setError(getString(R.string.wrongurl));
         } else {
 
             Intent intent = new Intent(getActivity(), AddTaskActivity.class);
@@ -469,12 +469,12 @@ public class CampaignFragment extends Fragment {
             holder.totalViews.setText(
                     "" + task.getCurrentSubscribesQuantity()
                             + "/" +
-                            task.getTotalSubscribesQuantity() + " Subscribes");
+                            task.getTotalSubscribesQuantity() + getString(R.string.subscribes));
 
-            holder.watchSecondsDefined.setText("Total Subscribes:" + task.getTotalSubscribesQuantity());
+            holder.watchSecondsDefined.setText(getString(R.string.totasubscribes) + task.getTotalSubscribesQuantity());
 
             if (!task.getCompletedDate().equals("error")) {
-                holder.completedTime.setText("complete:" + task.getCompletedDate());
+                holder.completedTime.setText(getString(R.string.completesmall) + task.getCompletedDate());
             }
 
             if (task.getTotalSubscribesQuantity().equals(String.valueOf(
@@ -502,12 +502,12 @@ public class CampaignFragment extends Fragment {
             holder.totalViews.setText(
                     "" + task.getCurrentLikesQuantity()
                             + "/" +
-                            task.getTotalLikesQuantity() + " Likes");
+                            task.getTotalLikesQuantity() + getString(R.string.likes));
 
-            holder.watchSecondsDefined.setText("Total Likes:" + task.getTotalLikesQuantity());
+            holder.watchSecondsDefined.setText(getString(R.string.totallikes) + task.getTotalLikesQuantity());
 
             if (!task.getCompletedDate().equals("error")) {
-                holder.completedTime.setText("complete:" + task.getCompletedDate());
+                holder.completedTime.setText(getString(R.string.completesmall) + task.getCompletedDate());
             }
 
             if (task.getTotalLikesQuantity().equals(String.valueOf(
@@ -535,12 +535,12 @@ public class CampaignFragment extends Fragment {
             holder.totalViews.setText(
                     "" + task.getCurrentViewsQuantity()
                             + "/" +
-                            task.getTotalViewsQuantity() + " View");
+                            task.getTotalViewsQuantity() + getString(R.string.view));
 
-            holder.watchSecondsDefined.setText("Watch Seconds:" + task.getTotalViewTimeQuantity());
+            holder.watchSecondsDefined.setText(getString(R.string.watchseconds) + task.getTotalViewTimeQuantity());
 
             if (!task.getCompletedDate().equals("error")) {
-                holder.completedTime.setText("complete:" + task.getCompletedDate());
+                holder.completedTime.setText(getString(R.string.completesmall) + task.getCompletedDate());
             }
 
             if (task.getTotalViewsQuantity().equals(String.valueOf(
@@ -568,10 +568,10 @@ public class CampaignFragment extends Fragment {
                 public boolean onLongClick(View view) {
 
                     Utils.showDialog(requireContext(),
-                            "Are you sure?",
-                            "Do you really want to delete this task?",
-                            "Yes",
-                            "No",
+                            getString(R.string.are_you_sure),
+                            getString(R.string.doyoureallywantotodelete),
+                            getString(R.string.yes),
+                            getString(R.string.no),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -600,10 +600,10 @@ public class CampaignFragment extends Fragment {
                 public boolean onLongClick(View view) {
 
                     Utils.showDialog(requireContext(),
-                            "Are you sure?",
-                            "Do you really want to delete this task?",
-                            "Yes",
-                            "No",
+                            getString(R.string.are_you_sure),
+                            getString(R.string.doyoureallywantotodelete),
+                            getString(R.string.yes),
+                            getString(R.string.no),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -632,10 +632,10 @@ public class CampaignFragment extends Fragment {
                 public boolean onLongClick(View view) {
 
                     Utils.showDialog(requireContext(),
-                            "Are you sure?",
-                            "Do you really want to delete this task?",
-                            "Yes",
-                            "No",
+                            getString(R.string.are_you_sure),
+                            getString(R.string.doyoureallywantotodelete),
+                            getString(R.string.yes),
+                            getString(R.string.no),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

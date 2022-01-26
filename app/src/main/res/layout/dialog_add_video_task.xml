@@ -12,7 +12,7 @@
         android:id="@+id/titleDialog"
         android:gravity="center_horizontal"
         android:padding="10dp"
-        android:text="Add your video"
+        android:text="@string/add_your_video"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:hint="Input Youtube video url" />
+            android:hint="@string/input_youtube_video_url" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addTaskButton"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/red"
-            android:text="add"
+            android:text="@string/add"
             android:textColor="@color/white" />
 
     </LinearLayout>
@@ -52,6 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="How to get link: open your video on YT -> share button -> copy link"/>
+        android:text="@string/how_to_get_link_open_your_video_on_yt_share_button_copy_link"/>
 
 </LinearLayout>

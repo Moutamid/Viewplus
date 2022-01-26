@@ -133,7 +133,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
         progressDialog = new ProgressDialog(requireContext());
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
         vipStatus = Utils.getBoolean(Constants.VIP_STATUS, false);
@@ -147,7 +147,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             currentPoints = snapshot.getValue(Integer.class);
-                            b.likeBtnLikeActivity.setText("Like (" + currentPoints + ")");
+                            b.likeBtnLikeActivity.setText(getString(R.string.likebracket) + currentPoints + ")");
                         }
                     }
 
@@ -162,7 +162,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) {
                     progressDialog.dismiss();
-                    Utils.toast("No data exist!");
+                    Utils.toast(getString(R.string.nodataexist));
                     return;
                 }
 
@@ -196,7 +196,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                 currentCounter++;
 
                 if (currentCounter >= likeTaskModelArrayList.size()) {
-                    Utils.toast("End of tasks!");
+                    Utils.toast(getString(R.string.endoftasks));
 
                 } else setDataOnViews(currentCounter, false);
 
@@ -217,7 +217,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
 
         mProgress = new ProgressDialog(requireContext());
-        mProgress.setMessage("Calling YouTube Data API ...");
+        mProgress.setMessage(getString(R.string.callyoutubedataapi));
 
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(//TODO: requireContext() is added
@@ -229,7 +229,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
             public void onCheckedChanged(CompoundButton compoundButton, boolean bi) {
                 if (isTimerRunning) {
                     b.autoPlaySwitchLike.setChecked(false);
-                    b.autoPlaySwitchLike.setText("Auto Play");
+                    b.autoPlaySwitchLike.setText(getString(R.string.autoplay));
                     b.autoPlaySwitchLike.setBackgroundColor(getResources().getColor(R.color.grey));
                     isAutoPlay = false;
                     return;
@@ -237,13 +237,13 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
                 if (bi) {
                     b.autoPlaySwitchLike.setText(
-                            "Auto Play ( Daily Limit: "
+                            getString(R.string.autoplaydailylimit)
                                     + remainingDailyLimitInt + "/)" + totall
                     );
                     isAutoPlay = true;
                     likeUserToVideo();
                 } else {
-                    b.autoPlaySwitchLike.setText("Auto Play");
+                    b.autoPlaySwitchLike.setText(getString(R.string.autoplay));
                     isAutoPlay = false;
                 }
             }
@@ -310,12 +310,12 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
         if (vipStatus) {
             if (remainingDailyLimitInt == 80) {
-                Utils.toast("Your daily limit reached!");
+                Utils.toast(getString(R.string.yourdailylimitreached));
                 return;
             }
         } else {
             if (remainingDailyLimitInt == 30) {
-                Utils.toast("Your daily limit reached!");
+                Utils.toast(getString(R.string.yourdailylimitreached));
                 return;
             }
         }
@@ -393,7 +393,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
                     this,
-                    "This app needs to access your Google account (via Contacts).",
+                    getString(R.string.thisappneedstoaccessgooglecontacts),
                     REQUEST_PERMISSION_GET_ACCOUNTS,
                     Manifest.permission.GET_ACCOUNTS);
         }
@@ -699,7 +699,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                     public void onComplete(@NonNull Task<Void> task) {
 
                                         mProgress.hide();
-                                        Utils.toast("Liked!");
+                                        Utils.toast(getString(R.string.likedmark));
 
 
                                         // INCREMENT DAILY LIMIT
@@ -707,14 +707,14 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                         Utils.store(Utils.getDate() + "Like",
                                                 remainingDailyLimitInt);
                                         b.autoPlaySwitchLike.setText(
-                                                "Auto Play ( Daily Limit: "
+                                                getString(R.string.autoplaydailylimit)
                                                         + remainingDailyLimitInt + "/)" + totall
                                         );
 
                                         currentCounter++;
 
                                         if (currentCounter >= likeTaskModelArrayList.size()) {
-                                            Utils.toast("End of tasks!");
+                                            Utils.toast(getString(R.string.endoftasks));
                                             b.videoImageLike.setBackgroundResource(0);
                                             b.videoIdLike.setText("Empty");
                                         } else setDataOnViews(currentCounter, true);
@@ -942,7 +942,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                     currentCounter++;
 
                                     if (currentCounter >= likeTaskModelArrayList.size()) {
-                                        Utils.toast("End of tasks!");
+                                        Utils.toast(getString(R.string.endoftasks));
 
                                     } else setDataOnViews(currentCounter, false);
 
@@ -963,7 +963,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
 
             b.videoIdLike.setText(
-                    "Video Id: " + Helper.getVideoId(likeTaskModelArrayList.get(counter).getVideoUrl())
+                    getString(R.string.videoidmark) + Helper.getVideoId(likeTaskModelArrayList.get(counter).getVideoUrl())
             );
 
             currentVideoLink = likeTaskModelArrayList.get(counter).getVideoUrl();
@@ -1031,7 +1031,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
                                         currentCounter++;
 
                                         if (currentCounter >= likeTaskModelArrayList.size()) {
-                                            Utils.toast("End of tasks!");
+                                            Utils.toast(getString(R.string.endoftasks));
 
                                         } else setDataOnViews(currentCounter, false);
                                     }
@@ -1049,7 +1049,7 @@ public class LikeFragment extends Fragment implements EasyPermissions.Permission
 
 
                 b.videoIdLike.setText(
-                        "Video Id: " + Helper.getVideoId(likeTaskModelArrayList.get(counter).getVideoUrl())
+                        getString(R.string.videoidmark) + Helper.getVideoId(likeTaskModelArrayList.get(counter).getVideoUrl())
                 );
 
                 currentVideoLink = likeTaskModelArrayList.get(counter).getVideoUrl();

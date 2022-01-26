@@ -1,6 +1,7 @@
 package com.moutamid.viewplussubsbooster.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,12 +34,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.moutamid.viewplussubsbooster.ContextWrapper;
 import com.moutamid.viewplussubsbooster.R;
 import com.moutamid.viewplussubsbooster.utils.Constants;
 import com.moutamid.viewplussubsbooster.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
     private ProgressDialog progressDialog;
@@ -56,9 +59,18 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
     BillingProcessor bp;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale newLocale = new Locale(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
+
+        Context context = ContextWrapper.wrap(newBase, newLocale);
+        super.attachBaseContext(context);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//        Utils.changeLanguage(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
         setContentView(R.layout.activity_main);
         bp = BillingProcessor.newBillingProcessor(this, Constants.LICENSE_KEY, this);
         bp.initialize();
@@ -129,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements BillingProcessor.
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

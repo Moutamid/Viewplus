@@ -113,7 +113,7 @@
                         style="@style/textviewStyle"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
-                        android:text="BENEFITS" />
+                        android:text="@string/benefits" />
 
                     <TextView
                         style="@style/textviewStyle"
@@ -122,7 +122,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:gravity="center_horizontal"
-                        android:text="20% Off on Campaigns \nIncreased Daily Limits (+50)\nRemove Ads"
+                        android:text="@string/_20_off_on_campaigns_nincreased_daily_limits_50_nremove_ads"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -141,7 +141,7 @@
 
                         <TextView
                             style="@style/textviewStyle"
-                            android:text="1 Week"
+                            android:text="@string/_1_week"
                             android:textSize="20sp" />
 
                     </LinearLayout>
@@ -176,7 +176,7 @@
                         <TextView
                             style="@style/textviewStyle"
 
-                            android:text="1 Month (Save 40%)"
+                            android:text="@string/_1_month_save_40"
                             android:textSize="20sp" />
 
                     </LinearLayout>
@@ -211,7 +211,7 @@
 
                         <TextView
                             style="@style/textviewStyle"
-                            android:text="3 Months (Save 50%)"
+                            android:text="@string/_3_months_save_50"
 
                             android:textSize="20sp" />
 
@@ -247,7 +247,7 @@
                             style="@style/textviewStyle"
                             android:layout_marginVertical="20dp"
 
-                            android:text="Note: Subscriptions are renewed according to specified period. In case you want to stop, renew at anytime, you must enter Google Play Store - Menu - Subscriptions - Palcon Booster - Cancel Subscription"
+                            android:text="@string/note_subscriptions_are_renewed_according_to_specified_period_in_case_you_want_to_stop_renew_at_anytime_you_must_enter_google_play_store_menu_subscriptions_palcon_booster_cancel_subscription"
                             android:textColor="@color/gray"
                             android:textSize="20sp" />
 

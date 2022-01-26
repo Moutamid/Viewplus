@@ -131,7 +131,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
         progressDialog = new ProgressDialog(requireContext());
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
         vipStatus = Utils.getBoolean(Constants.VIP_STATUS, false);
@@ -145,7 +145,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             currentPoints = snapshot.getValue(Integer.class);
-                            b.subscribeBtnSubscribeActivity.setText("Subscribe (" + currentPoints + ")");
+                            b.subscribeBtnSubscribeActivity.setText(getString(R.string.subscribebracket) + currentPoints + ")");
                         }
                     }
 
@@ -160,7 +160,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) {
                     progressDialog.dismiss();
-                    Utils.toast("No data exist!");
+                    Utils.toast(getString(R.string.nodataexist));
                     return;
                 }
 
@@ -195,7 +195,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                 currentCounter++;
 
                 if (currentCounter >= subscribeTaskModelArrayList.size()) {
-                    Utils.toast("End of tasks!");
+                    Utils.toast(getString(R.string.endoftasks));
 
                 } else setDataOnViews(currentCounter, false);
 
@@ -216,7 +216,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
 
         mProgress = new ProgressDialog(requireContext());
-        mProgress.setMessage("Calling YouTube Data API ...");
+        mProgress.setMessage(getString(R.string.callyoutubedataapi));
 
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(//TODO: requireContext() is added
@@ -228,20 +228,20 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
             public void onCheckedChanged(CompoundButton compoundButton, boolean bi) {
                 if (isTimerRunning) {
                     b.autoPlaySwitchSubscribe.setChecked(false);
-                    b.autoPlaySwitchSubscribe.setText("Auto Play");
+                    b.autoPlaySwitchSubscribe.setText(getString(R.string.autoplay));
                     isAutoPlay = false;
                     return;
                 }
 
                 if (bi) {
                     b.autoPlaySwitchSubscribe.setText(
-                            "Auto Play ( Daily Limit: "
+                            getString(R.string.autoplaydailylimit)
                                     + remainingDailyLimitInt + "/)" + totall
                     );
                     isAutoPlay = true;
                     subscribeUserToChannel();
                 } else {
-                    b.autoPlaySwitchSubscribe.setText("Auto Play");
+                    b.autoPlaySwitchSubscribe.setText(getString(R.string.autoplay));
                     isAutoPlay = false;
                 }
             }
@@ -307,12 +307,12 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
         if (vipStatus) {
             if (remainingDailyLimitInt == 80) {
-                Utils.toast("Your daily limit reached!");
+                Utils.toast(getString(R.string.yourdailylimitreached));
                 return;
             }
         } else {
             if (remainingDailyLimitInt == 30) {
-                Utils.toast("Your daily limit reached!");
+                Utils.toast(getString(R.string.yourdailylimitreached));
                 return;
             }
         }
@@ -390,7 +390,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
                     this,
-                    "This app needs to access your Google account (via Contacts).",
+                    getString(R.string.thisappneedstoaccessgooglecontacts),
                     REQUEST_PERMISSION_GET_ACCOUNTS,
                     Manifest.permission.GET_ACCOUNTS);
         }
@@ -696,7 +696,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                     public void onComplete(@NonNull Task<Void> task) {
 
                                         mProgress.hide();
-                                        Utils.toast("Subscribed!");
+                                        Utils.toast(getString(R.string.subscribedmark));
 
 
                                         // INCREMENT DAILY LIMIT
@@ -704,14 +704,14 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                         Utils.store(Utils.getDate(),
                                                 remainingDailyLimitInt);
                                         b.autoPlaySwitchSubscribe.setText(
-                                                "Auto Play ( Daily Limit: "
+                                                getString(R.string.autoplaydailylimit)
                                                         + remainingDailyLimitInt + "/)" + totall
                                         );
 
                                         currentCounter++;
 
                                         if (currentCounter >= subscribeTaskModelArrayList.size()) {
-                                            Utils.toast("End of tasks!");
+                                            Utils.toast(getString(R.string.endoftasks));
                                             b.videoImageSubscribe.setBackgroundResource(0);
                                             b.videoIdSubscribe.setText("Empty");
                                         } else setDataOnViews(currentCounter, true);
@@ -946,7 +946,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                     currentCounter++;
 
                                     if (currentCounter >= subscribeTaskModelArrayList.size()) {
-                                        Utils.toast("End of tasks!");
+                                        Utils.toast(getString(R.string.endoftasks));
                                         b.videoImageSubscribe.setBackgroundResource(0);
                                         b.videoIdSubscribe.setText("Empty");
                                     } else setDataOnViews(currentCounter, false);
@@ -965,7 +965,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                     .into(b.videoImageSubscribe);
 
             b.videoIdSubscribe.setText(
-                    "Video Id: " + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
+                    getString(R.string.videoidmark) + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
             );
 
             currentVideoLink = subscribeTaskModelArrayList.get(counter).getVideoUrl();
@@ -1035,7 +1035,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
                                         currentCounter++;
 
                                         if (currentCounter >= subscribeTaskModelArrayList.size()) {
-                                            Utils.toast("End of tasks!");
+                                            Utils.toast(getString(R.string.endoftasks));
                                             b.videoImageSubscribe.setBackgroundResource(0);
                                             b.videoIdSubscribe.setText("Empty");
                                         } else setDataOnViews(currentCounter, false);
@@ -1054,7 +1054,7 @@ public class SubscribeFragment extends Fragment implements EasyPermissions.Permi
 
 
                 b.videoIdSubscribe.setText(
-                        "Video Id: " + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
+                        getString(R.string.videoidmark) + Helper.getVideoId(subscribeTaskModelArrayList.get(counter).getVideoUrl())
                 );
 
                 currentVideoLink = subscribeTaskModelArrayList.get(counter).getVideoUrl();

@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:padding="10dp"
-                android:text="Autoplay"
+                android:text="@string/autoplayy"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:theme="@style/SelectionSwitch" />
@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="(Turn on automatic dialing and get 20% reduction in points)"
+                android:text="@string/turn_on_automatic_dialing_and_get_20_reduction_in_points"
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
@@ -127,7 +127,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Watch next"
+                android:text="@string/watch_next"
                 app:icon="@drawable/youtube"
                 app:iconSize="20dp"
                 android:textColor="@color/white"

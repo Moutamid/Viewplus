@@ -49,4 +49,17 @@ public class Constants {
     public static final String CUT_OFF_AMOUNT_OF_VIEWS = "cut_of_amount_of_views";
     public static final String CUT_OFF_AMOUNT_OF_LIKE = "cut_of_amount_of_like";
     public static final String CUT_OFF_AMOUNT_OF_SUBSCRIBE = "cut_of_amount_of_subscribe";
+
+    public static final String CURRENT_LANGUAGE_CODE = "current_language_code";
+    public static final String LANGUAGE_CODE_ENGLISH = "en";
+    public static final String LANGUAGE_CODE_ARABIC = "ar";
+    public static final String LANGUAGE_CODE_SPANISH = "es";
+    public static final String LANGUAGE_CODE_FRENCH = "fr";
+    public static final String LANGUAGE_CODE_HINDI = "hi";
+    public static final String LANGUAGE_CODE_INDONESIAN = "in";
+    public static final String LANGUAGE_CODE_JAPANESE = "ja";
+    public static final String LANGUAGE_CODE_KOREAN = "ko";
+    public static final String LANGUAGE_CODE_VIETNAMESE = "vi";
+    public static final String LANGUAGE_CODE_URDU = "ur";
+
 }

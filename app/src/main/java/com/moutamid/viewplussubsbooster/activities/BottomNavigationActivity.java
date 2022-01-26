@@ -3,6 +3,7 @@ package com.moutamid.viewplussubsbooster.activities;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -36,8 +37,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.moutamid.viewplussubsbooster.ContextWrapper;
 import com.moutamid.viewplussubsbooster.R;
+import com.moutamid.viewplussubsbooster.utils.Constants;
 import com.moutamid.viewplussubsbooster.utils.Utils;
+
+import java.util.Locale;
 
 import np.com.susanthapa.curved_bottom_navigation.CbnMenuItem;
 import np.com.susanthapa.curved_bottom_navigation.CurvedBottomNavigationView;
@@ -65,8 +70,17 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale newLocale = new Locale(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
+
+        Context context = ContextWrapper.wrap(newBase, newLocale);
+        super.attachBaseContext(context);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Utils.changeLanguage(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
         setContentView(R.layout.activity_bottom_navigation);
 
         coinsTextView = findViewById(R.id.coins_text_view_bottom_navigation);
@@ -115,8 +129,8 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                closeDrawer();
-                clearAppData();
+                    closeDrawer();
+                    clearAppData();
                 }
             });
         } catch (Exception e) {
@@ -193,6 +207,10 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
                 closeDrawer();
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://palconbooster.blogspot.com/p/privacy-policy.html")));
                 break;
+            case R.id.change_language_nav_option:
+                closeDrawer();
+                showLanguageDialog();
+                break;
             case R.id.exit_nav_option:
                 closeDrawer();
                 clearAppData();
@@ -202,12 +220,58 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
         return true;
     }
 
+    private void showLanguageDialog() {
+        AlertDialog dialog;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(BottomNavigationActivity.this);
+        final CharSequence[] items = {
+                "English",
+                "Korean",
+                "Japanese",
+                "Spanish",
+                "Hindi (India)",
+                "French",
+                "Arabic",
+                "Indonesian",
+                "Vietnamese",
+                "Urdu (Pakistan)"};
+        final CharSequence[] code = {
+                Constants.LANGUAGE_CODE_ENGLISH,
+                Constants.LANGUAGE_CODE_KOREAN,
+                Constants.LANGUAGE_CODE_JAPANESE,
+                Constants.LANGUAGE_CODE_SPANISH,
+                Constants.LANGUAGE_CODE_HINDI,
+                Constants.LANGUAGE_CODE_FRENCH,
+                Constants.LANGUAGE_CODE_ARABIC,
+                Constants.LANGUAGE_CODE_INDONESIAN,
+                Constants.LANGUAGE_CODE_VIETNAMESE,
+                Constants.LANGUAGE_CODE_URDU};
+        builder.setTitle("Change language");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int position) {
+                dialog.dismiss();
+                Utils.store(Constants.CURRENT_LANGUAGE_CODE, String.valueOf(code[position]));
+                try {
+                    Utils.changeLanguage(String.valueOf(code[position]));
+//                attachBaseContext(BottomNavigationActivity.this);
+                    recreate();
+                } catch (Exception e) {
+                    Log.e(TAG, "onClick: ERROR: " + e.getMessage());
+                }
+            }
+        });
+
+        dialog = builder.create();
+        dialog.show();
+    }
+
     private void clearAppData() {
 
         new AlertDialog.Builder(BottomNavigationActivity.this)
-                .setTitle("Are you sure?")
-                .setMessage("Do you really want to logout? \n\nNote: This will clear app data and the app will be closed!")
-                .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.are_you_sure))
+                .setMessage(getString(R.string.do_you_really_wanna_log_out))
+                .setNegativeButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         try {
@@ -276,10 +340,10 @@ public class BottomNavigationActivity extends AppCompatActivity implements Navig
                 if (snapshot.exists()) {
                     String value = String.valueOf(snapshot.child("coins").getValue(Integer.class));
                     coinsTextView.setText(value);
-                    pointsTextView.setText("Points: " + value);
+                    pointsTextView.setText(getString(R.string.points) + value);
                 } else {
                     coinsTextView.setText("0");
-                    pointsTextView.setText("Points: " + "0");
+                    pointsTextView.setText(getString(R.string.points) + "0");
                 }
             }
 

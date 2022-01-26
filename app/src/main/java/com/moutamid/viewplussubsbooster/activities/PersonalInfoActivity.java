@@ -30,7 +30,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
         TextView dateTextView = findViewById(R.id.email_textview);

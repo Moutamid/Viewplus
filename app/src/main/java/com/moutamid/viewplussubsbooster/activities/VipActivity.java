@@ -1,6 +1,7 @@
 package com.moutamid.viewplussubsbooster.activities;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,12 +19,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.moutamid.viewplussubsbooster.ContextWrapper;
 import com.moutamid.viewplussubsbooster.R;
 import com.moutamid.viewplussubsbooster.databinding.ActivityVipBinding;
 import com.moutamid.viewplussubsbooster.utils.Constants;
 import com.moutamid.viewplussubsbooster.utils.Utils;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class VipActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
     private static final String TAG = "VipActivity";
@@ -36,8 +39,18 @@ public class VipActivity extends AppCompatActivity implements BillingProcessor.I
     BillingProcessor bp;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale newLocale = new Locale(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
+
+        Context context = ContextWrapper.wrap(newBase, newLocale);
+        super.attachBaseContext(context);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Utils.changeLanguage(Constants.LANGUAGE_CODE_ARABIC);
+//        Utils.changeLanguage(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
         b = ActivityVipBinding.inflate(getLayoutInflater());
         setContentView(b.getRoot());
         getCoinsAmount();
@@ -111,7 +124,7 @@ public class VipActivity extends AppCompatActivity implements BillingProcessor.I
 
     @Override
     public void onProductPurchased(@NonNull String productId, @Nullable PurchaseInfo details) {
-        Utils.toast("Purchase Successful!");
+        Utils.toast(getString(R.string.purchase_successfull));
         Utils.toast(productId);
 
         Utils.store(Constants.VIP_STATUS, true);

@@ -185,7 +185,7 @@ public class ViewFragment extends Fragment {
 
         progressDialog = new ProgressDialog(getActivity());
 //        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getString(R.string.loading));
 
         databaseReference.child("tasks").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -379,7 +379,7 @@ public class ViewFragment extends Fragment {
 
         // Showing Video Title
         youTubePlayerView.getPlayerUiController().showVideoTitle(true);
-        youTubePlayerView.getPlayerUiController().setVideoTitle("Loading...");
+        youTubePlayerView.getPlayerUiController().setVideoTitle(getString(R.string.loading));
 
         // Showing Custom Forward and Backward Icons
         youTubePlayerView.getPlayerUiController().showCustomAction1(false);
@@ -775,7 +775,7 @@ public class ViewFragment extends Fragment {
             super.onPreExecute();
             isRunning = true;
             if (!isCancelled())
-                youTubePlayerView.getPlayerUiController().setVideoTitle("Loading...");
+                youTubePlayerView.getPlayerUiController().setVideoTitle(getString(R.string.loading));
         }
 
         @Override
@@ -787,7 +787,7 @@ public class ViewFragment extends Fragment {
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(url);
 
-            String videoTitle = "Loading...";
+            String videoTitle = getString(R.string.loading);
 
             Log.e("", "Response from url: " + jsonStr);
 

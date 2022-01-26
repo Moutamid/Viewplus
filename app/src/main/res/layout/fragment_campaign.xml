@@ -54,7 +54,7 @@
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Campaign"
+            android:text="@string/no_campaign"
             android:textColor="@color/black" />
 
         <TextView
@@ -64,7 +64,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Your campaign appears here. Click add button to create campaign to get subscribers for your channel." />
+            android:text="@string/your_campaign_appears_here_click_add_button_to_create_campaign_to_get_subscribers_for_your_channel" />
 
     </LinearLayout>
 

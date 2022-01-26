@@ -8,10 +8,15 @@ import androidx.appcompat.app.AlertDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
+import android.os.LocaleList;
 import android.widget.Toast;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -35,6 +40,32 @@ public class Utils {
     private SharedPreferences sp;
 
     public Utils() {
+    }
+
+    public static void changeLanguage(String languageToLoad) {
+        Locale newLocale = new Locale(languageToLoad);
+        Resources res = instance.getResources();
+        Configuration configuration = res.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= 24) {
+//        if (BuildUtils.isAtLeast24Api()) {
+            configuration.setLocale(newLocale);
+
+            LocaleList localeList = new LocaleList(newLocale);
+            LocaleList.setDefault(localeList);
+            configuration.setLocales(localeList);
+
+            instance = instance.createConfigurationContext(configuration);
+
+        } else if (Build.VERSION.SDK_INT >= 17) {
+//        } else if (BuildUtils.isAtLeast17Api()) {
+            configuration.setLocale(newLocale);
+            instance = instance.createConfigurationContext(configuration);
+
+        } else {
+            configuration.locale = newLocale;
+            res.updateConfiguration(configuration, res.getDisplayMetrics());
+        }
     }
 
     public static void init(Context context) {

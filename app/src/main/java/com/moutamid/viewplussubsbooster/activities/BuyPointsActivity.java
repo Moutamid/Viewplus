@@ -18,12 +18,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.moutamid.viewplussubsbooster.ContextWrapper;
 import com.moutamid.viewplussubsbooster.R;
 import com.moutamid.viewplussubsbooster.databinding.ActivityBuyPointsBinding;
 import com.moutamid.viewplussubsbooster.utils.Constants;
 import com.moutamid.viewplussubsbooster.utils.Utils;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class BuyPointsActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
     private static final String TAG = "BuyPointsActivity";
@@ -37,8 +39,17 @@ public class BuyPointsActivity extends AppCompatActivity implements BillingProce
     BillingProcessor bp;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale newLocale = new Locale(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
+
+        Context context = ContextWrapper.wrap(newBase, newLocale);
+        super.attachBaseContext(context);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Utils.changeLanguage(Utils.getString(Constants.CURRENT_LANGUAGE_CODE, "en"));
         b = ActivityBuyPointsBinding.inflate(getLayoutInflater());
         setContentView(b.getRoot());
 
@@ -102,7 +113,7 @@ public class BuyPointsActivity extends AppCompatActivity implements BillingProce
         bp.consumePurchaseAsync(productId, new BillingProcessor.IPurchasesResponseListener() {
             @Override
             public void onPurchasesSuccess() {
-                Utils.toast("Purchase Successful!");
+                Utils.toast(getString(R.string.purchase_successfull));
                 int AMOUNT = getBoughtCoinsAmount(productId);
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put(Constants.USER_ID, mAuth.getUid());
@@ -136,7 +147,7 @@ public class BuyPointsActivity extends AppCompatActivity implements BillingProce
 
             @Override
             public void onPurchasesError() {
-                Utils.toast("Purchased was not successful!");
+                Utils.toast(getString(R.string.purchasenotsuccessfull));
             }
         });
     }
@@ -162,7 +173,7 @@ public class BuyPointsActivity extends AppCompatActivity implements BillingProce
 
     @Override
     public void onProductPurchased(@NonNull String productId, @Nullable PurchaseInfo details) {
-        Utils.toast("Purchase Successful!");
+        Utils.toast(getString(R.string.purchase_successfull));
         int AMOUNT = getBoughtCoinsAmount(productId);
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put(Constants.USER_ID, mAuth.getUid());
